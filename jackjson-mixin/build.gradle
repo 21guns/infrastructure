@@ -1,0 +1,13 @@
+//apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/spring-boot.gradle'
+apply from: '/Volumes/data/Develop/workspace/21guns/gradle/spring-boot.gradle'
+
+dependencies {
+    compile 'org.springframework:spring-beans'
+    compile 'org.springframework:spring-context'
+    compile 'org.springframework:spring-web'
+    compile 'org.springframework:spring-webmvc'
+    compile 'com.fasterxml.jackson.core:jackson-databind'
+    compile 'org.slf4j:slf4j-api'
+    compile libraries.guava
+
+}

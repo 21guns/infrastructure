@@ -1,3 +1,5 @@
 rootProject.name = 'infrastructure'
 include 'common'
+include 'support'
+include 'jackjson-mixin'
 
