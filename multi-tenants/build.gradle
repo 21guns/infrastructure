@@ -1,0 +1,11 @@
+//apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/spring-boot.gradle'
+apply from: '/Volumes/data/Develop/workspace/21guns/gradle/spring-boot.gradle'
+
+dependencies {
+    compile 'javax.servlet:javax.servlet-api'
+    compile libraries.commonslang3
+
+    compile 'org.springframework:spring-web'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+}
