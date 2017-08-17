@@ -11,10 +11,11 @@ import java.text.DecimalFormat;
 /**
  * Created by jliu on 16/8/10.
  */
-public class MoneySerializer  extends JsonSerializer<Double> {
-    private DecimalFormat df = new DecimalFormat("0.00");
-    @Override
-    public void serialize(Double aDouble, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-        jsonGenerator.writeString(df.format(aDouble));
-    }
+public class MoneySerializer extends JsonSerializer<Double> {
+  private DecimalFormat df = new DecimalFormat("0.00");
+
+  @Override
+  public void serialize(Double aDouble, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+    jsonGenerator.writeString(df.format(aDouble));
+  }
 }

@@ -15,8 +15,8 @@ public class PasswordHelper {
 
   private static final RandomStringGenerator generator = new RandomStringGenerator.Builder()
       .withinRange('a', 'z')
-      .withinRange('A','Z')
-      .withinRange(0,9)
+      .withinRange('A', 'Z')
+      .withinRange(0, 9)
       .build();
 
   // Generate salt to secure password encryption
@@ -140,7 +140,7 @@ public class PasswordHelper {
   }
 
   public static void main(String[] args) {
-    for (String  s:
+    for (String s :
         PasswordHelper.encodeBySalt()) {
       System.err.println(s);
     }

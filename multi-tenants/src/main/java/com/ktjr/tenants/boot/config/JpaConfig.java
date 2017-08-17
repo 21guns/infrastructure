@@ -19,44 +19,44 @@ import java.util.Properties;
 @Configuration
 public class JpaConfig {
 
-    @Autowired
-    private MultiTenantConnectionProvider multiTenantConnectionProvider;
-    @Autowired
-    private CurrentTenantIdentifierResolver currentTenantIdentifierResolver;
+  @Autowired
+  private MultiTenantConnectionProvider multiTenantConnectionProvider;
+  @Autowired
+  private CurrentTenantIdentifierResolver currentTenantIdentifierResolver;
 
 
-    @Bean
-    public MultiTenantDataSourceLookup dataSourceLookup(DataSource dataSource){
-        HikariMultiTenantDataSourceLookup dataSourceLookup = new HikariMultiTenantDataSourceLookup(dataSource);
+  @Bean
+  public MultiTenantDataSourceLookup dataSourceLookup(DataSource dataSource) {
+    HikariMultiTenantDataSourceLookup dataSourceLookup = new HikariMultiTenantDataSourceLookup(dataSource);
 
-        return dataSourceLookup;
-    }
-    //默认使用org.apache.tomcat.jdbc.pool.DataSource,不会根据配置使用用户指定的datasource
+    return dataSourceLookup;
+  }
+  //默认使用org.apache.tomcat.jdbc.pool.DataSource,不会根据配置使用用户指定的datasource
 //    @Bean
 //    @ConfigurationProperties("spring.datasource")
 //    public DataSource dataSource(){
 //        return DataSourceBuilder.create().build();
 //    }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource){
+  @Bean
+  public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
 
-        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+    LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 
-        entityManagerFactory.setPackagesToScan("com.ktjr.**.**.api.entity");
-        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
-        hibernateJpaVendorAdapter.setGenerateDdl(true);
-        entityManagerFactory.setJpaVendorAdapter(hibernateJpaVendorAdapter);
-        Properties jpaProperties = new Properties();
-        jpaProperties.put("hibernate.globally_quoted_identifiers",true);
-        jpaProperties.put("hibernate.dialect",org.hibernate.dialect.MySQL5Dialect.class);
-        jpaProperties.put("hibernate.multi_tenant_connection_provider",multiTenantConnectionProvider);
-        jpaProperties.put("hibernate.tenant_identifier_resolver",currentTenantIdentifierResolver);
-        jpaProperties.put("hibernate.multiTenancy","SCHEMA");
-        entityManagerFactory.setJpaProperties(jpaProperties);
+    entityManagerFactory.setPackagesToScan("com.ktjr.**.**.api.entity");
+    HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+    hibernateJpaVendorAdapter.setGenerateDdl(true);
+    entityManagerFactory.setJpaVendorAdapter(hibernateJpaVendorAdapter);
+    Properties jpaProperties = new Properties();
+    jpaProperties.put("hibernate.globally_quoted_identifiers", true);
+    jpaProperties.put("hibernate.dialect", org.hibernate.dialect.MySQL5Dialect.class);
+    jpaProperties.put("hibernate.multi_tenant_connection_provider", multiTenantConnectionProvider);
+    jpaProperties.put("hibernate.tenant_identifier_resolver", currentTenantIdentifierResolver);
+    jpaProperties.put("hibernate.multiTenancy", "SCHEMA");
+    entityManagerFactory.setJpaProperties(jpaProperties);
 
-        return entityManagerFactory;
-    }
+    return entityManagerFactory;
+  }
 
 
 }

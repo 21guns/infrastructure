@@ -12,17 +12,16 @@ import org.springframework.session.web.http.HttpSessionStrategy;
 @Configuration
 public class HttpSessionConfig {
 
-    /**
-     * 通过header传递session ID
-     * @return
-     */
-    @Bean
-    public HttpSessionStrategy httpSessionStrategy() {
-        return new HeaderHttpSessionStrategy();
-    }
+  /**
+   * 通过header传递session ID.
+   */
+  @Bean
+  public HttpSessionStrategy httpSessionStrategy() {
+    return new HeaderHttpSessionStrategy();
+  }
 
-//    @Bean( name = "springSessionDefaultRedisSerializer")
-    public RedisSerializer redisSerializer() {
-        return new FastJsonSessionSerializer();
-    }
+  //    @Bean( name = "springSessionDefaultRedisSerializer")
+  public RedisSerializer redisSerializer() {
+    return new FastJsonSessionSerializer();
+  }
 }

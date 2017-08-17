@@ -15,37 +15,36 @@ import java.util.List;
 /**
  * Modified Spring internal Return value handlers, and wires up a decorator to
  * add support for @JsonResponseView
- * 
+ *
  * @author Jack Matthews
- * 
  */
 public final class JsonResponseSupportFactoryBean implements InitializingBean {
 
-    Logger log = LoggerFactory.getLogger(JsonResponseSupportFactoryBean.class);
+  Logger log = LoggerFactory.getLogger(JsonResponseSupportFactoryBean.class);
 
-    @Autowired
-    @Qualifier("requestMappingHandlerAdapter")
-    private RequestMappingHandlerAdapter adapter;
+  @Autowired
+  @Qualifier("requestMappingHandlerAdapter")
+  private RequestMappingHandlerAdapter adapter;
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        // Spring 4 way
-        List<HandlerMethodReturnValueHandler> handlers = Lists.newArrayList(this.adapter.getReturnValueHandlers());
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    // Spring 4 way
+    List<HandlerMethodReturnValueHandler> handlers = Lists.newArrayList(this.adapter.getReturnValueHandlers());
 
-        decorateHandlers(handlers);
-        this.adapter.setReturnValueHandlers(handlers);
+    decorateHandlers(handlers);
+    this.adapter.setReturnValueHandlers(handlers);
+  }
+
+  private void decorateHandlers(List<HandlerMethodReturnValueHandler> handlers) {
+    for (HandlerMethodReturnValueHandler handler : handlers) {
+      if (handler instanceof RequestResponseBodyMethodProcessor) {
+        JsonResponseInjectingReturnValueHandler decorator = new JsonResponseInjectingReturnValueHandler(handler);
+        int index = handlers.indexOf(handler);
+        handlers.set(index, decorator);
+        this.log.info("JsonResponse decorator support wired up");
+        break;
+      }
     }
-
-    private void decorateHandlers(List<HandlerMethodReturnValueHandler> handlers) {
-        for (HandlerMethodReturnValueHandler handler : handlers) {
-            if (handler instanceof RequestResponseBodyMethodProcessor) {
-                JsonResponseInjectingReturnValueHandler decorator = new JsonResponseInjectingReturnValueHandler(handler);
-                int index = handlers.indexOf(handler);
-                handlers.set(index, decorator);
-                this.log.info("JsonResponse decorator support wired up");
-                break;
-            }
-        }
-    }
+  }
 
 }

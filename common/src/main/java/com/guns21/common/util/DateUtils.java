@@ -437,6 +437,7 @@ public class DateUtils {
 
   /**
    * 根据日期获取当前日期所在周的最后一天.
+   *
    * @param date 日期
    * @return 返回前日期所在周的最后一天
    */
@@ -453,6 +454,7 @@ public class DateUtils {
 
   /**
    * 根据日期获取当前日期所在周的周几，周几跟进week而定.
+   *
    * @param week 1到7
    * @return 当前日期所在周的周几，
    */
@@ -474,6 +476,7 @@ public class DateUtils {
 
   /**
    * 取得一个date对象对应的日期的0点0分0秒时刻的Date对象.
+   *
    * @param date 一个日期
    * @return Date对象。
    */
@@ -493,6 +496,7 @@ public class DateUtils {
 
   /**
    * 取得一个date对象对应的日期的23点59分59秒时刻的Date对象.
+   *
    * @param date 一个日期
    * @return Date对象。
    */
