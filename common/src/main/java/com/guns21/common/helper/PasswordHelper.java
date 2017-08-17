@@ -122,21 +122,21 @@ public class PasswordHelper {
   private static Random random = new Random();
 
   public static String randomPassword(int length) {
-    String password = "";
+    StringBuffer password = new StringBuffer();
     for (int i = 0; i < length; i++) {
-      password += passwordChars.charAt(random.nextInt(passwordChars.length()));
+      password.append(passwordChars.charAt(random.nextInt(passwordChars.length())));
     }
-    return password;
+    return password.toString();
   }
 
   public static final String Alphabet = "abcdefghijklmnopqrstuvwyxzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
   public static String randomAlphabetString(int length) {
-    String password = "";
+    StringBuffer password = new StringBuffer();
     for (int i = 0; i < length; i++) {
-      password += Alphabet.charAt(random.nextInt(Alphabet.length()));
+      password.append(Alphabet.charAt(random.nextInt(Alphabet.length())));
     }
-    return password;
+    return password.toString();
   }
 
   public static void main(String[] args) {
