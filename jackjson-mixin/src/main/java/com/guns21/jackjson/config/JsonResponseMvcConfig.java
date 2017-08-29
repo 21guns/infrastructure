@@ -12,14 +12,14 @@ import java.util.List;
 @Configuration
 public class JsonResponseMvcConfig extends WebMvcConfigurerAdapter {
 
-  @Override
-  public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-    super.configureMessageConverters(converters);
-    converters.add(new JsonResponseAwareJsonMessageConverter());
-  }
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        super.configureMessageConverters(converters);
+        converters.add(new JsonResponseAwareJsonMessageConverter());
+    }
 
-  @Bean
-  public JsonResponseSupportFactoryBean jsonResponseSupportFactoryBean() {
-    return new JsonResponseSupportFactoryBean();
-  }
+    @Bean
+    public JsonResponseSupportFactoryBean jsonResponseSupportFactoryBean() {
+        return new JsonResponseSupportFactoryBean();
+    }
 }

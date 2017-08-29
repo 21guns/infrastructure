@@ -1,6 +1,6 @@
 package com.guns21.support.controller;
 
-import com.guns21.support.domain.ResultFactory;
+import com.guns21.data.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author liufeng
  */
 public abstract class BaseController {
-  @Autowired
-  protected ResultFactory resultFactory;
+    @Autowired
+    protected ResultFactory resultFactory;
 
 
 }

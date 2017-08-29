@@ -5,14 +5,14 @@ package com.guns21.support.exception;
  */
 public class IllegalInputArgumentException extends RuntimeException {
 
-  private String code;
+    private String code;
 
-  public IllegalInputArgumentException(String code, String message) {
-    super(message);
-    this.code = code;
-  }
+    public IllegalInputArgumentException(String code, String message) {
+        super(message);
+        this.code = code;
+    }
 
-  public String getCode() {
-    return code;
-  }
+    public String getCode() {
+        return code;
+    }
 }

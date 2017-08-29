@@ -12,14 +12,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface RequireUuid {
-  @AliasFor("name")
-  String value() default "";
+    @AliasFor("name")
+    String value() default "";
 
-  @AliasFor("value")
-  String name() default "";
+    @AliasFor("value")
+    String name() default "";
 
-  boolean required() default true;
+    boolean required() default true;
 
-  String defaultValue() default "\n\t\t\n\t\t\n\ue000\ue001\ue002\n\t\t\t\t\n";
+    String defaultValue() default "\n\t\t\n\t\t\n\ue000\ue001\ue002\n\t\t\t\t\n";
 
 }

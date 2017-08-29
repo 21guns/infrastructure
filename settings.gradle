@@ -5,4 +5,7 @@ include 'jackjson-mixin'
 include 'spring-session'
 include 'multi-tenants'
 include 'spring-mvc'
+include 'authentication'
+include 'result'
+include 'spring-data'
 

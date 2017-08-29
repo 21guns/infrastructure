@@ -2,7 +2,7 @@
 apply from: '/Volumes/data/Develop/workspace/21guns/gradle/spring-boot.gradle'
 
 dependencies {
-    compile 'org.springframework.data:spring-data-redis'
+    compile 'org.springframework.boot:spring-boot-starter-data-redis'
     compile 'org.springframework.session:spring-session'
 
     compile 'com.fasterxml.jackson.core:jackson-databind'

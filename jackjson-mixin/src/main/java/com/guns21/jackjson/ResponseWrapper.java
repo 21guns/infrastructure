@@ -4,10 +4,10 @@ import com.guns21.jackjson.annotation.JsonResponse;
 
 interface ResponseWrapper {
 
-  boolean hasJsonMixins();
+    boolean hasJsonMixins();
 
-  JsonResponse getJsonResponse();
+    JsonResponse getJsonResponse();
 
-  Object getOriginalResponse();
+    Object getOriginalResponse();
 
 }

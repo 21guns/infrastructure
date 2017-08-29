@@ -14,21 +14,21 @@ import javax.servlet.http.HttpServletRequest;
 
 public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
-  public CurrentUserMethodArgumentResolver() {
-  }
-
-  @Override
-  public boolean supportsParameter(MethodParameter parameter) {
-    if (parameter.hasParameterAnnotation(CurrentUser.class)) {
-      return true;
+    public CurrentUserMethodArgumentResolver() {
     }
-    return false;
-  }
 
-  @Override
-  public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-    return request.getSession().getAttribute(SpringConstant.LOGIN_USER);
+    @Override
+    public boolean supportsParameter(MethodParameter parameter) {
+        if (parameter.hasParameterAnnotation(CurrentUser.class)) {
+            return true;
+        }
+        return false;
+    }
 
-  }
+    @Override
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        return request.getSession().getAttribute(SpringConstant.LOGIN_USER);
+
+    }
 }

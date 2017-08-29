@@ -12,26 +12,26 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentifierResolver {
 
-  @Override
-  public String resolveCurrentTenantIdentifier() {
-    return resolveTenantByHead();
-  }
-
-  public String resolveTenantByHead() {
-    ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-
-    if (attr != null) {
-      String tenantId = attr.getRequest().getHeader("X-TenantID");
-      if (tenantId != null) {
-        return tenantId;
-      }
+    @Override
+    public String resolveCurrentTenantIdentifier() {
+        return resolveTenantByHead();
     }
-    return MultiTenantDataSourceLookup.DEFAULT_TENANTED;
 
-  }
+    public String resolveTenantByHead() {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
-  @Override
-  public boolean validateExistingCurrentSessions() {
-    return true;
-  }
+        if (attr != null) {
+            String tenantId = attr.getRequest().getHeader("X-TenantID");
+            if (tenantId != null) {
+                return tenantId;
+            }
+        }
+        return MultiTenantDataSourceLookup.DEFAULT_TENANTED;
+
+    }
+
+    @Override
+    public boolean validateExistingCurrentSessions() {
+        return true;
+    }
 }

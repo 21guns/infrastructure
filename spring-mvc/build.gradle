@@ -3,6 +3,7 @@ apply from: '/Volumes/data/Develop/workspace/21guns/gradle/spring-boot.gradle'
 
 dependencies {
     compile 'com.guns21:common:1.0.0-SNAPSHOT'
+    compile 'com.guns21:result:1.0.0-SNAPSHOT'
     compile 'com.guns21:support:1.0.0-SNAPSHOT'
 
     compile 'javax.servlet:javax.servlet-api'

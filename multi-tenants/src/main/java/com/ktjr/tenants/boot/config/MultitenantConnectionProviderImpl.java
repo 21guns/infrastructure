@@ -16,20 +16,20 @@ import javax.sql.DataSource;
 @Component
 public class MultitenantConnectionProviderImpl extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
 
-  private static final Logger logger = LoggerFactory.getLogger(MultitenantConnectionProviderImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(MultitenantConnectionProviderImpl.class);
 
-  @Autowired
-  @Qualifier("dataSourceLookup")
-  private MultiTenantDataSourceLookup dataSourceLookup;
+    @Autowired
+    @Qualifier("dataSourceLookup")
+    private MultiTenantDataSourceLookup dataSourceLookup;
 
-  @Override
-  protected DataSource selectAnyDataSource() {
-    return dataSourceLookup.getDataSource(MultiTenantDataSourceLookup.DEFAULT_TENANTED);
-  }
+    @Override
+    protected DataSource selectAnyDataSource() {
+        return dataSourceLookup.getDataSource(MultiTenantDataSourceLookup.DEFAULT_TENANTED);
+    }
 
-  @Override
-  protected DataSource selectDataSource(String tenantIdentifier) {
-    //FIXME 默认相信传过来的schema，没有就进行创建
-    return dataSourceLookup.getDataSource(tenantIdentifier);
-  }
+    @Override
+    protected DataSource selectDataSource(String tenantIdentifier) {
+        //FIXME 默认相信传过来的schema，没有就进行创建
+        return dataSourceLookup.getDataSource(tenantIdentifier);
+    }
 }

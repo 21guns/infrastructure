@@ -15,23 +15,23 @@ import java.util.List;
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
-  @Override
-  public void addInterceptors(InterceptorRegistry registry) {
-    super.addInterceptors(registry);
-    registry.addInterceptor(new AuthTokenInterceptor()).addPathPatterns("/app/**");
-  }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        super.addInterceptors(registry);
+        registry.addInterceptor(new AuthTokenInterceptor()).addPathPatterns("/app/**");
+    }
 
-  @Override
-  public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-    super.addArgumentResolvers(argumentResolvers);
-    argumentResolvers.add(new CurrentUserMethodArgumentResolver());
-    argumentResolvers.add(new RequireUuidMethodArgumentResolver());
-  }
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        super.addArgumentResolvers(argumentResolvers);
+        argumentResolvers.add(new CurrentUserMethodArgumentResolver());
+        argumentResolvers.add(new RequireUuidMethodArgumentResolver());
+    }
 
-  @Override
-  public void addFormatters(FormatterRegistry registry) {
-    super.addFormatters(registry);
-    registry.addConverter(new StringToDateConvert());
-  }
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        super.addFormatters(registry);
+        registry.addConverter(new StringToDateConvert());
+    }
 
 }

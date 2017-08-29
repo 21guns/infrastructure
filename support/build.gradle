@@ -4,6 +4,8 @@ apply from: '/Volumes/data/Develop/workspace/21guns/gradle/spring-boot.gradle'
 
 dependencies {
     compile 'com.guns21:common:1.0.0-SNAPSHOT'
+    compile 'com.guns21:result:1.0.0-SNAPSHOT'
+    compile 'com.guns21:spring-data:1.0.0-SNAPSHOT'
 
     compile 'org.springframework:spring-beans'
     compile 'org.springframework:spring-context'

@@ -13,9 +13,9 @@ import java.lang.annotation.Target;
 @Documented
 public @interface CurrentUser {
 
-  /**
-   * 当前用户在request中的名字.
-   */
-  String value() default SpringConstant.LOGIN_USER;
+    /**
+     * 当前用户在request中的名字.
+     */
+    String value() default SpringConstant.LOGIN_USER;
 
 }

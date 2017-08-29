@@ -13,19 +13,19 @@ import java.util.Date;
  * Created by ljun on 15/4/30.
  */
 public class StringToDateConvert implements Converter<String, Date> {
-  private static final Logger logger = LoggerFactory.getLogger(StringToDateConvert.class);
+    private static final Logger logger = LoggerFactory.getLogger(StringToDateConvert.class);
 
-  @Override
-  public Date convert(String source) {
-    if (StringUtils.isEmpty(source)) {
-      return null;
+    @Override
+    public Date convert(String source) {
+        if (StringUtils.isEmpty(source)) {
+            return null;
+        }
+
+        if (NumberUtils.isCreatable(source)) {
+            return new Date(NumberUtils.createLong(source));
+        } else {
+            return DateUtils.parse(source, DateUtils.LONG_DATE_FORMAT);
+        }
+
     }
-
-    if (NumberUtils.isCreatable(source)) {
-      return new Date(NumberUtils.createLong(source));
-    } else {
-      return DateUtils.parse(source, DateUtils.LONG_DATE_FORMAT);
-    }
-
-  }
 }

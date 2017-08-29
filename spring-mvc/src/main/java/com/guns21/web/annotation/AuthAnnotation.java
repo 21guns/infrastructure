@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Target( {ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthAnnotation {
-  String value() default "";
+    String value() default "";
 }
