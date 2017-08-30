@@ -1,0 +1,23 @@
+//apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/spring-boot.gradle'
+apply from: '/Volumes/data/Develop/workspace/21guns/gradle/spring-boot.gradle'
+
+dependencies {
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    // io.rest-assured
+    testCompile "io.rest-assured:spring-mock-mvc:${versions.restAssured}"
+    testCompile "io.rest-assured:rest-assured:${versions.restAssured}"
+    testCompile "io.rest-assured:json-schema-validator:${versions.restAssured}"
+
+    testCompile "org.mockito:mockito-core:2.9.0"
+}
+
+//configurations {
+//    testArtifacts
+//}
+//task testJar(type: Jar) {
+//    baseName = "${project.name}-test"
+//    from sourceSets.test.output
+//}
+//artifacts {
+//    testArtifacts testJar
+//}
