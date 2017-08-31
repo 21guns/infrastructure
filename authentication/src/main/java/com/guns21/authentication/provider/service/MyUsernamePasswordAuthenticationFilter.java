@@ -78,18 +78,18 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
          * 验证码处理
          * 先判断是否有验证码验证要求，如果有则正常验证，如果没有则跳过。
          */
-        if (captchaEnabled) {
-            HttpSession session = request.getSession(false);
-            if (session != null) {
-                Captcha captcha = (Captcha) session.getAttribute(Captcha.NAME);
-                String p_captcha = request.getParameter("v_code");
-//                if(captcha != null) {
-                if (captcha == null || p_captcha == null || !captcha.isCorrect(p_captcha)) {
-                    throw new InsufficientAuthenticationException("请传入有效的验证码！");
-                }
+//        if (captchaEnabled) {
+//            HttpSession session = request.getSession(false);
+//            if (session != null) {
+//                Captcha captcha = (Captcha) session.getAttribute(Captcha.NAME);
+//                String p_captcha = request.getParameter("v_code");
+////                if(captcha != null) {
+//                if (captcha == null || p_captcha == null || !captcha.isCorrect(p_captcha)) {
+//                    throw new InsufficientAuthenticationException("请传入有效的验证码！");
 //                }
-            }
-        }
+////                }
+//            }
+//        }
 
         /**
          * 通用扩展验证，用于其他项目在引用时，自定义validation

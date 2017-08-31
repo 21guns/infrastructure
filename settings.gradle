@@ -9,4 +9,5 @@ include 'authentication'
 include 'result'
 include 'spring-data'
 include 'test'
+include 'captcha-starter'
 

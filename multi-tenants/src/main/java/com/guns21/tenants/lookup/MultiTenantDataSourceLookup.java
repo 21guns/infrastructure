@@ -1,4 +1,4 @@
-package com.ktjr.tenants.lookup;
+package com.guns21.tenants.lookup;
 
 import org.springframework.jdbc.datasource.lookup.DataSourceLookup;
 import org.springframework.jdbc.datasource.lookup.DataSourceLookupFailureException;

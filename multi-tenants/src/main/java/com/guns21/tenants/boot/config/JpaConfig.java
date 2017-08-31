@@ -1,7 +1,7 @@
-package com.ktjr.tenants.boot.config;
+package com.guns21.tenants.boot.config;
 
-import com.ktjr.tenants.lookup.HikariMultiTenantDataSourceLookup;
-import com.ktjr.tenants.lookup.MultiTenantDataSourceLookup;
+import com.guns21.tenants.lookup.MultiTenantDataSourceLookup;
+import com.guns21.tenants.lookup.HikariMultiTenantDataSourceLookup;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
 import org.springframework.beans.factory.annotation.Autowired;

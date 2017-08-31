@@ -1,4 +1,4 @@
-package com.ktjr.tenants.lookup;
+package com.guns21.tenants.lookup;
 
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.springframework.beans.BeanUtils;

@@ -1,6 +1,7 @@
 package com.guns21.authentication.provider.service;
 
 import com.guns21.authentication.api.entity.MyUserDetails;
+import com.guns21.common.helper.UserEncrypt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +46,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         String encriptPassword = "";
         try {
             //TODO 密码校验
-//      encriptPassword = UserEncrypt.encryptUserPassword(myUserDetails.getSalt(), password);
+            encriptPassword = UserEncrypt.encryptUserPassword(myUserDetails.getSalt(), password);
         } catch (Exception ex) {
         }
 

@@ -16,19 +16,11 @@ import java.io.*;
 /**
  * Created by ljj on 17/6/20.
  */
-@Service
 public class MyAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
-    @Value("${com.ktjr.security.login-form-url:/loginpage}")
-    private String loginFormUrl = "/loginpage";
 
     public MyAuthenticationEntryPoint(String loginFormUrl) {
         super(loginFormUrl);
     }
-
-    public MyAuthenticationEntryPoint() {
-        super("/loginpage");
-    }
-
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {

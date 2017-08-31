@@ -1,6 +1,6 @@
-package com.ktjr.tenants.boot.config;
+package com.guns21.tenants.boot.config;
 
-import com.ktjr.tenants.lookup.MultiTenantDataSourceLookup;
+import com.guns21.tenants.lookup.MultiTenantDataSourceLookup;
 import org.hibernate.engine.jdbc.connections.spi.AbstractDataSourceBasedMultiTenantConnectionProviderImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
