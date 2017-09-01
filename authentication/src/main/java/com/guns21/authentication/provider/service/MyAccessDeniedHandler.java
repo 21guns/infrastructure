@@ -1,7 +1,7 @@
 package com.guns21.authentication.provider.service;
 
 import com.guns21.result.domain.Result;
-import com.guns21.authentication.provider.util.ResponseUtil;
+import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
@@ -27,6 +27,6 @@ public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
 //        accessDeniedMessage,
 //        "message",
 //        null);
-        ResponseUtil.writeResponse(response, Result.fail403(accessDeniedMessage));
+        ResponseUtils.writeResponse(response, Result.fail403(accessDeniedMessage));
     }
 }

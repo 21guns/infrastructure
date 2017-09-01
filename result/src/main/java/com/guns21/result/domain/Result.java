@@ -16,11 +16,11 @@ public class Result<T> extends AbstractResult<T> {
     }
 
     public static <T> Result<T> success() {
-        return success(Code.CODE_200.text, Code.CODE_200.code);
+        return success(Code.CODE_200.code, Code.CODE_200.text);
     }
 
     public static <T> Result<T> success(T object) {
-        return success(Code.CODE_200.text, Code.CODE_200.code, object);
+        return success(Code.CODE_200.code, Code.CODE_200.text, object);
     }
 
     /**
@@ -47,7 +47,7 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回成功结果
      */
     public static <T> Result<T> success(String message) {
-        return success(message, Code.CODE_200.code);
+        return success(Code.CODE_200.code, message);
     }
 
     /**
@@ -58,11 +58,11 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回成功结果
      */
     public static <T> Result<T> success(String message, String code) {
-        return success(message, code, null);
+        return success(code, message, null);
     }
 
     public static <T> Result<T> success(String message, T object) {
-        return success(message, Code.CODE_200.code, object);
+        return success(Code.CODE_200.code, message, object);
     }
 
     /**
@@ -73,7 +73,7 @@ public class Result<T> extends AbstractResult<T> {
      * @param object  对象信息
      * @return 返回成功结果
      */
-    public static <T> Result<T> success(String message, String code, T object) {
+    public static <T> Result<T> success(String code, String message, T object) {
         return getInstance(Boolean.TRUE, message, code, object);
     }
 
@@ -93,8 +93,7 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回失败信息和４０３
      */
     public static <T> Result<T> fail403(String message) {
-        return fail(message, Code.CODE_403.code);
-    }
+        return fail(Code.CODE_403.code, message);    }
 
     /**
      * 通用异常.
@@ -103,7 +102,7 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回400失败
      */
     public static <T> Result<T> fail400(String message) {
-        return fail(message, Code.CODE_400.code);
+        return fail(Code.CODE_400.code, message);
     }
 
     /**
@@ -112,7 +111,7 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回400失败
      */
     public static <T> Result<T> fail400() {
-        return fail(Code.CODE_400.text, Code.CODE_400.code);
+        return fail(Code.CODE_400.code, Code.CODE_400.text);
     }
 
     /**
@@ -122,11 +121,11 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回失败信息和500
      */
     public static <T> Result<T> fail(String message) {
-        return fail(message, Code.CODE_500.code);
+        return fail(Code.CODE_500.code, message);
     }
 
     public static <T> Result<T> fail() {
-        return fail(Code.CODE_500.text, Code.CODE_500.code);
+        return fail(Code.CODE_500.code, Code.CODE_500.text);
     }
 
     /**
@@ -135,8 +134,8 @@ public class Result<T> extends AbstractResult<T> {
      * @param message 失败信息
      * @return 返回失败结果
      */
-    public static <T> Result<T> fail(String message, String code) {
-        return fail(message, code, null);
+    public static <T> Result<T> fail(String code, String message) {
+        return fail(code, message, null);
     }
 
     /**
@@ -147,7 +146,7 @@ public class Result<T> extends AbstractResult<T> {
      * @param object  对象信息
      * @return 返回失败结果
      */
-    public static <T> Result<T> fail(String message, String code, T object) {
+    public static <T> Result<T> fail(String code, String message, T object) {
         return getInstance(Boolean.FALSE, message, code, object);
     }
 

@@ -35,13 +35,14 @@ public class CaptchaServletConfig extends HttpServlet {
     public static final int DEFAULT_WIDTH = 150;
     public static final int DEFAULT_HEIGHT = 50;
     public static final int DEFAULT_FONT_SIZE = 48;
+    public static final long DEFAULT_KEY_TIMEOUT = 120;
 
     public static final String KEY_PREFIX = "captcha-";
 
     private String url = "/api/v1/captcha.png";
     private int width = DEFAULT_WIDTH;
     private int height = DEFAULT_HEIGHT;
-    private long timeout = 120; //秒
+    private long timeout = DEFAULT_KEY_TIMEOUT; //秒
 
     private static final List<Color> COLORS = new ArrayList(3);
     private static final List<Font> FONTS = new ArrayList(3);

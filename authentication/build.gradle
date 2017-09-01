@@ -4,6 +4,7 @@ apply from: '/Volumes/data/Develop/workspace/21guns/gradle/spring-boot.gradle'
 dependencies {
     compile 'com.guns21:common:1.0.0-SNAPSHOT'
     compile 'com.guns21:result:1.0.0-SNAPSHOT'
+    compile 'com.guns21:servlet:1.0.0-SNAPSHOT'
 
     compile 'nl.captcha:SimpleCaptcha:1.3.0'
     compile 'javax.servlet:javax.servlet-api'

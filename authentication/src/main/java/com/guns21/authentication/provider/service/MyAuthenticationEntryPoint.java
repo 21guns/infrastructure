@@ -1,12 +1,10 @@
 package com.guns21.authentication.provider.service;
 
-import com.guns21.authentication.provider.util.ResponseUtil;
 import com.guns21.result.domain.Result;
-import org.springframework.beans.factory.annotation.Value;
+import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.RedirectUrlBuilder;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +33,7 @@ public class MyAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint
 //        error,
 //        "message",
 //        null);
-        ResponseUtil.writeResponse(response, Result.fail403(error));
+        ResponseUtils.writeResponse(response, Result.fail403(error));
     }
 
     protected String buildHttpReturnUrlForRequest(HttpServletRequest request)

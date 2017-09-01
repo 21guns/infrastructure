@@ -1,5 +1,7 @@
 package com.guns21.captcha.boot.config;
 
+import com.guns21.result.domain.Result;
+import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -32,7 +35,7 @@ public class CaptchaSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private RedisTemplate<String, String> template;
 
-    private String validate = "/login";
+    private String[] validate = {"/login"};
     /**
      * 定义web的访问权限
      *
@@ -53,14 +56,24 @@ public class CaptchaSecurityConfig extends WebSecurityConfigurerAdapter {
                     @Override
                     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
-                        String qCaptcha = request.getParameter("v_code");
+                        String qCaptcha = request.getParameter("captcha");
+                        // 1.qCaptcha == null 未输入验证码
+                        if (!StringUtils.hasText(qCaptcha)) {
+                            ResponseUtils.writeResponse(response, Result.fail("未输入验证码"));
+                            return;
+                        }
+
+                        // 2.captcha == null 验证码过期
                         String captcha = template.opsForValue().get(CaptchaServletConfig.KEY_PREFIX + qCaptcha);
-                        //TODO
-                        // 1.captcha == null 验证码过期
-                        // 2.qCaptcha == null 未输入验证码
+                        if (!StringUtils.hasText(captcha)) {
+                            ResponseUtils.writeResponse(response, Result.fail("验证码过期"));
+                            return;
+                        }
+
                         // 3.!captcha.equals(qCaptcha) 验证码输入错误
-                        if (captcha == null || qCaptcha == null || !captcha.equals(qCaptcha)) {
-                            throw new InsufficientAuthenticationException("请传入有效的验证码！");
+                        if (!captcha.equals(qCaptcha)) {
+                            ResponseUtils.writeResponse(response, Result.fail("验证码输入错误"));
+                            return;
                         }
                         filterChain.doFilter(request, response);
                     }

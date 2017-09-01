@@ -3,7 +3,7 @@ package com.guns21.authentication.provider.service;
 import com.guns21.authentication.api.entity.MyLoginUserInfo;
 import com.guns21.authentication.api.entity.MyUserDetails;
 import com.guns21.result.domain.Result;
-import com.guns21.authentication.provider.util.ResponseUtil;
+import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -39,7 +39,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             myLoginUserInfo.setRoles(myUserDetails.getRoles());
         }
 
-        ResponseUtil.writeResponse(response, Result.success(loginMessage, myLoginUserInfo));
+        ResponseUtils.writeResponse(response, Result.success(loginMessage, myLoginUserInfo));
 
         clearAuthenticationAttributes(request);
     }

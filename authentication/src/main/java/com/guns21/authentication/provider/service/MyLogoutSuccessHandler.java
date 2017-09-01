@@ -1,7 +1,7 @@
 package com.guns21.authentication.provider.service;
 
-import com.guns21.authentication.provider.util.ResponseUtil;
 import com.guns21.result.domain.Result;
+import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
@@ -22,6 +22,6 @@ public class MyLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        ResponseUtil.writeResponse(response, Result.success(logoutMessage));
+        ResponseUtils.writeResponse(response, Result.success(logoutMessage));
     }
 }

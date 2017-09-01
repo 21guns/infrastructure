@@ -1,7 +1,7 @@
 package com.guns21.authentication.provider.service;
 
 import com.guns21.result.domain.Result;
-import com.guns21.authentication.provider.util.ResponseUtil;
+import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -24,7 +24,6 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
         request.getSession().setAttribute("message", exception.getLocalizedMessage());
         request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, exception);
 
-//    Result<String> Result = Result.getCustomReturn(Result.NOT_AUTHENTICATION, exception.getMessage(), "message", null);
-        ResponseUtil.writeResponse(response, Result.fail403(exception.getMessage()));
+        ResponseUtils.writeResponse(response, Result.fail403(exception.getMessage()));
     }
 }
