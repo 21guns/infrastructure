@@ -54,28 +54,29 @@ public class CaptchaSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
 
                     @Override
-                    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+                    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+                            throws IOException, ServletException {
 
                         String qCaptcha = request.getParameter("captcha");
-                        // 1.qCaptcha == null 未输入验证码
-                        if (!StringUtils.hasText(qCaptcha)) {
+                        if (StringUtils.hasText(qCaptcha)) {
+                            String captcha = template.opsForValue().get(CaptchaServletConfig.KEY_PREFIX + qCaptcha);
+                            if (StringUtils.hasText(captcha)) {
+                                if (captcha.equals(qCaptcha)) {
+                                    filterChain.doFilter(request, response);
+                                } else {
+                                    // !captcha.equals(qCaptcha) 验证码输入错误
+                                    ResponseUtils.writeResponse(response, Result.fail("验证码输入错误"));
+                                }
+                            } else {
+                                // captcha == null 验证码过期
+                                ResponseUtils.writeResponse(response, Result.fail("验证码过期"));
+                            }
+                        } else {
+                            // qCaptcha == null 未输入验证码
                             ResponseUtils.writeResponse(response, Result.fail("未输入验证码"));
-                            return;
-                        }
 
-                        // 2.captcha == null 验证码过期
-                        String captcha = template.opsForValue().get(CaptchaServletConfig.KEY_PREFIX + qCaptcha);
-                        if (!StringUtils.hasText(captcha)) {
-                            ResponseUtils.writeResponse(response, Result.fail("验证码过期"));
-                            return;
                         }
-
-                        // 3.!captcha.equals(qCaptcha) 验证码输入错误
-                        if (!captcha.equals(qCaptcha)) {
-                            ResponseUtils.writeResponse(response, Result.fail("验证码输入错误"));
-                            return;
-                        }
-                        filterChain.doFilter(request, response);
+                        return;
                     }
 
                     @Override
