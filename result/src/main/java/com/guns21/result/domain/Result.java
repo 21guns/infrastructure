@@ -1,5 +1,7 @@
 package com.guns21.result.domain;
 
+import com.guns21.http.HttpStatus;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,11 +18,11 @@ public class Result<T> extends AbstractResult<T> {
     }
 
     public static <T> Result<T> success() {
-        return success(Code.CODE_200.code, Code.CODE_200.text);
+        return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase());
     }
 
     public static <T> Result<T> success(T object) {
-        return success(Code.CODE_200.code, Code.CODE_200.text, object);
+        return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase(), object);
     }
 
     /**
@@ -47,7 +49,7 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回成功结果
      */
     public static <T> Result<T> success(String message) {
-        return success(Code.CODE_200.code, message);
+        return success(String.valueOf(HttpStatus.OK.value()), message);
     }
 
     /**
@@ -62,7 +64,7 @@ public class Result<T> extends AbstractResult<T> {
     }
 
     public static <T> Result<T> success(String message, T object) {
-        return success(Code.CODE_200.code, message, object);
+        return success(String.valueOf(HttpStatus.OK.value()), message, object);
     }
 
     /**
@@ -93,26 +95,18 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回失败信息和４０３
      */
     public static <T> Result<T> fail403(String message) {
-        return fail(Code.CODE_403.code, message);    }
+        return fail(String.valueOf(HttpStatus.FORBIDDEN.value()), message);    }
 
     /**
      * 通用异常.
      *
      * @param message 失败信息
-     * @return 返回400失败
+     * @return 返回401失败
      */
-    public static <T> Result<T> fail400(String message) {
-        return fail(Code.CODE_400.code, message);
+    public static <T> Result<T> fail401(String message) {
+        return fail(String.valueOf(HttpStatus.UNAUTHORIZED.value()), message);
     }
 
-    /**
-     * 通用异常.
-     *
-     * @return 返回400失败
-     */
-    public static <T> Result<T> fail400() {
-        return fail(Code.CODE_400.code, Code.CODE_400.text);
-    }
 
     /**
      * 通用异常.
@@ -121,11 +115,11 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回失败信息和500
      */
     public static <T> Result<T> fail(String message) {
-        return fail(Code.CODE_500.code, message);
+        return fail(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), message);
     }
 
     public static <T> Result<T> fail() {
-        return fail(Code.CODE_500.code, Code.CODE_500.text);
+        return fail(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
     }
 
     /**

@@ -14,7 +14,7 @@ import java.io.*;
 /**
  * Created by ljj on 2017/6/18.
  */
-@Service
+//@Service
 public class MyFilterSecurityInterceptor extends FilterSecurityInterceptor {
     @Value("${com.ktjr.security.message.access-denied:没有访问权限！}")
     private String accessDeniedMessage;

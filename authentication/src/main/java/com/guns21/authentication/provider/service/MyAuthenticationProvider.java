@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by ljj on 2017/6/17.
  */
-@Component
+//@Component
 public class MyAuthenticationProvider implements AuthenticationProvider {
     @Value("${com.ktjr.security.message.password-error:用户密码错误！}")
     private String passwordError;
@@ -65,4 +65,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         return true;
     }
 
+    public MyAuthenticationProvider setMyUserDetailsService(MyUserDetailsService myUserDetailsService) {
+        this.myUserDetailsService = myUserDetailsService;
+        return this;
+    }
 }

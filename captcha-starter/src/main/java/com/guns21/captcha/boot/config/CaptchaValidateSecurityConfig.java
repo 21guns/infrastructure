@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -30,12 +29,14 @@ import java.io.*;
 @EnableWebSecurity
 @Order(1)
 @ConfigurationProperties(prefix = "com.guns21.captcha")
-public class CaptchaSecurityConfig extends WebSecurityConfigurerAdapter {
+public class CaptchaValidateSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private RedisTemplate<String, String> template;
 
+    //配置captcha 验证的url 一般为登录的url
     private String[] validate = {"/login"};
+
     /**
      * 定义web的访问权限
      *
@@ -44,14 +45,13 @@ public class CaptchaSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+
         httpSecurity
                 .requestMatchers().antMatchers(validate)
                 .and()
-                .addFilterAt(new Filter() {
+                .addFilterBefore(new Filter() {
                     @Override
-                    public void init(FilterConfig filterConfig) throws ServletException {
-
-                    }
+                    public void init(FilterConfig filterConfig) throws ServletException { }
 
                     @Override
                     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
@@ -65,11 +65,11 @@ public class CaptchaSecurityConfig extends WebSecurityConfigurerAdapter {
                                     filterChain.doFilter(request, response);
                                 } else {
                                     // !captcha.equals(qCaptcha) 验证码输入错误
-                                    ResponseUtils.writeResponse(response, Result.fail("验证码输入错误"));
+                                    ResponseUtils.writeResponse(response, Result.fail("验证码错误"));
                                 }
                             } else {
                                 // captcha == null 验证码过期
-                                ResponseUtils.writeResponse(response, Result.fail("验证码过期"));
+                                ResponseUtils.writeResponse(response, Result.fail("验证码错误"));
                             }
                         } else {
                             // qCaptcha == null 未输入验证码
@@ -80,14 +80,14 @@ public class CaptchaSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
 
                     @Override
-                    public void destroy() {
-
-                    }
+                    public void destroy() { }
                 }, (Class<? extends Filter>) ChannelProcessingFilter.class)
                 .csrf().disable();
-//                .authorizeRequests()
-//                .anyRequest().authenticated();
     }
 
+    public CaptchaValidateSecurityConfig setValidate(String[] validate) {
+        this.validate = validate;
+        return this;
+    }
 
 }

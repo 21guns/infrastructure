@@ -9,7 +9,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,13 +42,15 @@ public class CaptchaServletConfig extends HttpServlet {
 
     public static final String KEY_PREFIX = "captcha-";
 
-    private String url = "/api/v1/captcha.png";
+    /* ------------------ 配置参数 -----------------*/
+    //产生captcha的url
+    private String url = "/api/v1/captcha";
     private int width = DEFAULT_WIDTH;
     private int height = DEFAULT_HEIGHT;
     private long timeout = DEFAULT_KEY_TIMEOUT; //秒
 
-    private static final List<Color> COLORS = new ArrayList(3);
-    private static final List<Font> FONTS = new ArrayList(3);
+    private static final List<Color> COLORS = new ArrayList<Color>(3);
+    private static final List<Font> FONTS = new ArrayList<Font>(3);
 
     @Autowired
     private RedisTemplate<String, String> template;

@@ -1,6 +1,8 @@
 package com.guns21.result.domain;
 
 
+import com.guns21.http.HttpStatus;
+
 import java.util.List;
 
 /**
@@ -25,12 +27,12 @@ public class PageResult<T> extends AbstractResult<T> {
     }
 
 
-    public static <T> PageResult<T>  success() {
-        return success(Code.CODE_200.text, Code.CODE_200.code);
+    public static <T> PageResult<T> success() {
+        return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase());
     }
 
     public static <T> PageResult<T>  success(List<T> object) {
-        return success(Code.CODE_200.text, Code.CODE_200.code, object);
+        return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase(), object);
     }
 
     /**
@@ -40,7 +42,7 @@ public class PageResult<T> extends AbstractResult<T> {
      * @return 返回成功结果
      */
     public static <T> PageResult<T>  success(String message) {
-        return success(message, Code.CODE_200.code);
+        return success(String.valueOf(HttpStatus.OK.value()), message);
     }
 
     /**
@@ -50,9 +52,8 @@ public class PageResult<T> extends AbstractResult<T> {
      * @param message 成功信息
      * @return 返回成功结果
      */
-    public static <T> PageResult<T>  success(String message, String code) {
-        return success(message, code, null);
-    }
+    public static <T> PageResult<T>  success( String code, String message) {
+        return success(code, message, null);    }
 
     /**
      * 通用成功
@@ -62,7 +63,7 @@ public class PageResult<T> extends AbstractResult<T> {
      * @param object  对象信息
      * @return 返回成功结果
      */
-    public static <T> PageResult<T>  success(String message, String code, List<T> object) {
+    public static <T> PageResult<T> success(String code, String message, List<T> object) {
         return getInstance(Boolean.TRUE, message, code, object);
     }
 
@@ -74,11 +75,11 @@ public class PageResult<T> extends AbstractResult<T> {
      * @return 返回失败信息和500
      */
     public static <T> PageResult<T>  fail(String message) {
-        return fail(message, Code.CODE_500.code);
+        return fail(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), message);
     }
 
     public static <T> PageResult<T>  fail() {
-        return fail(Code.CODE_500.text, Code.CODE_500.code);
+        return fail(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
     }
 
     /**
@@ -87,8 +88,8 @@ public class PageResult<T> extends AbstractResult<T> {
      * @param message 失败信息
      * @return 返回失败结果
      */
-    public static <T> PageResult<T>  fail(String message, String code) {
-        return fail(message, code, null);
+    public static <T> PageResult<T>  fail(String code, String message) {
+        return fail(code, message, null);
     }
 
     /**
@@ -99,7 +100,7 @@ public class PageResult<T> extends AbstractResult<T> {
      * @param object  对象信息
      * @return 返回失败结果
      */
-    public static <T> PageResult<T>  fail(String message, String code, List object) {
+    public static <T> PageResult<T>  fail(String code, String message, List object) {
         return getInstance(Boolean.FALSE, message, code, object);
     }
 

@@ -1,7 +1,7 @@
 package com.guns21.authentication.boot.config;
 
 import com.guns21.authentication.provider.service.MyAccessDeniedHandler;
-import com.guns21.authentication.provider.service.MyAuthenticationEntryPoint;
+import com.guns21.authentication.provider.service.HttpAuthenticationEntryPoint;
 import com.guns21.authentication.provider.service.MyFilterSecurityInterceptor;
 import com.guns21.authentication.provider.service.MyLogoutSuccessHandler;
 import com.guns21.authentication.provider.service.MyUsernamePasswordAuthenticationFilter;
@@ -22,8 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * validating submitted username and passwords, redirecting to the log in form, etc)
  * within your application.
  */
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${com.ktjr.security.permit-pages:null}")
     private String[] permitPages;
@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         //指定授权范围
         httpSecurity
-                .addFilterAt(myFilterSecurityInterceptor, FilterSecurityInterceptor.class)
+//                .addFilterAt(myFilterSecurityInterceptor, FilterSecurityInterceptor.class)
                 .addFilterAt(myUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .authorizeRequests()
@@ -73,7 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(myAccessDeniedHandler)
-                .authenticationEntryPoint(new MyAuthenticationEntryPoint(loginFormUrl))
+                .authenticationEntryPoint(new HttpAuthenticationEntryPoint())
                 .and()
                 .logout()
                 .logoutUrl(lougout)

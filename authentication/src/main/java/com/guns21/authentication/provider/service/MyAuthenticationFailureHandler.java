@@ -5,6 +5,7 @@ import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
@@ -15,7 +16,7 @@ import java.io.*;
 /**
  * Created by ljj on 17/6/20.
  */
-@Service
+@Component
 public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,

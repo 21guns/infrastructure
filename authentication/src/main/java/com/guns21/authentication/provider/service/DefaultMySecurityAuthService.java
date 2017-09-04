@@ -1,8 +1,8 @@
 package com.guns21.authentication.provider.service;
 
 import com.guns21.authentication.api.entity.MyRole;
-import com.guns21.authentication.api.service.MySecurityAuthService;
 import com.guns21.authentication.api.entity.MyUser;
+import com.guns21.authentication.api.service.MySecurityAuthService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

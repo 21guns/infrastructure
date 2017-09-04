@@ -7,6 +7,7 @@ import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
@@ -17,7 +18,7 @@ import java.io.*;
 /**
  * Created by ljj on 17/6/20.
  */
-@Service
+@Component
 public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Value("${com.ktjr.security.message.login-success:登录成功！}")
     private String loginMessage;

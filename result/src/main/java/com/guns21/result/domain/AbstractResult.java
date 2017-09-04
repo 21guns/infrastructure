@@ -10,30 +10,6 @@ public class AbstractResult<T> {
     protected String message;
     protected T data;
 
-
-    public enum Code {
-        CODE_200("200", "请求成功！"),
-        CODE_400("400", "请求无效！"),
-        CODE_500("500", "执行失败！"),
-        CODE_403("403", "未授权");
-
-        protected String code;
-        protected String text;
-
-        Code(String code, String text) {
-            this.code = code;
-            this.text = text;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getText() {
-            return text;
-        }
-    }
-
     public String getCode() {
         return code;
     }
