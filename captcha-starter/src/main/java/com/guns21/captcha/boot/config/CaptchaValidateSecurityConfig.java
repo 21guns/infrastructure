@@ -51,7 +51,8 @@ public class CaptchaValidateSecurityConfig extends WebSecurityConfigurerAdapter 
                 .and()
                 .addFilterBefore(new Filter() {
                     @Override
-                    public void init(FilterConfig filterConfig) throws ServletException { }
+                    public void init(FilterConfig filterConfig) throws ServletException {
+                    }
 
                     @Override
                     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
@@ -80,7 +81,8 @@ public class CaptchaValidateSecurityConfig extends WebSecurityConfigurerAdapter 
                     }
 
                     @Override
-                    public void destroy() { }
+                    public void destroy() {
+                    }
                 }, (Class<? extends Filter>) ChannelProcessingFilter.class)
                 .csrf().disable();
     }

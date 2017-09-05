@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * Created by ljj on 17/7/14.
  */
-public class MyRole implements Serializable {
+public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String id;

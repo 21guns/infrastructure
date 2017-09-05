@@ -7,7 +7,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -16,7 +15,7 @@ import java.util.Iterator;
  * Created by ljj on 2017/6/18.
  */
 
-@Service
+//@Service
 public class MyAccessDecisionManager implements AccessDecisionManager {
 
 //    private static final String SUPER_ADMINISTRATOR = "SUPER_ADMIN";
@@ -45,9 +44,9 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
             throw new AccessDeniedException(accessDeniedMessage);
         } else {
             //如果权限返回的角色中包括匿名用户角色，则该权限不需验证
-            if (configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals("ROLE_ANONYMOUS"))) {
-                return;
-            }
+//            if (configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals("ROLE_ANONYMOUS"))) {
+//                return;
+//            }
         }
 
         if (authentication.getAuthorities() == null || authentication.getAuthorities().size() == 0) {

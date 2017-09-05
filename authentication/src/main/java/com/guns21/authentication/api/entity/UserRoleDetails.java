@@ -10,21 +10,21 @@ import java.util.List;
 /**
  * Created by ljj on 17/6/28.
  */
-public class MyUserDetails extends User {
+public class UserRoleDetails extends User {
     private static final long serialVersionUID = 1L;
 
     private int salt;
     private String userId;
     private String nickname;
     private String organizationId;
-    private List<MyRole> roles;
+    private List<Role> roles;
 
 
-    public MyUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserRoleDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         this(username, password, true, true, true, true, authorities);
     }
 
-    public MyUserDetails(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    public UserRoleDetails(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
@@ -60,11 +60,11 @@ public class MyUserDetails extends User {
         this.nickname = nickname;
     }
 
-    public List<MyRole> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<MyRole> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 }

@@ -16,7 +16,7 @@ public class MyLoginUserInfo implements Serializable {
 
     private String nickname;
 
-    private List<MyRole> roles;
+    private List<Role> roles;
 
 
     public String getId() {
@@ -43,11 +43,11 @@ public class MyLoginUserInfo implements Serializable {
         this.nickname = nickname;
     }
 
-    public List<MyRole> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<MyRole> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 }

@@ -6,6 +6,5 @@ dependencies {
     compile 'org.springframework.session:spring-session'
 
     compile 'com.fasterxml.jackson.core:jackson-databind'
-    compile libraries.fastjson
 
 }

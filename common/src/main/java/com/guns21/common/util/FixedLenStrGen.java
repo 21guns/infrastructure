@@ -12,13 +12,14 @@ public class FixedLenStrGen {
 
     /**
      * 生成指定长度的大写字符串
+     *
      * @param length
      * @return
      */
-    public static String GenFixedLenUppercaseString(int length){
+    public static String GenFixedLenUppercaseString(int length) {
         Random random = new Random();
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             builder.append(uppercase[random.nextInt(26)]);
         }
 

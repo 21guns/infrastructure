@@ -42,14 +42,14 @@ public class BaseControllerTest {
             //获得session id
             Object nextId = FieldUtils.readDeclaredStaticField(MockHttpSession.class, "nextId", true);
             return given().
-                    interceptor(new MockHttpServletRequestBuilderInterceptor(){
+                    interceptor(new MockHttpServletRequestBuilderInterceptor() {
                         @Override
                         public void intercept(MockHttpServletRequestBuilder mockHttpServletRequestBuilder) {
                             // 设置登录用户
-                            mockHttpServletRequestBuilder.sessionAttr("loginUser",userInfo);
+                            mockHttpServletRequestBuilder.sessionAttr("loginUser", userInfo);
                         }
                     }).
-                    header("x-auth-token",nextId);
+                    header("x-auth-token", nextId);
         } catch (IllegalAccessException e) {
         }
         throw new IllegalArgumentException();

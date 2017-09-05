@@ -13,7 +13,7 @@ public class MyUser {
     private String password;
     private int salt;
     private String organizationId;
-    private List<MyRole> roles;
+    private List<Role> roles;
 
     public String getId() {
         return id;
@@ -63,11 +63,11 @@ public class MyUser {
         this.organizationId = organizationId;
     }
 
-    public List<MyRole> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<MyRole> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 }

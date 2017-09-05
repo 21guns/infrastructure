@@ -95,7 +95,8 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回失败信息和４０３
      */
     public static <T> Result<T> fail403(String message) {
-        return fail(String.valueOf(HttpStatus.FORBIDDEN.value()), message);    }
+        return fail(String.valueOf(HttpStatus.FORBIDDEN.value()), message);
+    }
 
     /**
      * 通用异常.

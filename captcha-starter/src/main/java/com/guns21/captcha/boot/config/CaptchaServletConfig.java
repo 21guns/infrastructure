@@ -9,10 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,6 +27,7 @@ import java.util.concurrent.TimeUnit;
  * 将Captcha存储到redis中
  * key: "captcha_" + Captcha.getAnswer()
  * value: Captcha.getAnswer()
+ *
  * @see nl.captcha.servlet.SimpleCaptchaServlet
  */
 @Configuration
@@ -57,10 +55,11 @@ public class CaptchaServletConfig extends HttpServlet {
 
     /**
      * 请求处理
-     * @param req 请求
+     *
+     * @param req  请求
      * @param resp 响应
      * @throws ServletException 处理异常
-     * @throws IOException io异常
+     * @throws IOException      io异常
      */
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WordRenderer wordRenderer = new DefaultWordRenderer(COLORS, FONTS);

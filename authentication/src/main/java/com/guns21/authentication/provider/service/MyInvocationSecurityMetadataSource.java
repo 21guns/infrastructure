@@ -13,7 +13,6 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+//@Service
 //@Log4j
 public class MyInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
     @Value("${com.ktjr.security.permit-pages:null}")
@@ -60,18 +59,18 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
         map.put("/**", superRoleList);
 
         //添加匿名访问
-        if (permitPages != null) {
-            for (String p : permitPages) {
-                Collection<ConfigAttribute> temp = map.get(p);
-                if (temp != null) {
-                    temp.add(new SecurityConfig(anonymousRole));
-                } else {
-                    temp = new ArrayList<>();
-                    temp.add(new SecurityConfig(anonymousRole));
-                }
-                map.put(p, temp);
-            }
-        }
+//        if (permitPages != null) {
+//            for (String p : permitPages) {
+//                Collection<ConfigAttribute> temp = map.get(p);
+//                if (temp != null) {
+//                    temp.add(new SecurityConfig(anonymousRole));
+//                } else {
+//                    temp = new ArrayList<>();
+//                    temp.add(new SecurityConfig(anonymousRole));
+//                }
+//                map.put(p, temp);
+//            }
+//        }
 
 
         //获取当前权限的角色信息

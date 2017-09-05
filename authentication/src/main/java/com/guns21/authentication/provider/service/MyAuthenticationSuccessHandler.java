@@ -1,14 +1,13 @@
 package com.guns21.authentication.provider.service;
 
 import com.guns21.authentication.api.entity.MyLoginUserInfo;
-import com.guns21.authentication.api.entity.MyUserDetails;
+import com.guns21.authentication.api.entity.UserRoleDetails;
 import com.guns21.result.domain.Result;
 import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +29,8 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
 //        request.getSession().removeAttribute("backUrl");
 
         MyLoginUserInfo myLoginUserInfo = null;
-        if (auth.getPrincipal() instanceof MyUserDetails) {
-            MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
+        if (auth.getPrincipal() instanceof UserRoleDetails) {
+            UserRoleDetails myUserDetails = (UserRoleDetails) auth.getPrincipal();
 
             myLoginUserInfo = new MyLoginUserInfo();
             myLoginUserInfo.setId(myUserDetails.getUserId());

@@ -1,7 +1,9 @@
 package com.guns21.session.boot.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
@@ -12,7 +14,7 @@ import org.springframework.session.web.http.HttpSessionStrategy;
  */
 @Configuration
 //@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 5)
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 5*356*24*60*60)
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 5 * 356 * 24 * 60 * 60)
 public class HttpSessionConfig {
 
     /**
@@ -23,8 +25,9 @@ public class HttpSessionConfig {
         return new HeaderHttpSessionStrategy();
     }
 
-    @Bean(name = "springSessionDefaultRedisSerializer")
-    public RedisSerializer redisSerializer() {
-        return new FastJsonSessionSerializer();
+    @Bean
+    @ConditionalOnMissingBean(RedisSerializer.class)
+    public RedisSerializer springSessionDefaultRedisSerializer() {
+        return new GenericJackson2JsonRedisSerializer();
     }
 }
