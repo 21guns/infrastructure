@@ -1,4 +1,4 @@
-package com.guns21.authentication.provider.service;
+package com.guns21.authentication.security;
 
 import com.guns21.authentication.api.entity.MyUser;
 import com.guns21.authentication.api.entity.Role;

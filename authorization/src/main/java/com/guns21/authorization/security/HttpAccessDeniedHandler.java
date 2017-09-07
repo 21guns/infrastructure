@@ -1,4 +1,4 @@
-package com.guns21.authorization;
+package com.guns21.authorization.security;
 
 import com.guns21.result.domain.Result;
 import com.guns21.servlet.util.ResponseUtils;

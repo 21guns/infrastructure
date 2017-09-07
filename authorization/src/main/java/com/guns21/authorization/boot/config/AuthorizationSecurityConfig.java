@@ -1,13 +1,12 @@
 package com.guns21.authorization.boot.config;
 
-import com.guns21.authorization.HttpAccessDecisionManager;
-import com.guns21.authorization.HttpAccessDeniedHandler;
-import com.guns21.authorization.HttpAuthenticationEntryPoint;
-import com.guns21.authorization.HttpInvocationSecurityMetadataSource;
-import com.guns21.authorization.HttpSessionInformationExpiredStrategy;
+import com.guns21.authorization.security.HttpAccessDecisionManager;
+import com.guns21.authorization.security.HttpAccessDeniedHandler;
+import com.guns21.authorization.security.HttpAuthenticationEntryPoint;
+import com.guns21.authorization.security.RedisInvocationSecurityMetadataSource;
+import com.guns21.authorization.security.HttpSessionInformationExpiredStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -17,14 +16,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.savedrequest.NullRequestCache;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
-import org.springframework.session.ExpiringSession;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
@@ -55,7 +50,7 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public FilterInvocationSecurityMetadataSource securityMetadataSource() {
-        return new HttpInvocationSecurityMetadataSource();
+        return new RedisInvocationSecurityMetadataSource();
     }
 
     @Bean

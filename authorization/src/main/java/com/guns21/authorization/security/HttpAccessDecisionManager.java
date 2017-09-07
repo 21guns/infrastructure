@@ -1,4 +1,4 @@
-package com.guns21.authorization;
+package com.guns21.authorization.security;
 
 import com.guns21.authentication.provider.util.SecurityAuthUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,11 +53,11 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
         }
 
         /** 超级管理员处理 **/
-        if (authentication.getAuthorities().stream()
-                .map(a -> a.getAuthority())
-                .anyMatch(role -> role.equals(SecurityAuthUtil.SUPER_ADMINISTRATOR))) {
-            return;
-        }
+//        if (authentication.getAuthorities().stream()
+//                .map(a -> a.getAuthority())
+//                .anyMatch(role -> role.equals(SecurityAuthUtil.SUPER_ADMINISTRATOR))) {
+//            return;
+//        }
 
         /** 用户权限检查 **/
 

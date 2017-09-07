@@ -1,13 +1,12 @@
 package com.guns21.authentication.boot.config;
 
 import com.guns21.authentication.provider.ext.AuthExtValidator;
-import com.guns21.authentication.provider.service.HttpAuthenticationProvider;
-import com.guns21.authentication.provider.service.HttpAuthenticationFailureHandler;
-import com.guns21.authentication.provider.service.HttpAuthenticationSuccessHandler;
-import com.guns21.authentication.provider.service.HttpLogoutSuccessHandler;
+import com.guns21.authentication.security.HttpAuthenticationProvider;
+import com.guns21.authentication.security.HttpAuthenticationFailureHandler;
+import com.guns21.authentication.security.HttpAuthenticationSuccessHandler;
+import com.guns21.authentication.security.HttpLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -17,10 +16,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;

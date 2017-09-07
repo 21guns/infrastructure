@@ -1,4 +1,4 @@
-package com.guns21.authentication.provider.service;
+package com.guns21.authentication.security;
 
 import com.guns21.result.domain.Result;
 import com.guns21.servlet.util.ResponseUtils;

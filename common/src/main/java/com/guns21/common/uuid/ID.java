@@ -48,6 +48,7 @@ public class ID {
         }
         long et = System.currentTimeMillis();
         System.out.println(1000 * max / (et - st) + "/s");
+        System.err.println(ID.get());
 
     }
 }
