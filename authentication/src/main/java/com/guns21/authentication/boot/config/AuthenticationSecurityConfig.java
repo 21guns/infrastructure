@@ -2,11 +2,12 @@ package com.guns21.authentication.boot.config;
 
 import com.guns21.authentication.provider.ext.AuthExtValidator;
 import com.guns21.authentication.provider.service.HttpAuthenticationProvider;
-import com.guns21.authentication.provider.service.MyAuthenticationFailureHandler;
-import com.guns21.authentication.provider.service.MyAuthenticationSuccessHandler;
-import com.guns21.authentication.provider.service.MyLogoutSuccessHandler;
+import com.guns21.authentication.provider.service.HttpAuthenticationFailureHandler;
+import com.guns21.authentication.provider.service.HttpAuthenticationSuccessHandler;
+import com.guns21.authentication.provider.service.HttpLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -16,7 +17,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.data.redis.RedisOperationsSessionRepository;
+import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -40,23 +47,30 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     private String lougout;
 
     @Autowired
-    private MyLogoutSuccessHandler myLogoutSuccessHandler;
+    private HttpLogoutSuccessHandler httpLogoutSuccessHandler;
     @Autowired
-    private MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
+    private HttpAuthenticationSuccessHandler httpAuthenticationSuccessHandler;
     @Autowired
-    private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
+    private HttpAuthenticationFailureHandler httpAuthenticationFailureHandler;
 
     @Autowired
     private AuthExtValidator authExtValidator;
+
+    @Bean
+    public AuthenticationProvider httpAuthenticationProvider() {
+        return new HttpAuthenticationProvider();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(httpAuthenticationProvider());
     }
 
+    @Autowired
+    RedisOperationsSessionRepository redisOperationsSessionRepository;
     @Bean
-    public AuthenticationProvider httpAuthenticationProvider() {
-        return new HttpAuthenticationProvider();
+    SpringSessionBackedSessionRegistry sessionRegistry() {
+        return new SpringSessionBackedSessionRegistry((FindByIndexNameSessionRepository) this.redisOperationsSessionRepository);
     }
 
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -85,9 +99,24 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 }, UsernamePasswordAuthenticationFilter.class)
                 .formLogin().loginProcessingUrl(login)
-                .successHandler(myAuthenticationSuccessHandler).failureHandler(myAuthenticationFailureHandler)
+                .successHandler(httpAuthenticationSuccessHandler).failureHandler(httpAuthenticationFailureHandler)
                 .and().logout().logoutUrl(lougout)
-                .logoutSuccessHandler(myLogoutSuccessHandler).invalidateHttpSession(true)
+                .logoutSuccessHandler(httpLogoutSuccessHandler).invalidateHttpSession(true)
                 .and().csrf().disable();
+
+        //同一个账户多次登录限制，针对等是需要对之前的session进行表示
+        httpSecurity
+                .sessionManagement()
+                .maximumSessions(1)
+//                .maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
+                .sessionRegistry(sessionRegistry());
+
     }
+
+
+
+//        @Bean
+//    public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
+//        return new ServletListenerRegistrationBean<HttpSessionEventPublisher>(new HttpSessionEventPublisher());
+//    }
 }

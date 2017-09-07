@@ -1,10 +1,13 @@
-package com.guns21.authentication.boot.config;
+package com.guns21.authorization.boot.config;
 
-import com.guns21.authentication.provider.service.HttpAccessDeniedHandler;
-import com.guns21.authentication.provider.service.HttpAuthenticationEntryPoint;
-import com.guns21.authentication.provider.service.MyAccessDecisionManager;
-import com.guns21.authentication.provider.service.MyInvocationSecurityMetadataSource;
+import com.guns21.authorization.HttpAccessDecisionManager;
+import com.guns21.authorization.HttpAccessDeniedHandler;
+import com.guns21.authorization.HttpAuthenticationEntryPoint;
+import com.guns21.authorization.HttpInvocationSecurityMetadataSource;
+import com.guns21.authorization.HttpSessionInformationExpiredStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -14,9 +17,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.savedrequest.NullRequestCache;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
+import org.springframework.session.ExpiringSession;
+import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.data.redis.RedisOperationsSessionRepository;
+import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
 /**
  * 鉴权
@@ -28,15 +39,30 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${com.ktjr.security.permit-pages:null}")
     private String[] permitPages;
 
+
+    @Autowired
+    RedisOperationsSessionRepository redisOperationsSessionRepository;
     @Bean
-    public AccessDecisionManager accessDecisionManager() {
-        return new MyAccessDecisionManager();
+    SpringSessionBackedSessionRegistry sessionRegistry() {
+        return new SpringSessionBackedSessionRegistry((FindByIndexNameSessionRepository) this.redisOperationsSessionRepository);
     }
 
     @Bean
-    public FilterInvocationSecurityMetadataSource securityMetadataSource() {
-        return new MyInvocationSecurityMetadataSource();
+    public AccessDecisionManager accessDecisionManager() {
+        return new HttpAccessDecisionManager();
     }
+
+
+    @Bean
+    public FilterInvocationSecurityMetadataSource securityMetadataSource() {
+        return new HttpInvocationSecurityMetadataSource();
+    }
+
+    @Bean
+    public SessionInformationExpiredStrategy sessionInformationExpiredStrategy() {
+        return new HttpSessionInformationExpiredStrategy();
+    }
+
 
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -55,6 +81,14 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new HttpAuthenticationEntryPoint())
                 .accessDeniedHandler(new HttpAccessDeniedHandler())
                 .and().csrf().disable();
+
+        //同一个账户多次登录限制，对url访问进行监控
+        httpSecurity
+                .sessionManagement()
+                .maximumSessions(1)
+//                .maxSessionsPreventsLogin(true) 为true是多次登录时抛出异常
+                .sessionRegistry(sessionRegistry())
+                .expiredSessionStrategy(sessionInformationExpiredStrategy());
 
     }
 

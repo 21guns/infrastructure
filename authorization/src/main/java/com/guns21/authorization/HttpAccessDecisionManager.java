@@ -1,4 +1,4 @@
-package com.guns21.authentication.provider.service;
+package com.guns21.authorization;
 
 import com.guns21.authentication.provider.util.SecurityAuthUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +15,7 @@ import java.util.Iterator;
  * Created by ljj on 2017/6/18.
  */
 
-//@Service
-public class MyAccessDecisionManager implements AccessDecisionManager {
+public class HttpAccessDecisionManager implements AccessDecisionManager {
 
 //    private static final String SUPER_ADMINISTRATOR = "SUPER_ADMIN";
 
@@ -44,9 +43,9 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
             throw new AccessDeniedException(accessDeniedMessage);
         } else {
             //如果权限返回的角色中包括匿名用户角色，则该权限不需验证
-//            if (configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals("ROLE_ANONYMOUS"))) {
-//                return;
-//            }
+            if (configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals("ROLE_ANONYMOUS"))) {
+                return;
+            }
         }
 
         if (authentication.getAuthorities() == null || authentication.getAuthorities().size() == 0) {

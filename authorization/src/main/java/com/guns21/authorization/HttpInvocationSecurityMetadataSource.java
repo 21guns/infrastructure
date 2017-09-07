@@ -1,4 +1,4 @@
-package com.guns21.authentication.provider.service;
+package com.guns21.authorization;
 
 /**
  * Created by ljj on 17/6/19.
@@ -20,9 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-//@Service
-//@Log4j
-public class MyInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
+public class HttpInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
     @Value("${com.ktjr.security.permit-pages:null}")
     private String[] permitPages;
 
@@ -57,21 +55,6 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
         Collection<ConfigAttribute> superRoleList = new ArrayList<>();
         superRoleList.add(new SecurityConfig(SecurityAuthUtil.SUPER_ADMINISTRATOR));
         map.put("/**", superRoleList);
-
-        //添加匿名访问
-//        if (permitPages != null) {
-//            for (String p : permitPages) {
-//                Collection<ConfigAttribute> temp = map.get(p);
-//                if (temp != null) {
-//                    temp.add(new SecurityConfig(anonymousRole));
-//                } else {
-//                    temp = new ArrayList<>();
-//                    temp.add(new SecurityConfig(anonymousRole));
-//                }
-//                map.put(p, temp);
-//            }
-//        }
-
 
         //获取当前权限的角色信息
         HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
@@ -108,6 +91,6 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return true;
+        return FilterInvocation.class.isAssignableFrom(clazz);
     }
 }

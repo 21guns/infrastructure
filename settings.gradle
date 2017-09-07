@@ -11,4 +11,5 @@ include 'spring-data'
 include 'test'
 include 'captcha-starter'
 include 'servlet'
+include 'authorization'
 

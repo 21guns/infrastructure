@@ -16,7 +16,7 @@ import java.io.*;
  * Created by ljj on 17/6/20.
  */
 @Component
-public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class HttpAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {

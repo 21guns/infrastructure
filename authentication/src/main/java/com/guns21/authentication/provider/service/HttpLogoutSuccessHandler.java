@@ -16,7 +16,7 @@ import java.io.*;
  * Created by ljj on 17/6/22.
  */
 @Component
-public class MyLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
+public class HttpLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
     @Value("${com.ktjr.security.message.logout-success:登出成功！}")
     private String logoutMessage;
 

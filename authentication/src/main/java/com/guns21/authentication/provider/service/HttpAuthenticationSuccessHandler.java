@@ -18,7 +18,7 @@ import java.io.*;
  * Created by ljj on 17/6/20.
  */
 @Component
-public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class HttpAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Value("${com.ktjr.security.message.login-success:登录成功！}")
     private String loginMessage;
 
