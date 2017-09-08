@@ -92,9 +92,9 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity webSecurity) throws Exception {
-//        webSecurity
-//                .ignoring()
-//                .antMatchers(permitPages);
+        webSecurity
+                .ignoring()
+                .antMatchers(permitPages);
     }
 
 

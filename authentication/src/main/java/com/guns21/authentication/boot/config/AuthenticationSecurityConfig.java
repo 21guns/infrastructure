@@ -1,8 +1,8 @@
 package com.guns21.authentication.boot.config;
 
 import com.guns21.authentication.provider.ext.AuthExtValidator;
-import com.guns21.authentication.security.HttpAuthenticationProvider;
 import com.guns21.authentication.security.HttpAuthenticationFailureHandler;
+import com.guns21.authentication.security.HttpAuthenticationProvider;
 import com.guns21.authentication.security.HttpAuthenticationSuccessHandler;
 import com.guns21.authentication.security.HttpLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,10 +109,4 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-
-
-//        @Bean
-//    public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
-//        return new ServletListenerRegistrationBean<HttpSessionEventPublisher>(new HttpSessionEventPublisher());
-//    }
 }
