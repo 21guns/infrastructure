@@ -19,7 +19,7 @@ import java.io.*;
  */
 @Component
 public class HttpAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    @Value("${com.ktjr.security.message.login-success:登录成功！}")
+    @Value("${com.guns21.security.message.login-success:登录成功！}")
     private String loginMessage;
 
     @Override

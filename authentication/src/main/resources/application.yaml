@@ -24,9 +24,8 @@
 #
 ## 自定义提示信息，根据需要进行配置（可选）
 ##com:
-##  ktjr:
+##  guns21:
 ##    security:
-##      login-enabled: false
 ##      message:
 ##        access-denied: 没有访问权限！
 ##        password-error: 用户密码错误！
@@ -35,8 +34,6 @@
 ##        user-not-exist: 用户不存在！
 ##        login-error: 请提交正确的用户信息！
 ##      permit-pages: /home,/static/**
-##      login-form-url: /loginpage
-##      permission-redis-key: PERMISSION-REDIS-KEY-USERMANAGE
 ##      login: /api/usermanage/v1/login
 #
 #

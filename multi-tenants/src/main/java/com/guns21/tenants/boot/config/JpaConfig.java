@@ -43,7 +43,7 @@ public class JpaConfig {
 
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 
-        entityManagerFactory.setPackagesToScan("com.ktjr.**.**.api.entity");
+        entityManagerFactory.setPackagesToScan("com.guns21.**.**.api.entity");
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
         hibernateJpaVendorAdapter.setGenerateDdl(true);
         entityManagerFactory.setJpaVendorAdapter(hibernateJpaVendorAdapter);

@@ -37,9 +37,9 @@ import java.io.*;
 @EnableWebSecurity
 @Order(100)
 public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Value("${com.ktjr.security.login:/login}")
+    @Value("${com.guns21.security.login:/login}")
     private String login;
-    @Value("${com.ktjr.security.logout:/logout}")
+    @Value("${com.guns21.security.logout:/logout}")
     private String lougout;
 
     @Autowired
@@ -101,11 +101,11 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
 
         //同一个账户多次登录限制，针对等是需要对之前的session进行表示
-//        httpSecurity
-//                .sessionManagement()
-//                .maximumSessions(1)
-////                .maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
-//                .sessionRegistry(sessionRegistry());
+        httpSecurity
+                .sessionManagement()
+                .maximumSessions(1)
+//                .maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
+                .sessionRegistry(sessionRegistry());
 
     }
 

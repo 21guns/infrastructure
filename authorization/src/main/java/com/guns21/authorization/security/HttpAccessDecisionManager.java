@@ -19,7 +19,7 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
 
 //    private static final String SUPER_ADMINISTRATOR = "SUPER_ADMIN";
 
-    @Value("${com.ktjr.security.message.access-denied:没有访问权限！}")
+    @Value("${com.guns21.security.message.access-denied:没有访问权限！}")
     private String accessDeniedMessage;
 
     /**
@@ -48,16 +48,9 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
             }
         }
 
-        if (authentication.getAuthorities() == null || authentication.getAuthorities().size() == 0) {
+        if (null == authentication || authentication.getAuthorities() == null || authentication.getAuthorities().size() == 0) {
             throw new AccessDeniedException(accessDeniedMessage);
         }
-
-        /** 超级管理员处理 **/
-//        if (authentication.getAuthorities().stream()
-//                .map(a -> a.getAuthority())
-//                .anyMatch(role -> role.equals(SecurityAuthUtil.SUPER_ADMINISTRATOR))) {
-//            return;
-//        }
 
         /** 用户权限检查 **/
 

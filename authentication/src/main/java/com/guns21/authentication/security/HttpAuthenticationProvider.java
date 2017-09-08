@@ -25,12 +25,12 @@ import java.util.stream.Collectors;
  * Created by ljj on 2017/6/17.
  */
 public class HttpAuthenticationProvider implements AuthenticationProvider {
-    @Value("${com.ktjr.security.message.password-error:用户密码错误！}")
+    @Value("${com.guns21.security.message.password-error:用户密码错误！}")
     private String passwordError;
 
-    @Value("${com.ktjr.security.message.login-error:请提交正确的用户信息！}")
+    @Value("${com.guns21.security.message.login-error:请提交正确的用户信息！}")
     private String loginError;
-    @Value("${com.ktjr.security.message.user-not-exist:用户不存在！}")
+    @Value("${com.guns21.security.message.user-not-exist:用户不存在！}")
     private String userNotExistMessage;
     @Autowired
     private UserAuthService userAuthService;

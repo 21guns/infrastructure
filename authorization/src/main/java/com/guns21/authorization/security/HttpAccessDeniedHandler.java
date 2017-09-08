@@ -17,7 +17,7 @@ import java.io.*;
  */
 @Service
 public class HttpAccessDeniedHandler implements AccessDeniedHandler {
-    @Value("${com.ktjr.security.message.access-denied:没有访问权限！}")
+    @Value("${com.guns21.security.message.access-denied:没有访问权限！}")
     private String accessDeniedMessage;
 
     public void handle(HttpServletRequest request,

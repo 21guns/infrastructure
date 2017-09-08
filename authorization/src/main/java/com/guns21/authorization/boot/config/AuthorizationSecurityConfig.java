@@ -31,7 +31,7 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 @EnableWebSecurity
 @Order(101)
 public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Value("${com.ktjr.security.permit-pages:null}")
+    @Value("${com.guns21.security.permit-pages:null}")
     private String[] permitPages;
 
 
@@ -60,6 +60,7 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.anonymous().disable();
         httpSecurity
                 .requestCache().requestCache(new NullRequestCache())//不缓存request
                 .and()
@@ -78,20 +79,22 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
 
         //同一个账户多次登录限制，对url访问进行监控
-//        httpSecurity
-//                .sessionManagement()
-//                .maximumSessions(1)
-////                .maxSessionsPreventsLogin(true) 为true是多次登录时抛出异常
-//                .sessionRegistry(sessionRegistry())
-//                .expiredSessionStrategy(sessionInformationExpiredStrategy());
+        httpSecurity
+                .sessionManagement()
+                .maximumSessions(1)
+//                .maxSessionsPreventsLogin(true) 为true是多次登录时抛出异常
+                .sessionRegistry(sessionRegistry())
+                .expiredSessionStrategy(sessionInformationExpiredStrategy());
+
+
 
     }
 
     @Override
     public void configure(WebSecurity webSecurity) throws Exception {
-        webSecurity
-                .ignoring()
-                .antMatchers(permitPages);
+//        webSecurity
+//                .ignoring()
+//                .antMatchers(permitPages);
     }
 
 

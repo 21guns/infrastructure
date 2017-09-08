@@ -1,4 +1,4 @@
-package com.ktjr.test;
+package com.guns21.test;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.intercept.MockHttpServletRequestBuilderInterceptor;

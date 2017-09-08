@@ -17,7 +17,7 @@ import java.io.*;
  */
 @Component
 public class HttpLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
-    @Value("${com.ktjr.security.message.logout-success:登出成功！}")
+    @Value("${com.guns21.security.message.logout-success:登出成功！}")
     private String logoutMessage;
 
     @Override
