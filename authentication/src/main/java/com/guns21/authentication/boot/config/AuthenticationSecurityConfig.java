@@ -101,11 +101,11 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
 
         //同一个账户多次登录限制，针对等是需要对之前的session进行表示
-        httpSecurity
-                .sessionManagement()
-                .maximumSessions(1)
-//                .maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
-                .sessionRegistry(sessionRegistry());
+//        httpSecurity
+//                .sessionManagement()
+//                .maximumSessions(1)
+////                .maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
+//                .sessionRegistry(sessionRegistry());
 
     }
 
