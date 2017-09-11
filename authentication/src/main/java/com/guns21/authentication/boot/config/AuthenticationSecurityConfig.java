@@ -1,5 +1,6 @@
 package com.guns21.authentication.boot.config;
 
+import com.guns21.authentication.filter.AccessFilter;
 import com.guns21.authentication.provider.ext.AuthExtValidator;
 import com.guns21.authentication.security.HttpAuthenticationFailureHandler;
 import com.guns21.authentication.security.HttpAuthenticationProvider;
@@ -7,6 +8,7 @@ import com.guns21.authentication.security.HttpAuthenticationSuccessHandler;
 import com.guns21.authentication.security.HttpLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -16,6 +18,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.data.redis.RedisOperationsSessionRepository;
@@ -32,6 +35,7 @@ import java.io.*;
 
 /**
  * 认证
+ *  * see https://stackoverflow.com/questions/34314084/howto-additionally-add-spring-security-captcha-filter-for-specific-urls-only
  */
 @Configuration
 @EnableWebSecurity
@@ -53,6 +57,12 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthExtValidator authExtValidator;
 
     @Bean
+    @ConditionalOnMissingBean(name = "beforeLoginFilter")
+    public Filter beforeLoginFilter() {
+        return new AccessFilter();
+    }
+
+    @Bean
     public AuthenticationProvider httpAuthenticationProvider() {
         return new HttpAuthenticationProvider();
     }
@@ -71,9 +81,10 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .requestMatchers().antMatchers(login, lougout)
+                .requestMatchers().antMatchers(login, lougout) //当有多个 HttpSecurity patterns 只能匹配Order优先级最好的HttpSecurity
                 .and().authorizeRequests().anyRequest().authenticated()
                 .and()
+                .addFilterBefore(beforeLoginFilter(), ChannelProcessingFilter.class)
                 .addFilterBefore(new Filter() {
                     @Override
                     public void init(FilterConfig filterConfig) throws ServletException {

@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 @Order(2)
 @ConfigurationProperties(prefix = "com.guns21.captcha")
-public class CaptchaUrllecurityConfig extends WebSecurityConfigurerAdapter {
+public class CaptchaUrlSecurityConfig extends WebSecurityConfigurerAdapter {
 
     //产生captcha的url
     private String url = "/api/v1/captcha";
@@ -32,8 +32,7 @@ public class CaptchaUrllecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.requestMatchers().antMatchers(url).and().authorizeRequests().anyRequest().permitAll();
     }
 
-    public CaptchaUrllecurityConfig setUrl(String url) {
+    public void setUrl(String url) {
         this.url = url;
-        return this;
     }
 }
