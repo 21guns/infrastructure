@@ -35,13 +35,13 @@ public class CaptchaValidateFilterConfig {
 
 
     @Bean
-    public FilterRegistrationBean testFilterRegistration(BeforeLoginFilter beforeLoginFilter) {
+    public FilterRegistrationBean beforeLoginFilterRegistration(BeforeLoginFilter beforeLoginFilter) {
 
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(beforeLoginFilter);
         registration.addUrlPatterns(validate);
         registration.setName("beforeLoginFilter");
-        registration.setOrder(1);
+        registration.setOrder(10);
         return registration;
     }
 

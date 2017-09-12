@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  */
 @Configuration
 @EnableWebSecurity
-@Order(2)
+@Order(20)
 @ConfigurationProperties(prefix = "com.guns21.captcha")
 public class CaptchaUrlSecurityConfig extends WebSecurityConfigurerAdapter {
 
