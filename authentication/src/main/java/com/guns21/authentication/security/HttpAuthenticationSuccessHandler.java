@@ -1,6 +1,6 @@
 package com.guns21.authentication.security;
 
-import com.guns21.authentication.api.entity.MyLoginUserInfo;
+import com.guns21.authentication.api.entity.Role;
 import com.guns21.authentication.api.entity.UserRoleDetails;
 import com.guns21.result.domain.Result;
 import com.guns21.servlet.util.ResponseUtils;
@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 
 /**
  * Created by ljj on 17/6/20.
@@ -25,22 +26,69 @@ public class HttpAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth)
             throws IOException, ServletException {
-//        String backUrl = (String)request.getSession().getAttribute("backUrl");
-//        request.getSession().removeAttribute("backUrl");
 
-        MyLoginUserInfo myLoginUserInfo = null;
         if (auth.getPrincipal() instanceof UserRoleDetails) {
-            UserRoleDetails myUserDetails = (UserRoleDetails) auth.getPrincipal();
+            UserRoleDetails userRoleDetails = (UserRoleDetails) auth.getPrincipal();
 
-            myLoginUserInfo = new MyLoginUserInfo();
-            myLoginUserInfo.setId(myUserDetails.getUserId());
-            myLoginUserInfo.setName(myUserDetails.getUsername());
-            myLoginUserInfo.setNickname(myUserDetails.getNickname());
-            myLoginUserInfo.setRoles(myUserDetails.getRoles());
+            LoginUserInfo loginUserInfo = new LoginUserInfo();
+            loginUserInfo.setId(userRoleDetails.getUserId());
+            loginUserInfo.setName(userRoleDetails.getUsername());
+            loginUserInfo.setNickname(userRoleDetails.getNickname());
+            loginUserInfo.setRoles(userRoleDetails.getRoles());
+
+            ResponseUtils.writeResponse(response, Result.success(loginMessage, loginUserInfo));
         }
 
-        ResponseUtils.writeResponse(response, Result.success(loginMessage, myLoginUserInfo));
-
         clearAuthenticationAttributes(request);
+    }
+
+
+    /**
+     * 由于用户登录成功后返回给客户端
+     * Created by ljj on 17/7/14.
+     */
+    public class LoginUserInfo implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private String id;
+
+        private String name;
+
+        private String nickname;
+
+        private List<Role> roles;
+
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public List<Role> getRoles() {
+            return roles;
+        }
+
+        public void setRoles(List<Role> roles) {
+            this.roles = roles;
+        }
     }
 }
