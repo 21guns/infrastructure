@@ -35,7 +35,7 @@ import java.io.*;
 
 /**
  * 认证
- *  * see https://stackoverflow.com/questions/34314084/howto-additionally-add-spring-security-captcha-filter-for-specific-urls-only
+ * * see https://stackoverflow.com/questions/34314084/howto-additionally-add-spring-security-captcha-filter-for-specific-urls-only
  */
 @Configuration
 @EnableWebSecurity

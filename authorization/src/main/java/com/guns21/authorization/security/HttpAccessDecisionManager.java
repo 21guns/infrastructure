@@ -1,6 +1,5 @@
 package com.guns21.authorization.security;
 
-import com.guns21.authentication.provider.util.SecurityAuthUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;

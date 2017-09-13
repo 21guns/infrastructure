@@ -54,6 +54,7 @@ public class CaptchaValidateFilterConfig {
 
         @Autowired
         private RedisTemplate<String, String> template;
+
         @Override
         public void init(FilterConfig filterConfig) throws ServletException {
         }

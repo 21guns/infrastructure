@@ -3,8 +3,8 @@ package com.guns21.authorization.boot.config;
 import com.guns21.authorization.security.HttpAccessDecisionManager;
 import com.guns21.authorization.security.HttpAccessDeniedHandler;
 import com.guns21.authorization.security.HttpAuthenticationEntryPoint;
-import com.guns21.authorization.security.RedisInvocationSecurityMetadataSource;
 import com.guns21.authorization.security.HttpSessionInformationExpiredStrategy;
+import com.guns21.authorization.security.RedisInvocationSecurityMetadataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +20,6 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
-import org.springframework.session.FindByIndexNameSessionRepository;
-import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
 /**
@@ -81,7 +79,6 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .maxSessionsPreventsLogin(true) 为true是多次登录时抛出异常
                 .sessionRegistry(springSessionBackedSessionRegistry)
                 .expiredSessionStrategy(sessionInformationExpiredStrategy());
-
 
 
     }

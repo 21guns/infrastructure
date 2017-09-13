@@ -1,6 +1,7 @@
 package com.guns21.authentication.boot.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.guns21.authentication.mixin.AuthenticationJasksonModue;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ public class SessionSerializerConfig implements BeanClassLoaderAware {
     ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModules(SecurityJackson2Modules.getModules(this.loader));
+        mapper.registerModule(new AuthenticationJasksonModue());
         return mapper;
     }
 
@@ -41,4 +43,6 @@ public class SessionSerializerConfig implements BeanClassLoaderAware {
     public void setBeanClassLoader(ClassLoader classLoader) {
         this.loader = classLoader;
     }
+
+
 }
