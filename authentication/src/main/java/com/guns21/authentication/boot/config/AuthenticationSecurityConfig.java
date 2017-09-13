@@ -52,6 +52,8 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     private HttpAuthenticationSuccessHandler httpAuthenticationSuccessHandler;
     @Autowired
     private HttpAuthenticationFailureHandler httpAuthenticationFailureHandler;
+    @Autowired
+    private RedisOperationsSessionRepository redisOperationsSessionRepository;
 
     @Autowired
     private AuthExtValidator authExtValidator;
@@ -72,10 +74,8 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(httpAuthenticationProvider());
     }
 
-    @Autowired
-    RedisOperationsSessionRepository redisOperationsSessionRepository;
     @Bean
-    SpringSessionBackedSessionRegistry sessionRegistry() {
+    public SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry() {
         return new SpringSessionBackedSessionRegistry((FindByIndexNameSessionRepository) this.redisOperationsSessionRepository);
     }
 
@@ -116,7 +116,7 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .maximumSessions(1)
 //                .maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
-                .sessionRegistry(sessionRegistry());
+                .sessionRegistry(springSessionBackedSessionRegistry());
 
     }
 

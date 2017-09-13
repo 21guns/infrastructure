@@ -36,11 +36,7 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    RedisOperationsSessionRepository redisOperationsSessionRepository;
-    @Bean
-    SpringSessionBackedSessionRegistry sessionRegistry() {
-        return new SpringSessionBackedSessionRegistry((FindByIndexNameSessionRepository) this.redisOperationsSessionRepository);
-    }
+    SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry;
 
     @Bean
     public AccessDecisionManager accessDecisionManager() {
@@ -83,7 +79,7 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .maximumSessions(1)
 //                .maxSessionsPreventsLogin(true) 为true是多次登录时抛出异常
-                .sessionRegistry(sessionRegistry())
+                .sessionRegistry(springSessionBackedSessionRegistry)
                 .expiredSessionStrategy(sessionInformationExpiredStrategy());
 
 
