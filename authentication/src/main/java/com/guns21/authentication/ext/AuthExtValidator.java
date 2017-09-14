@@ -1,4 +1,4 @@
-package com.guns21.authentication.provider.ext;
+package com.guns21.authentication.ext;
 
 import com.guns21.authentication.api.service.AuthExtValidation;
 import org.springframework.stereotype.Component;
