@@ -9,6 +9,7 @@ import com.guns21.common.util.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.ConfigAttribute;
@@ -51,14 +52,15 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
         Collection<ConfigAttribute> configAttributes = new ArrayList<>();
         HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
         //取redis中的数据
-        HashOperations<String, String, List<String>> ops = template.opsForHash();
+//        HashOperations<String, String, List<String>> ops = template.opsForHash();
+        BoundHashOperations<String, String,  List<String>> ops = template.boundHashOps(permissionRedisKey);
         String requestURI = request.getRequestURI();
-        List<String> roles = ops.get(permissionRedisKey, requestURI); //TODO 添加过期时间
+        List<String> roles = ops.get(requestURI); //TODO 添加过期时间
 //        List<String> roles = Collections.EMPTY_LIST;
         if (ObjectUtils.isEmpty(roles)) {
             //提供数据来源
             roles = resourceRoleMapping.listRole(requestURI);
-            ops.put(permissionRedisKey, requestURI, roles);
+            ops.put(requestURI, roles);
         }
 
         if (null == roles || roles.size() == 0) {
