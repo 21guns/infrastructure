@@ -1,14 +1,13 @@
 package com.guns21.authentication.boot.config;
 
+import com.guns21.authentication.ext.AuthExtValidator;
 import com.guns21.authentication.filter.AccessFilter;
-import com.guns21.authentication.provider.ext.AuthExtValidator;
 import com.guns21.authentication.security.HttpAuthenticationFailureHandler;
 import com.guns21.authentication.security.HttpAuthenticationProvider;
 import com.guns21.authentication.security.HttpAuthenticationSuccessHandler;
 import com.guns21.authentication.security.HttpLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
