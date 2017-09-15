@@ -7,6 +7,7 @@ dependencies {
     compile 'com.guns21:result:1.0.0-SNAPSHOT'
     compile 'com.guns21:spring-data:1.0.0-SNAPSHOT'
 
+    compile group: 'javax.persistence', name: 'persistence-api', version: '1.0.2'
     compile 'org.springframework:spring-beans'
     compile 'org.springframework:spring-context'
 
