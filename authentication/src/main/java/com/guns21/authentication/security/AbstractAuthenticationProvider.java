@@ -80,7 +80,7 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
         UserRoleDetails userRoleDetails = new UserRoleDetails(authUser.getUserName(), authUser.getPassword(), grantedAuthorities);
         userRoleDetails.setSalt(authUser.getSalt());
         userRoleDetails.setUserId(authUser.getId());
-        userRoleDetails.setNickname(authUser.getNickname());
+        userRoleDetails.setNickname(authUser.getNickName());
         userRoleDetails.setOrganizationId(authUser.getOrganizationId());
         userRoleDetails.setRoles(roles);
 

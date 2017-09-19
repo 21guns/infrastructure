@@ -9,7 +9,7 @@ import java.util.List;
 public class AuthUser {
     private String id;
     private String userName;
-    private String nickname;
+    private String nickName;
     private String password;
     private int salt;
     private String organizationId;
@@ -31,12 +31,12 @@ public class AuthUser {
         this.userName = userName;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getPassword() {
