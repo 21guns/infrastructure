@@ -1,10 +1,9 @@
 package com.guns21.authentication.security;
 
-import com.guns21.authentication.api.entity.MyUser;
+import com.guns21.authentication.api.entity.AuthUser;
 import com.guns21.authentication.api.entity.Role;
 import com.guns21.authentication.api.entity.UserRoleDetails;
 import com.guns21.authentication.api.service.UserAuthService;
-import com.guns21.common.helper.UserEncrypt;
 import com.guns21.common.util.ObjectUtils;
 import com.guns21.common.util.RegexChkUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,13 +61,13 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
             }
         }
         //从库中获取用户信息
-        MyUser myUser = userAuthService.getUser(username);
+        AuthUser authUser = userAuthService.getUser(username);
 
-        if (myUser == null) {
+        if (authUser == null) {
             throw new UsernameNotFoundException(userNotExistMessage);
         }
 
-        passwordValidate(myUser, password);
+        passwordValidate(authUser, password);
 
         //生成认证对象
         List<Role> roles = userAuthService.getUserRoles(username);
@@ -78,14 +77,14 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
             grantedAuthorities = roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
         }
 
-        UserRoleDetails myUserDetails = new UserRoleDetails(myUser.getUserName(), myUser.getPassword(), grantedAuthorities);
-        myUserDetails.setSalt(myUser.getSalt());
-        myUserDetails.setUserId(myUser.getId());
-        myUserDetails.setNickname(myUser.getNickname());
-        myUserDetails.setOrganizationId(myUser.getOrganizationId());
-        myUserDetails.setRoles(roles);
+        UserRoleDetails userRoleDetails = new UserRoleDetails(authUser.getUserName(), authUser.getPassword(), grantedAuthorities);
+        userRoleDetails.setSalt(authUser.getSalt());
+        userRoleDetails.setUserId(authUser.getId());
+        userRoleDetails.setNickname(authUser.getNickname());
+        userRoleDetails.setOrganizationId(authUser.getOrganizationId());
+        userRoleDetails.setRoles(roles);
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(myUserDetails, myUserDetails.getPassword(), myUserDetails.getAuthorities());
+        Authentication auth = new UsernamePasswordAuthenticationToken(userRoleDetails, userRoleDetails.getPassword(), userRoleDetails.getAuthorities());
 
         return auth;
     }
@@ -97,10 +96,10 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
 
     /**
      * 校验用户信息
-     * @param myUser 登录用户信息
+     * @param authUser 登录用户信息
      * @param password 认证信息
      * @throws AuthenticationException 认证失败异常
      */
-    protected abstract void passwordValidate(MyUser myUser, String password) throws AuthenticationException;
+    protected abstract void passwordValidate(AuthUser authUser, String password) throws AuthenticationException;
 
 }

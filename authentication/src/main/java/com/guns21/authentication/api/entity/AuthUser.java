@@ -6,7 +6,7 @@ import java.util.List;
  * 用于接收从数据库中读取用户信息
  * Created by ljj on 2017/6/17.
  */
-public class MyUser {
+public class AuthUser {
     private String id;
     private String userName;
     private String nickname;

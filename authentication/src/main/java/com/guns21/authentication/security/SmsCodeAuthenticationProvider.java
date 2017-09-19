@@ -1,6 +1,6 @@
 package com.guns21.authentication.security;
 
-import com.guns21.authentication.api.entity.MyUser;
+import com.guns21.authentication.api.entity.AuthUser;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,9 +13,9 @@ public class SmsCodeAuthenticationProvider extends AbstractAuthenticationProvide
     private RedisTemplate<String, String> template;
 
     @Override
-    protected void passwordValidate(MyUser myUser, String password) throws AuthenticationException {
-        String smsCode = template.opsForValue().get(myUser.getUserName() + "-code");
-        if (StringUtils.isNoneEmpty(smsCode) && !smsCode.equals(myUser.getPassword())) {
+    protected void passwordValidate(AuthUser authUser, String password) throws AuthenticationException {
+        String smsCode = template.opsForValue().get(authUser.getUserName() + "-code");
+        if (StringUtils.isNoneEmpty(smsCode) && !smsCode.equals(authUser.getPassword())) {
             throw new BadCredentialsException(passwordError);
         }
     }

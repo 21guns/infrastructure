@@ -4,7 +4,7 @@ package com.guns21.authentication.api.service;
  * Created by ljj on 17/6/28.
  */
 
-import com.guns21.authentication.api.entity.MyUser;
+import com.guns21.authentication.api.entity.AuthUser;
 import com.guns21.authentication.api.entity.Role;
 
 import java.util.List;
@@ -19,16 +19,16 @@ public interface UserAuthService {
     /**
      * 登录时根据用户登录名称获取MyUser类型的用户信息（需要子类实现）
      *
-     * @param username
+     * @param username 用户名
      * @return
      */
-    public MyUser getUser(String username);
+    AuthUser getUser(String username);
 
     /**
      * 登录时，根据用户登录名称获取用户的角色列表（需要子类实现）
      *
-     * @param username
+     * @param username 用户名
      * @return
      */
-    public List<Role> getUserRoles(String username);
+    List<Role> getUserRoles(String username);
 }
