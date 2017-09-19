@@ -65,14 +65,14 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    @ConditionalOnMissingBean(value = AuthenticationProvider.class)
-    public AuthenticationProvider httpAuthenticationProvider() {
+    @ConditionalOnMissingBean(name = "authenticationProvider")
+    public AuthenticationProvider authenticationProvider() {
         return new HttpAuthenticationProvider();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(httpAuthenticationProvider());
+        auth.authenticationProvider(authenticationProvider());
     }
 
     @Bean
