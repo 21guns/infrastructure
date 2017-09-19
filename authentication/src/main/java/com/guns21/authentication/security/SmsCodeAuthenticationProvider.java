@@ -15,6 +15,9 @@ public class SmsCodeAuthenticationProvider extends AbstractAuthenticationProvide
     @Override
     protected void passwordValidate(AuthUser authUser, String password) throws AuthenticationException {
         String smsCode = template.opsForValue().get(authUser.getUserName() + "-code");
+        if (StringUtils.isEmpty(smsCode)) {
+            throw new BadCredentialsException("验证码错误");
+        }
         if (StringUtils.isNoneEmpty(smsCode) && !smsCode.equals(authUser.getPassword())) {
             throw new BadCredentialsException(passwordError);
         }
