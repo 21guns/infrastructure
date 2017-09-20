@@ -3,7 +3,7 @@ package com.guns21.authentication.boot.config;
 import com.guns21.authentication.ext.AuthExtValidator;
 import com.guns21.authentication.filter.AccessFilter;
 import com.guns21.authentication.security.HttpAuthenticationFailureHandler;
-import com.guns21.authentication.security.HttpAuthenticationProvider;
+import com.guns21.authentication.security.PasswordEncryptAuthenticationProvider;
 import com.guns21.authentication.security.HttpAuthenticationSuccessHandler;
 import com.guns21.authentication.security.HttpLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,14 +65,14 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    @ConditionalOnMissingBean(name = "authenticationProvider")
-    public AuthenticationProvider authenticationProvider() {
-        return new HttpAuthenticationProvider();
+    @ConditionalOnMissingBean(name = "passwordAuthenticationProvider")
+    public AuthenticationProvider passwordAuthenticationProvider() {
+        return new PasswordEncryptAuthenticationProvider();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+        auth.authenticationProvider(passwordAuthenticationProvider());
     }
 
     @Bean

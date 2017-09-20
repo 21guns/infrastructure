@@ -9,7 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 /**
  * Created by ljj on 2017/6/17.
  */
-public class HttpAuthenticationProvider extends AbstractAuthenticationProvider {
+public class PasswordEncryptAuthenticationProvider extends AbstractAuthenticationProvider {
 
 
     @Override
