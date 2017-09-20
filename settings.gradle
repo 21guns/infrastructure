@@ -12,5 +12,5 @@ include 'test'
 include 'captcha-starter'
 include 'servlet'
 include 'authorization'
-include 'jedis'
+include 'redis'
 

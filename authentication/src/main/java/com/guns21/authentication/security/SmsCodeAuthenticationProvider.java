@@ -18,7 +18,7 @@ public class SmsCodeAuthenticationProvider extends AbstractAuthenticationProvide
         if (StringUtils.isEmpty(smsCode)) {
             throw new BadCredentialsException("验证码错误");
         }
-        if (StringUtils.isNoneEmpty(smsCode) && !smsCode.equals(authUser.getPassword())) {
+        if (StringUtils.isNoneEmpty(smsCode) && !smsCode.equals(password)) {
             throw new BadCredentialsException(passwordError);
         }
     }
