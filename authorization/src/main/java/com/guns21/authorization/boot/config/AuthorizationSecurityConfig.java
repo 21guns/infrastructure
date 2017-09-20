@@ -78,7 +78,7 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .maximumSessions(1)
 //                .maxSessionsPreventsLogin(true) 为true是多次登录时抛出异常
                 .sessionRegistry(springSessionBackedSessionRegistry)
-                .expiredSessionStrategy(sessionInformationExpiredStrategy());
+                .expiredSessionStrategy(sessionInformationExpiredStrategy()); //被登录时，第一次返回的错误信息
 
 
     }

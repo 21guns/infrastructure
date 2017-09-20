@@ -4,7 +4,7 @@ import com.guns21.result.domain.Result;
 import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -16,7 +16,7 @@ import java.io.*;
  * Created by ljj on 17/6/22.
  */
 @Component
-public class HttpLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
+public class HttpLogoutSuccessHandler implements LogoutSuccessHandler {
     @Value("${com.guns21.security.message.logout-success:登出成功！}")
     private String logoutMessage;
 

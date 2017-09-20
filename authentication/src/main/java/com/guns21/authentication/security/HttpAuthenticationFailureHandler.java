@@ -3,8 +3,7 @@ package com.guns21.authentication.security;
 import com.guns21.result.domain.Result;
 import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.WebAttributes;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -16,7 +15,7 @@ import java.io.*;
  * Created by ljj on 17/6/20.
  */
 @Component
-public class HttpAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class HttpAuthenticationFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {

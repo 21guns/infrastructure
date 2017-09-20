@@ -6,6 +6,7 @@ import com.guns21.result.domain.Result;
 import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * Created by ljj on 17/6/20.
  */
 @Component
-public class HttpAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class HttpAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     @Value("${com.guns21.security.message.login-success:登录成功！}")
     private String loginMessage;
 
@@ -37,9 +38,10 @@ public class HttpAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
             loginUserInfo.setRoles(userRoleDetails.getRoles());
 
             ResponseUtils.writeResponse(response, Result.success(loginMessage, loginUserInfo));
+        } else {
+            throw new ServletException("don't support Principal " + auth.getPrincipal().getClass());
         }
 
-        clearAuthenticationAttributes(request);
     }
 
 
