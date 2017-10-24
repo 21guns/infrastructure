@@ -1,8 +1,10 @@
 package com.guns21.support.entity;
 
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.io.*;
 
 /**
@@ -10,12 +12,13 @@ import java.io.*;
  * Created by chenbei on 16/1/5.
  */
 @Data
+@MappedSuperclass
 public abstract class IdEntity implements Serializable {
 
     /**
      * 唯一标识
      */
     @Id
-    private String id;
+    protected String id;
 
 }
