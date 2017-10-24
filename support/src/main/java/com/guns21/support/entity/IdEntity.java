@@ -1,7 +1,6 @@
 package com.guns21.support.entity;
 
 import lombok.Data;
-import lombok.Getter;
 
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
