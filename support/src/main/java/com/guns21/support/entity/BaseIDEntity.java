@@ -8,16 +8,16 @@ import java.io.*;
 
 /**
  * 实体抽象父类
- * Created by chenbei on 16/1/5.
+ * @author jliu
  */
 @Data
 @MappedSuperclass
-public abstract class IdEntity implements Serializable {
+public abstract class BaseIDEntity implements Serializable {
 
     /**
      * 唯一标识
      */
     @Id
-    protected String id;
+    private String id;
 
 }
