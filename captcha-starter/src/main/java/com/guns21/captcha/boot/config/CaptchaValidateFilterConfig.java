@@ -8,6 +8,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.Filter;
@@ -16,7 +18,10 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 校验验证码正确性，根据登录的url
@@ -55,14 +60,25 @@ public class CaptchaValidateFilterConfig {
         @Autowired
         private RedisTemplate<String, String> template;
 
+        private List<RequestMatcher> requestMatchers = new ArrayList<RequestMatcher>();;
+
         @Override
         public void init(FilterConfig filterConfig) throws ServletException {
+            for (String s : validate) {
+                requestMatchers.add(new AntPathRequestMatcher(s));
+            }
         }
 
         @Override
         public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
                 throws IOException, ServletException {
 
+            //任何不匹配validate url的请求都不进行验证码校验
+            boolean anyMatch = requestMatchers.stream().anyMatch(requestMatcher -> requestMatcher.matches((HttpServletRequest) request));
+            if (!anyMatch) {
+                filterChain.doFilter(request, response);
+                return;
+            }
             String qCaptcha = request.getParameter("captcha");
             if (StringUtils.hasText(qCaptcha)) {
                 String captcha = template.opsForValue().get(CaptchaServletConfig.KEY_PREFIX + qCaptcha);
