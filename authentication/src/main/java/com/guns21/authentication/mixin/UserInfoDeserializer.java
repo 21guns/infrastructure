@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
-import com.guns21.authentication.api.entity.Role;
+import com.guns21.web.entity.Role;
 import com.guns21.web.entity.UserInfo;
 
 import java.io.*;

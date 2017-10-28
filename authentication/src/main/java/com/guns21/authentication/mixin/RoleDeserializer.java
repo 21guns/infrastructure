@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
-import com.guns21.authentication.api.entity.Role;
+import com.guns21.web.entity.Role;
 
 import java.io.*;
 
@@ -18,10 +18,8 @@ class RoleDeserializer extends JsonDeserializer<Role> {
     public Role deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         JsonNode jsonNode = (JsonNode) mapper.readTree(jp);
-        Role role = new Role();
-        role.setNickname(readJsonNode(jsonNode, "nickname").asText());
-        role.setId(readJsonNode(jsonNode, "id").asText());
-        role.setName(readJsonNode(jsonNode, "name").asText());
+        Role role = new Role(readJsonNode(jsonNode, "id").asText(),
+                readJsonNode(jsonNode, "name").asText(), readJsonNode(jsonNode, "nickname").asText());
         return role;
     }
 

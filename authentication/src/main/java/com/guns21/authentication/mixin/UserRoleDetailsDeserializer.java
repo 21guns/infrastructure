@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
-import com.guns21.authentication.api.entity.Role;
 import com.guns21.authentication.api.entity.UserRoleDetails;
+import com.guns21.web.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -33,6 +33,7 @@ class UserRoleDetailsDeserializer extends JsonDeserializer<User> {
         }
         result.setNickname(readJsonNode(jsonNode, "nickname").asText());
         result.setUserId(readJsonNode(jsonNode, "userId").asText());
+
         result.setOrganizationId(readJsonNode(jsonNode, "organizationId").asText());
         result.setRoles(mapper.convertValue(jsonNode.get("roles"), new TypeReference<List<Role>>() {
         }));

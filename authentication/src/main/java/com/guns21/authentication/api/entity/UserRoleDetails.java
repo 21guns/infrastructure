@@ -1,6 +1,7 @@
 package com.guns21.authentication.api.entity;
 
 
+import com.guns21.web.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

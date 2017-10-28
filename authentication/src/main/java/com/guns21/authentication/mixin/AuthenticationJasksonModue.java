@@ -2,8 +2,8 @@ package com.guns21.authentication.mixin;
 
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.guns21.authentication.api.entity.Role;
 import com.guns21.authentication.api.entity.UserRoleDetails;
+import com.guns21.web.entity.Role;
 import com.guns21.web.entity.UserInfo;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
