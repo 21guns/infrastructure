@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
         ignoreUnknown = true
 )
 @JsonDeserialize(
-        using = RoleDeserializer.class
+        using = UserInfoDeserializer.class
 )
 public abstract class UserInfoMixin {
     UserInfoMixin() {

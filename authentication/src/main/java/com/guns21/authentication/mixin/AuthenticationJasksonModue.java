@@ -18,7 +18,7 @@ public class AuthenticationJasksonModue extends SimpleModule {
         context.setMixInAnnotations(UserRoleDetails.class, UserRoleDetailsMixin.class);
         context.setMixInAnnotations(UsernamePasswordAuthenticationToken.class, UsernamePasswordAuthenticationTokenMixin.class);
         context.setMixInAnnotations(Role.class, RoleMixin.class);
-        context.setMixInAnnotations(UserInfo.class, RoleMixin.class);
+        context.setMixInAnnotations(UserInfo.class, UserInfoMixin.class);
     }
 }
 

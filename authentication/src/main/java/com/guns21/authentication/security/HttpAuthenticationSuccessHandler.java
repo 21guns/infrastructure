@@ -33,11 +33,8 @@ public class HttpAuthenticationSuccessHandler implements AuthenticationSuccessHa
         if (auth.getPrincipal() instanceof UserRoleDetails) {
             UserRoleDetails userRoleDetails = (UserRoleDetails) auth.getPrincipal();
 
-            List<Role> roles = userRoleDetails.getRoles().stream()
-                    .map(role -> new Role(role.getId(), role.getName(), role.getNickname()))
-                    .collect(Collectors.toList());
             UserInfo loginUserInfo = new UserInfo(userRoleDetails.getUserId(),
-                    userRoleDetails.getUsername(), userRoleDetails.getNickname(), roles);
+                    userRoleDetails.getUsername(), userRoleDetails.getNickname(), userRoleDetails.getRoles());
             request.getSession().setAttribute(SpringConstant.LOGIN_USER, loginUserInfo);
 
             ResponseUtils.writeResponse(response, Result.success(loginMessage, loginUserInfo));
