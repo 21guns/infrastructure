@@ -1,8 +1,10 @@
 package com.guns21.support.entity;
 
+import com.guns21.common.uuid.ID;
 import lombok.Data;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import java.util.Date;
 
 /**
@@ -22,4 +24,12 @@ public abstract class AbstractEntity extends BaseIDEntity {
      * 更新时间
      */
     private Date updateTime;
+
+    /**
+     *
+     */
+    @PrePersist
+    public void prePersist() {
+        setId(ID.get());
+    }
 }
