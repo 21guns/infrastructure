@@ -11,7 +11,7 @@ import java.util.List;
 public class PageResult<T> extends AbstractResult<T> {
     protected int current; //当前页数
     protected int pageSize; //每页条数
-    protected int totals;
+    protected long totals;
 
     protected static PageResult getInstance() {
         return new PageResult();
@@ -109,11 +109,23 @@ public class PageResult<T> extends AbstractResult<T> {
         return current;
     }
 
+    public void setCurrent(int current) {
+        this.current = current;
+    }
+
     public int getPageSize() {
         return pageSize;
     }
 
-    public int getTotals() {
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public long getTotals() {
         return totals;
+    }
+
+    public void setTotals(long totals) {
+        this.totals = totals;
     }
 }
