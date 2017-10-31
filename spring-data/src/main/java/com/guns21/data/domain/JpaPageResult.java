@@ -28,7 +28,7 @@ public class JpaPageResult<T> extends PageResult<T> {
         PageResult<T> instance = getInstance(Boolean.TRUE, message, code, page.getContent());
 
         instance.setTotals(page.getTotalElements());
-        instance.setCurrent(page.getNumber());
+        instance.setPage(page.getNumber());
         instance.setPageSize(page.getSize());
         return instance;
     }

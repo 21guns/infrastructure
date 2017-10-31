@@ -4,12 +4,13 @@ package com.guns21.result.domain;
 import com.guns21.http.HttpStatus;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @param <T>
  */
-public class PageResult<T> extends AbstractResult<T> {
-    protected int current; //当前页数
+public class PageResult<T> extends AbstractResult<List<T>> {
+    protected int page; //当前页数
     protected int pageSize; //每页条数
     protected long totals;
 
@@ -25,7 +26,6 @@ public class PageResult<T> extends AbstractResult<T> {
         result.setData(object);
         return result;
     }
-
 
     public static <T> PageResult<T> success() {
         return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase());
@@ -105,12 +105,12 @@ public class PageResult<T> extends AbstractResult<T> {
         return getInstance(Boolean.FALSE, message, code, object);
     }
 
-    public int getCurrent() {
-        return current;
+    public int getPage() {
+        return page;
     }
 
-    public void setCurrent(int current) {
-        this.current = current;
+    public void setPage(int page) {
+        this.page = page;
     }
 
     public int getPageSize() {
