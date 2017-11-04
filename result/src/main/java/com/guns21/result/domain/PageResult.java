@@ -70,6 +70,18 @@ public class PageResult<T> extends AbstractResult<List<T>> {
         return getInstance(Boolean.TRUE, message, code, object);
     }
 
+    /**
+     * form T to R type
+     * @param list
+     * @param mapper
+     * @param <T>
+     * @param <R>
+     * @return
+     */
+    public static <T, R> PageResult<R> success(List<T> list, Function<? super T, ? extends R> mapper) {
+        List<R> collect = list.stream().map(mapper).collect(Collectors.toList());
+        return success(collect);
+    }
 
     /**
      * 通用异常
