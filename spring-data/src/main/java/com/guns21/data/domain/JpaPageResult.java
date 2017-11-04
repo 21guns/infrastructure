@@ -5,6 +5,10 @@ import com.guns21.http.HttpStatus;
 import com.guns21.result.domain.PageResult;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 /**
  * @param <T>
  */
@@ -14,6 +18,22 @@ public class JpaPageResult<T> extends PageResult<T> {
 
     public static <T> PageResult<T> success(Page<T> page) {
         return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase(), page);
+    }
+
+    /**
+     * form T to R type
+     * @param page
+     * @param mapper
+     * @param <T>
+     * @param <R>
+     * @return
+     */
+    public static <T, R> PageResult<R> success(Page<T> page, Function<? super T, ? extends R> mapper) {
+        //set page property
+        PageResult success = success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase(), page);
+        List<R> collect = page.getContent().stream().map(mapper).collect(Collectors.toList());
+        success.setData(collect);
+        return success;
     }
 
     /**
