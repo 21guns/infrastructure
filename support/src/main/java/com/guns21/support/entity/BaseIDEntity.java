@@ -1,6 +1,5 @@
 package com.guns21.support.entity;
 
-import com.guns21.common.util.DateUtils;
 import com.guns21.common.uuid.ID;
 import lombok.Data;
 

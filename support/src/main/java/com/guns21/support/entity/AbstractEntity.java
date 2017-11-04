@@ -29,8 +29,10 @@ public abstract class AbstractEntity extends BaseIDEntity {
     /**
      *
      */
+    @Override
     @PrePersist
     public void prePersist() {
+        super.prePersist();
         setCreateTime(DateUtils.newDate());
         setUpdateTime(DateUtils.newDate());
     }
