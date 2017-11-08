@@ -42,4 +42,27 @@ public class AbstractResult<T> {
         this.data = data;
         return this;
     }
+
+    public enum Code {
+
+        TYPE_VIOLATION("1020", "数据类型不合法"),
+        MISS_PARAMETER("1021", "丢失参数");
+
+        protected String code;
+        protected String text;
+
+        Code(String code, String text)
+        {
+            this.code = code;
+            this.text = text;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getText() {
+            return text;
+        }
+    }
 }

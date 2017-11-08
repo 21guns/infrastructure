@@ -12,4 +12,5 @@ dependencies {
     compile 'org.springframework:spring-webmvc'
     compile 'org.springframework.security:spring-security-core'
     compile libraries.fastjson
+    compile libraries.guava
 }
