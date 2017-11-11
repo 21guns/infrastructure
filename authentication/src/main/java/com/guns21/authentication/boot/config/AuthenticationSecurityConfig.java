@@ -40,11 +40,12 @@ import java.io.*;
 @Configuration
 @EnableWebSecurity
 @Order(100)
+//@ConfigurationProperties(prefix = "com.guns21.security") TODO 当有多处需要注入相同的prefix时不能使用ConfigurationProperties注入
 public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${com.guns21.security.login:/login}")
     private String login;
     @Value("${com.guns21.security.logout:/logout}")
-    private String lougout;
+    private String logout;
 
     @Autowired
     private HttpLogoutSuccessHandler httpLogoutSuccessHandler;
@@ -82,7 +83,7 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .requestMatchers().antMatchers(login, lougout) //当有多个 HttpSecurity patterns 只能匹配Order优先级最好的HttpSecurity
+                .requestMatchers().antMatchers(login, logout) //当有多个 HttpSecurity patterns 只能匹配Order优先级最好的HttpSecurity
                 .and().authorizeRequests().anyRequest().authenticated()
                 .and()
                 .addFilterBefore(beforeLoginFilter(), ChannelProcessingFilter.class)
@@ -108,7 +109,7 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
                 }, UsernamePasswordAuthenticationFilter.class)
                 .formLogin().loginProcessingUrl(login)
                 .successHandler(httpAuthenticationSuccessHandler).failureHandler(httpAuthenticationFailureHandler)
-                .and().logout().logoutUrl(lougout)
+                .and().logout().logoutUrl(logout)
                 .logoutSuccessHandler(httpLogoutSuccessHandler).invalidateHttpSession(true)
                 .and().csrf().disable();
 

@@ -3,6 +3,7 @@ apply from: '/Volumes/data/Develop/workspace/21guns/gradle/java.gradle'
 
 
 dependencies {
+    //id 生成器
     compile 'com.sohu:idcenter:1.1.1'
     //common
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
