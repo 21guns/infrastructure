@@ -1,0 +1,24 @@
+spring:
+  mvc:
+    #静态资源映射
+    static-path-pattern: /data/upload/**
+  resources:
+    static-locations: file:/Users/jliu/develop/data/upload/
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+    #文件上传大小限制
+    multipart:
+      max-file-size: 1Mb
+      max-request-size: 1Mb
+com:
+  guns21:
+    upload:
+      #存储文件路径
+      upload-root-path: /Users/jliu/develop/data/upload/
+      #web文件访问前缀路径
+      web-upload-path: data/upload/
+      #资源访问域名
+      www-resource-url: http://ogrmxctc5.bkt.clouddn.com/

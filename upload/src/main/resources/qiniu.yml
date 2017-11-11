@@ -1,0 +1,67 @@
+##########################七牛云存储##########################
+qiniu:
+  #上传视频ACCESS_KEY
+  access-key: GbeCC0oEpZUEEe0Inb02-ptS0nJ_8oiPUkG9x2Yv
+  #上传视频SECRET_KEY
+  secret-key: iCatpEkR2jDqGOYESLSCQZGcOUthk30CV0a02luc
+  #上传视频存储空间
+  bucket-name: ijusai-qiniu-dev
+  #断点上传存储路径
+  breakpoint-upload-path: C://Users/chhw/develop/breakpoint
+  #预转七牛设置转码操作参数720P(通用)
+  video-format-hd-fops: avthumb/mp4/ab/192k/ar/44100/vb/1536k/s/1280x720
+  #预转七牛设置转码操作参数480P(通用)
+  video-format-sd-fops: avthumb/mp4/ab/192k/ar/44100/vb/1024k/s/854x480
+  #设置七牛转码的队列
+  video-trans-code-pipeline: video720
+  #设置七牛图片实时缩放参数
+  image-zoom-pixel: imageMogr2/thumbnail/
+
+
+---
+spring:
+  profiles: test
+
+##########################测试环境七牛云存储配置##########################
+qiniu:
+  #上传视频ACCESS_KEY
+  access-key: GbeCC0oEpZUEEe0Inb02-ptS0nJ_8oiPUkG9x2Yv
+  #上传视频SECRET_KEY
+  secret-key: iCatpEkR2jDqGOYESLSCQZGcOUthk30CV0a02luc
+  #上传视频存储空间
+  bucket-name: ijusai-qiniu-storagespace
+  #断点上传存储路径
+  breakpoint-upload-path: /var/tmp
+  #预转七牛设置转码操作参数720P(通用)
+  video-format-hd-fops: avthumb/mp4/ab/192k/ar/44100/vb/1536k/s/1280x720
+  #预转七牛设置转码操作参数480P(通用)
+  video-format-sd-fops: avthumb/mp4/ab/192k/ar/44100/vb/1024k/s/854x480
+  #设置七牛转码的队列
+  video-trans-code-pipeline: video720
+  #设置七牛图片实时缩放参数
+  image-zoom-pixel: imageMogr2/thumbnail/
+
+
+
+---
+spring:
+  profiles: pro
+
+##########################正式环境七牛云存储配置##########################
+qiniu:
+  #上传视频ACCESS_KEY
+  access-key: GbeCC0oEpZUEEe0Inb02-ptS0nJ_8oiPUkG9x2Yv
+  #上传视频SECRET_KEY
+  secret-key: iCatpEkR2jDqGOYESLSCQZGcOUthk30CV0a02luc
+  #上传视频存储空间
+  bucket-name: ijusai-qiniu-production
+  #断点上传存储路径
+  breakpoint-upload-path: /var/tmp
+  #预转七牛设置转码操作参数720P(通用)
+  video-format-hd-fops: avthumb/mp4/ab/192k/ar/44100/vb/1536k/s/1280x720
+  #预转七牛设置转码操作参数480P(通用)
+  video-format-sd-fops: avthumb/mp4/ab/192k/ar/44100/vb/1024k/s/854x480
+  #设置七牛转码的队列
+  video-trans-code-pipeline: video_transcode
+  #设置七牛图片实时缩放参数
+  image-zoom-pixel: imageMogr2/thumbnail/
