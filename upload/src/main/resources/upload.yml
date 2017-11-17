@@ -18,7 +18,3 @@ com:
     upload:
       #存储文件路径
       upload-root-path: /Users/jliu/develop/data/upload/
-      #web文件访问前缀路径
-      web-upload-path: data/upload/
-      #资源访问域名
-      www-resource-url: http://ogrmxctc5.bkt.clouddn.com/

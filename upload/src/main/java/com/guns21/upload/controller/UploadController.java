@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.guns21.result.domain.Result;
 import com.guns21.support.controller.AdminBaseController;
+import com.guns21.support.util.WebUtils;
 import com.guns21.upload.Constants;
 import com.guns21.upload.provider.Attachment;
 import com.guns21.upload.util.UploadUtils;
@@ -47,9 +48,9 @@ public class UploadController extends AdminBaseController {
         for (MultipartFile fileData : files) {
             Map map = new HashMap();
             Attachment attachment = UploadUtils.uploadImage(fileData, request);
-            String buildWebUrlWithFile = UploadUtils.buildWebUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
+            String buildWebUrlWithFile = WebUtils.buildWebUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
             map.put("url", buildWebUrlWithFile);
-            String buildRelativeUrlWithFile = UploadUtils.buildRelativeUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
+            String buildRelativeUrlWithFile = WebUtils.buildRelativeUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
             map.put("rUrl", buildRelativeUrlWithFile);
             list.add(map);
         }
@@ -71,9 +72,9 @@ public class UploadController extends AdminBaseController {
         for (MultipartFile fileData : files) {
             Map map = new HashMap();
             Attachment attachment = UploadUtils.uploadHeaderImage(fileData, request);
-            String buildWebUrlWithFile = UploadUtils.buildWebUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
+            String buildWebUrlWithFile = WebUtils.buildWebUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
             map.put("url", buildWebUrlWithFile);
-            String buildRelativeUrlWithFile = UploadUtils.buildRelativeUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
+            String buildRelativeUrlWithFile = WebUtils.buildRelativeUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
             map.put("rUrl", buildRelativeUrlWithFile);
             list.add(map);
         }
@@ -102,7 +103,7 @@ public class UploadController extends AdminBaseController {
                 //返回对象
                 DecimalFormat df = new DecimalFormat("######0.00");
                 try {
-                    String buildRelativeUrlWithFile = UploadUtils.buildRelativeUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
+                    String buildRelativeUrlWithFile = WebUtils.buildRelativeUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
                     map.put("url", buildRelativeUrlWithFile);
                     map.put("realName", attachment.getName());
                     map.put("size", df.format(file.getSize() / Constants.ONE_M));
@@ -131,7 +132,7 @@ public class UploadController extends AdminBaseController {
     public void uploadForEditor(@RequestParam("files") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) throws Exception {
         for (MultipartFile fileData : files) {
             Attachment attachment = UploadUtils.uploadImage(fileData, request);
-            String buildWebUrlWithFile = UploadUtils.buildWebUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
+            String buildWebUrlWithFile = WebUtils.buildWebUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
             response.getWriter().write(buildWebUrlWithFile);
         }
     }

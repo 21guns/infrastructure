@@ -2,6 +2,8 @@ package com.guns21.upload.util;
 
 import com.guns21.common.util.DateUtils;
 import com.guns21.common.uuid.ID;
+import com.guns21.support.boot.config.WebConfig;
+import com.guns21.support.util.WebUtils;
 import com.guns21.upload.Constants;
 import com.guns21.upload.boot.config.QiNiuConfig;
 import com.guns21.upload.boot.config.UploadConfig;
@@ -159,7 +161,7 @@ public class UploadUtils {
         if (Objects.isNull(attachment)) {
             return null;
         }
-        return buildRelativeUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
+        return WebUtils.buildRelativeUrlWithFile(attachment.getSavePath(), attachment.getSaveName());
     }
 
     public static String getHtmlSaveKey() {
@@ -214,19 +216,6 @@ public class UploadUtils {
         }
     }
 
-    /* --------------------------------------------------- build url --------------------------------------------------- */
-
-    public static String buildRelativeUrlWithFile(String savePath, String fileName) {
-        return savePath + fileName;
-    }
-
-    public static String buildWebUrlWithFile(String savePath, String fileName) {
-        return UploadConfig.WWW_RESOURCE_URL + UploadConfig.WBE_UPLOAD_PATH + buildRelativeUrlWithFile(savePath, fileName);
-    }
-
-    public static String buildWebUrlWithFile(String url) {
-        return buildWebUrlWithFile(url, "");
-    }
 
     /**
      * cdn存储刷新缓存
@@ -238,11 +227,11 @@ public class UploadUtils {
      * @return
      */
     public static String buildWebUrlWithVersion(String url, long version) {
-        return buildWebUrlWithFile(url + "?v=" + version);
+        return WebUtils.buildWebUrlWithFile(url + "?v=" + version);
     }
 
     public static String buildWebUrlWithPxiel(String url, String pxiel) {
-        return buildWebUrlWithFile(url + "?" + QiNiuConfig.IMAGE_ZOOM_PIXEL + pxiel);
+        return WebUtils.buildWebUrlWithFile(url + "?" + QiNiuConfig.IMAGE_ZOOM_PIXEL + pxiel);
     }
 
     /* --------------------------------------------------- private ---------------------------------------------------  */
@@ -312,7 +301,7 @@ public class UploadUtils {
         if (StringUtils.isEmpty(attachment.getSavePath()) || StringUtils.isEmpty(attachment.getSaveName())) {
             throw new IllegalArgumentException();
         }
-        return UploadConfig.WBE_UPLOAD_PATH +
+        return WebConfig.WBE_UPLOAD_PATH +
 //                (attachment.getSavePath().startsWith("/")? attachment.getSavePath().substring(1):attachment.getSavePath())
                 attachment.getSavePath()
                 + attachment.getSaveName();

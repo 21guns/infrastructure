@@ -10,6 +10,7 @@ dependencies {
     compileOnly 'javax.persistence:persistence-api:1.0.2'
     compile 'org.springframework:spring-beans'
     compile 'org.springframework:spring-context'
+    compile 'org.springframework.boot:spring-boot'
 
 //    compile "org.springframework.boot:spring-boot-starter-web"
 

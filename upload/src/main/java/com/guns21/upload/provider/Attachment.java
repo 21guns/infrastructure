@@ -1,14 +1,7 @@
 package com.guns21.upload.provider;
 
-import lombok.Data;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.*;
 
-@Data
-@Entity
-@Table(name = "TB_ATTACHMENT")
 public class Attachment implements Serializable {
 
     public static Attachment newAttachment() {
