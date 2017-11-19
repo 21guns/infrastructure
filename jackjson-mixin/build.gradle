@@ -1,5 +1,5 @@
 //apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/spring-boot.gradle'
-apply from: '/Volumes/data/Develop/workspace/21guns/gradle/spring-boot.gradle'
+apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-boot.gradle'
 
 dependencies {
     compile 'org.springframework:spring-beans'
