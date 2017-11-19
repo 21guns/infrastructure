@@ -3,9 +3,9 @@ apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-
 
 
 dependencies {
-    compile 'com.guns21:common:1.0.0-SNAPSHOT'
-    compile 'com.guns21:result:1.0.0-SNAPSHOT'
-    compile 'com.guns21:spring-data:1.0.0-SNAPSHOT'
+    compile project(":common")
+    compile project(":result")
+    compile project(":spring-data")
 
     compileOnly 'javax.persistence:persistence-api:1.0.2'
     compile 'org.springframework:spring-beans'

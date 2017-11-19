@@ -3,7 +3,7 @@ apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-
 
 
 dependencies {
-    compile 'com.guns21:result:1.0.0-SNAPSHOT'
+    compile project(":result")
     compile libraries.commonslang3
     compile 'org.springframework:spring-beans'
     compile 'org.springframework:spring-context'
