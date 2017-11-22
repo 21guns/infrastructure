@@ -31,6 +31,8 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${com.guns21.security.permit-pages:null}")
     private String[] permitPages;
+    @Value("${com.guns21.security.anonymous.disable:true}")
+    private boolean anonymous;
 
 
     @Autowired
@@ -54,7 +56,10 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity.anonymous().disable();
+        if (anonymous) {
+            httpSecurity.anonymous().disable();
+        }
+
         httpSecurity
                 .requestCache().requestCache(new NullRequestCache())//不缓存request
                 .and()
