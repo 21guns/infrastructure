@@ -44,11 +44,8 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
         /**
          * 2.启用匿名访问时，检查角色列表是否包含匿名用户
          */
-        if (!anonymous) {
-            //如果权限返回的角色中包括匿名用户角色，则该权限不需验证
-            if (configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals(ROLE_ANONYMOUS))) {
-                return;
-            }
+        if (!anonymous && configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals(ROLE_ANONYMOUS))) {
+            return;
         }
 
         /**
