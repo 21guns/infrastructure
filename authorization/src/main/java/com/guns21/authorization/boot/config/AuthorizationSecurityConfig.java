@@ -29,7 +29,7 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 @EnableWebSecurity
 @Order(101)
 public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Value("${com.guns21.security.permit-pages:null}")
+    @Value("${com.guns21.security.permit-pages:#{null}}")
     private String[] permitPages;
     @Value("${com.guns21.security.anonymous.disable:true}")
     private boolean anonymous;

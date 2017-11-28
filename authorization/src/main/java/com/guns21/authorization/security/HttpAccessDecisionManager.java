@@ -16,11 +16,12 @@ import java.util.Iterator;
 
 public class HttpAccessDecisionManager implements AccessDecisionManager {
 
-//    private static final String SUPER_ADMINISTRATOR = "SUPER_ADMIN";
+    private static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
 
     @Value("${com.guns21.security.message.access-denied:没有访问权限！}")
     private String accessDeniedMessage;
-
+    @Value("${com.guns21.security.anonymous.disable:true}")
+    private boolean anonymous;
     /**
      * 判断configAttribute中找角色在authentication中是否存在，如果不存在throws 异常。
      *
@@ -31,29 +32,36 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
      * @throwsInsufficientAuthenticationException
      */
     @Override
-    public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) {
+    public void decide(Authentication authentication, Object object, final Collection<ConfigAttribute> configAttributes) {
 
         /**
-         * 1.基于authentication中的role信息，与configAttributes中的role信息进行比对，来判断是否有权限。
+         * 1.如果url对应的角色列表为空，禁止访问
          */
-
-
         if (null == configAttributes || configAttributes.size() == 0) {
             throw new AccessDeniedException(accessDeniedMessage);
-        } else {
+        }
+
+        /**
+         * 2.启用匿名访问时，检查角色列表是否包含匿名用户
+         */
+        if (!anonymous) {
             //如果权限返回的角色中包括匿名用户角色，则该权限不需验证
-            if (configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals("ROLE_ANONYMOUS"))) {
+            if (configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals(ROLE_ANONYMOUS))) {
                 return;
             }
         }
 
+        /**
+         * 3.没有授权用户，并且授权用户没有权限
+         */
         if (null == authentication || authentication.getAuthorities() == null || authentication.getAuthorities().size() == 0) {
             throw new AccessDeniedException(accessDeniedMessage);
         }
 
-        /** 用户权限检查 **/
-
-
+        /**
+         * 4.用户权限检查
+         *
+         */
         ConfigAttribute c;
         String needRole;
         for (Iterator<ConfigAttribute> iter = configAttributes.iterator(); iter.hasNext(); ) {
@@ -65,7 +73,6 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
                 }
             }
         }
-
         throw new AccessDeniedException(accessDeniedMessage);
     }
 
