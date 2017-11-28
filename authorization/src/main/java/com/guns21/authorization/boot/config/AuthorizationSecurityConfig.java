@@ -22,6 +22,8 @@ import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
+import java.util.Objects;
+
 /**
  * 鉴权
  */
@@ -90,9 +92,11 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity webSecurity) throws Exception {
-        webSecurity
-                .ignoring()
-                .antMatchers(permitPages);
+        if (Objects.nonNull(permitPages)) {
+            webSecurity
+                    .ignoring()
+                    .antMatchers(permitPages);
+        }
     }
 
 
