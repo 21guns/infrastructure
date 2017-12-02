@@ -59,7 +59,7 @@ public class Result<T> extends AbstractResult<T> {
      * @param message 成功信息
      * @return 返回成功结果
      */
-    public static <T> Result<T> success(String message, String code) {
+    public static <T> Result<T> success(String code, String message) {
         return success(code, message, null);
     }
 
