@@ -1,12 +1,11 @@
 package com.guns21.support.entity;
 
-import com.guns21.common.util.DateUtils;
 import lombok.Data;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 实体抽象父类
@@ -20,12 +19,12 @@ public abstract class AbstractEntity extends BaseIDEntity {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime gmtCreate;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime gmtModified;
 
     /**
      *
@@ -34,8 +33,8 @@ public abstract class AbstractEntity extends BaseIDEntity {
     @PrePersist
     public void prePersist() {
         super.prePersist();
-        setCreateTime(DateUtils.newDate());
-        setUpdateTime(DateUtils.newDate());
+        setGmtCreate(LocalDateTime.now());
+        setGmtModified(LocalDateTime.now());
     }
 
     /**
@@ -43,6 +42,6 @@ public abstract class AbstractEntity extends BaseIDEntity {
      */
     @PreUpdate
     public void preUpdate() {
-        setUpdateTime(DateUtils.newDate());
+        setGmtModified(LocalDateTime.now());
     }
 }
