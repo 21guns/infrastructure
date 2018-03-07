@@ -3,7 +3,8 @@ apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-redis'
-    compile 'org.springframework.session:spring-session'
+    compile 'org.springframework.session:spring-session-core'
+    compile 'org.springframework.session:spring-session-data-redis'
     compile 'com.fasterxml.jackson.core:jackson-databind'
 
 }
