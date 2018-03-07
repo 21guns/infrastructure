@@ -1,2 +1,11 @@
 group 'com.guns21'
 version '1.0.0-SNAPSHOT'
+
+
+allprojects {
+    ext {
+        userName = "my-artifact"
+        password = "my-artifact"
+    }
+}
+
