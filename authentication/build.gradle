@@ -21,4 +21,5 @@ dependencies {
     compile 'org.springframework:spring-web'
     compile 'org.springframework.data:spring-data-redis'
     compile 'org.springframework.boot:spring-boot-starter-security'
+    compile 'org.springframework.security:spring-security-cas'
 }

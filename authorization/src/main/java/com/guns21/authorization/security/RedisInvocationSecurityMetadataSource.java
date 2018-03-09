@@ -30,7 +30,7 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
     private static final Logger LOGGER = LoggerFactory.getLogger(RedisInvocationSecurityMetadataSource.class);
     private String permissionRedisKey = "permission_redis_key";
 
-    @Resource(name = "sessionRedisTemplate")
+    @Resource(name = "redisTemplate")
     private RedisTemplate<String, Map<String, List<String>>> template;
 
     @Autowired
