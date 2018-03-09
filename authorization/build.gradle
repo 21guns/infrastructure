@@ -5,4 +5,5 @@ dependencies {
 //    compile 'com.guns21:authentication:1.0.0-SNAPSHOT'
 
     compile project(":authentication")
+    compile project(":redis")
 }

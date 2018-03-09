@@ -28,7 +28,7 @@ public interface UserAuthService {
      * 登录时，根据用户登录名称获取用户的角色列表（需要子类实现）
      *
      * @param username 用户名
-     * @return
+     * @return 只能使用ArrayList封装
      */
     List<Role> getUserRoles(String username);
 }

@@ -11,7 +11,7 @@ public interface ResourceRoleMapping {
      * 返回资源所对应的角色
      *
      * @param resource url资源
-     * @return 返回资源所对应的角色
+     * @return 返回资源所对应的角色,只能使用ArrayList封装
      */
     List<String> listRole(String resource);
 }
