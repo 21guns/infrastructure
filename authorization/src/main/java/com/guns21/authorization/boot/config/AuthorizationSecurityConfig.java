@@ -1,5 +1,6 @@
 package com.guns21.authorization.boot.config;
 
+import com.guns21.authentication.security.PasswordEncryptAuthenticationProvider;
 import com.guns21.authorization.security.HttpAccessDecisionManager;
 import com.guns21.authorization.security.HttpAccessDeniedHandler;
 import com.guns21.authorization.security.HttpAuthenticationEntryPoint;
@@ -7,11 +8,14 @@ import com.guns21.authorization.security.HttpSessionInformationExpiredStrategy;
 import com.guns21.authorization.security.RedisInvocationSecurityMetadataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,7 +42,18 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry;
+    private SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry;
+
+    @Bean
+    @ConditionalOnMissingBean(name = "passwordAuthenticationProvider")
+    public AuthenticationProvider passwordAuthenticationProvider() {
+        return new PasswordEncryptAuthenticationProvider();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(passwordAuthenticationProvider());
+    }
 
     @Bean
     public AccessDecisionManager accessDecisionManager() {
