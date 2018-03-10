@@ -1,8 +1,8 @@
-package com.guns21.data.domain;
+package com.guns21.data.domain.result;
 
 
+import com.guns21.domain.result.light.PageResult;
 import com.guns21.http.HttpStatus;
-import com.guns21.result.domain.PageResult;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

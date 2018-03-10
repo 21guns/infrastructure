@@ -1,10 +1,9 @@
 package com.guns21.authentication.security;
 
 import com.guns21.authentication.api.entity.UserRoleDetails;
-import com.guns21.result.domain.Result;
+import com.guns21.domain.result.light.Result;
 import com.guns21.servlet.util.ResponseUtils;
 import com.guns21.web.constant.SpringConstant;
-import com.guns21.web.entity.Role;
 import com.guns21.web.entity.UserInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -15,8 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by ljj on 17/6/20.

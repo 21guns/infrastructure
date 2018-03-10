@@ -1,4 +1,4 @@
-package com.guns21.result.domain.query;
+package com.guns21.domain.query;
 
 /**
  * Created by jliu on 2016/12/2.

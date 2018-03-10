@@ -1,47 +1,23 @@
-package com.guns21.result.domain;
+package com.guns21.domain.result;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Created by jliu on 16/7/19.
  */
+@Data
 public class AbstractResult<T> {
 
     protected String code;
     protected Boolean success;
     protected String message;
+    //entity,list,page,message
+    protected String type;
     protected T data;
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public Boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public AbstractResult setData(T data) {
-        this.data = data;
-        return this;
-    }
 
     public enum Code {
 

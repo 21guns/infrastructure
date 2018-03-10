@@ -1,7 +1,11 @@
-package com.guns21.result.domain;
+package com.guns21.domain.result.light;
 
+import com.guns21.domain.result.AbstractResult;
+import com.guns21.domain.result.ResultType;
 import com.guns21.http.HttpStatus;
+import lombok.Builder;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,12 +13,7 @@ import java.util.Map;
  * 接口统一返回结果
  */
 public class Result<T> extends AbstractResult<T> {
-
     private Result() {
-    }
-
-    public static <T> Result<T> getInstance() {
-        return new Result<T>();
     }
 
     public static <T> Result<T> success() {
@@ -22,7 +21,8 @@ public class Result<T> extends AbstractResult<T> {
     }
 
     public static <T> Result<T> success(T object) {
-        return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase(), object);
+
+        return success(HttpStatus.OK.getReasonPhrase(), object);
     }
 
     /**
@@ -31,7 +31,7 @@ public class Result<T> extends AbstractResult<T> {
      * @param objects 输入参数是以key:value为键值对的数据
      * @return Result
      */
-    public static Result<Map> success(Object... objects) {
+    public static Result<Map> successMap(Object... objects) {
         if (null != objects && objects.length > 0 && objects.length % 2 == 0) {
             Map<Object, Object> map = new HashMap<Object, Object>();
             for (int i = 0; i < objects.length; i += 2) {
@@ -52,6 +52,13 @@ public class Result<T> extends AbstractResult<T> {
         return success(String.valueOf(HttpStatus.OK.value()), message);
     }
 
+    public static <T> Result<T> success(String message, T object) {
+        if (object instanceof Collection) {
+            return success(String.valueOf(HttpStatus.OK.value()), message,ResultType.LIST, object);
+        }
+        return success(String.valueOf(HttpStatus.OK.value()), message,ResultType.ENTITY, object);
+    }
+
     /**
      * 通用成功.
      *
@@ -60,11 +67,11 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回成功结果
      */
     public static <T> Result<T> success(String code, String message) {
-        return success(code, message, null);
+        return success(code, message, ResultType.MESSAGE, null);
     }
 
-    public static <T> Result<T> success(String message, T object) {
-        return success(String.valueOf(HttpStatus.OK.value()), message, object);
+    public static <T> Result<T> success(String message, ResultType resultType, T object) {
+        return success(String.valueOf(HttpStatus.OK.value()), message,resultType,  object);
     }
 
     /**
@@ -75,17 +82,8 @@ public class Result<T> extends AbstractResult<T> {
      * @param object  对象信息
      * @return 返回成功结果
      */
-    public static <T> Result<T> success(String code, String message, T object) {
-        return getInstance(Boolean.TRUE, message, code, object);
-    }
-
-    private static <T> Result<T> getInstance(Boolean aTrue, String message, String code, T object) {
-        Result<T> result = getInstance();
-        result.setSuccess(aTrue);
-        result.setMessage(message);
-        result.setCode(code);
-        result.setData(object);
-        return result;
+    public static <T> Result<T> success(String code, String message, ResultType resultType, T object) {
+        return getInstance(Boolean.TRUE, message, code, resultType, object);
     }
 
     /**
@@ -142,8 +140,18 @@ public class Result<T> extends AbstractResult<T> {
      * @return 返回失败结果
      */
     public static <T> Result<T> fail(String code, String message, T object) {
-        return getInstance(Boolean.FALSE, message, code, object);
+        return getInstance(Boolean.FALSE, message, code, ResultType.MESSAGE, object);
     }
 
+    private static <T> Result<T> getInstance(Boolean aTrue, String message, String code, ResultType resultType, T object) {
 
+        Result result = new Result();
+        result.setSuccess(aTrue);
+        result.setMessage(message);
+        result.setCode(code);
+        result.setType(resultType.name().toLowerCase());
+        result.setData(object);
+
+        return result;
+    }
 }

@@ -1,10 +1,10 @@
-package com.guns21.result.domain;
+package com.guns21.domain.result.light;
 
 
+import com.guns21.domain.result.AbstractResult;
 import com.guns21.http.HttpStatus;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

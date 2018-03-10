@@ -1,6 +1,6 @@
 package com.guns21.captcha.boot.config;
 
-import com.guns21.result.domain.Result;
+import com.guns21.domain.result.light.Result;
 import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;

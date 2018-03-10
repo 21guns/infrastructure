@@ -1,7 +1,7 @@
 package com.guns21.servlet.util;
 
 import com.alibaba.fastjson.JSON;
-import com.guns21.result.domain.Result;
+import com.guns21.domain.result.light.Result;
 
 import javax.servlet.ServletResponse;
 import java.io.*;

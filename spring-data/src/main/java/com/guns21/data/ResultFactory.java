@@ -1,6 +1,6 @@
 package com.guns21.data;
 
-import com.guns21.result.domain.Result;
+import com.guns21.domain.result.light.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.util.Assert;
@@ -40,4 +40,5 @@ public class ResultFactory {
             return Result.fail(message);
         }
     }
+
 }

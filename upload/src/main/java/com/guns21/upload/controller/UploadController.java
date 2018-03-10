@@ -2,7 +2,7 @@ package com.guns21.upload.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.guns21.result.domain.Result;
+import com.guns21.domain.result.light.Result;
 import com.guns21.support.controller.AdminBaseController;
 import com.guns21.support.util.WebUtils;
 import com.guns21.upload.Constants;

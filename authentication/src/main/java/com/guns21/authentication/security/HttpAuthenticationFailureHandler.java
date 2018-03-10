@@ -1,6 +1,6 @@
 package com.guns21.authentication.security;
 
-import com.guns21.result.domain.Result;
+import com.guns21.domain.result.light.Result;
 import com.guns21.servlet.util.ResponseUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;

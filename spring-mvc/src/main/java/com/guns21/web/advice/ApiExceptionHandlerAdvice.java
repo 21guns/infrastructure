@@ -2,7 +2,7 @@ package com.guns21.web.advice;
 
 
 import com.google.common.base.Throwables;
-import com.guns21.result.domain.Result;
+import com.guns21.domain.result.light.Result;
 import com.guns21.support.exception.IllegalInputArgumentException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
