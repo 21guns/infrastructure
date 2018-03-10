@@ -3,9 +3,7 @@ package com.guns21.jedis.boot.config;
 import com.guns21.jedis.FastJsonSerializer;
 import com.guns21.jedis.JedisTemplate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 import redis.clients.jedis.JedisPoolConfig;
 

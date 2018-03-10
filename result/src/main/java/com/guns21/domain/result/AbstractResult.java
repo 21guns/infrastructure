@@ -1,10 +1,6 @@
 package com.guns21.domain.result;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * Created by jliu on 16/7/19.

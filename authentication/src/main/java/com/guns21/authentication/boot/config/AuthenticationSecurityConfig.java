@@ -3,15 +3,16 @@ package com.guns21.authentication.boot.config;
 import com.guns21.authentication.ext.AuthExtValidator;
 import com.guns21.authentication.filter.AccessFilter;
 import com.guns21.authentication.security.HttpAuthenticationFailureHandler;
-import com.guns21.authentication.security.PasswordEncryptAuthenticationProvider;
 import com.guns21.authentication.security.HttpAuthenticationSuccessHandler;
 import com.guns21.authentication.security.HttpLogoutSuccessHandler;
+import com.guns21.authentication.security.PasswordEncryptAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -81,9 +82,21 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
         return new SpringSessionBackedSessionRegistry((FindByIndexNameSessionRepository) this.redisOperationsSessionRepository);
     }
 
+    /**
+     * used to expose the AuthenticationManager
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .requestMatchers().antMatchers(login, logout) //当有多个 HttpSecurity patterns 只能匹配Order优先级最好的HttpSecurity
+                //当有多个 HttpSecurity patterns 只能匹配Order优先级最好的HttpSecurity
+                .requestMatchers().antMatchers(login, logout)
                 .and().authorizeRequests().anyRequest().authenticated()
                 .and()
                 .addFilterBefore(beforeLoginFilter(), ChannelProcessingFilter.class)

@@ -3,7 +3,6 @@ package com.guns21.domain.result.light;
 import com.guns21.domain.result.AbstractResult;
 import com.guns21.domain.result.ResultType;
 import com.guns21.http.HttpStatus;
-import lombok.Builder;
 
 import java.util.Collection;
 import java.util.HashMap;
