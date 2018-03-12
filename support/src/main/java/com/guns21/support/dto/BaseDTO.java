@@ -10,7 +10,5 @@ import java.util.Date;
  */
 @Data
 public class BaseDTO implements Serializable {
-    private String id;
-    private Date createTime;
-    private Date updateTime;
+
 }

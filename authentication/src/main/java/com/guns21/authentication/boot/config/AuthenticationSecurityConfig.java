@@ -19,6 +19,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.session.FindByIndexNameSessionRepository;
@@ -133,6 +135,12 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
                 .sessionRegistry(springSessionBackedSessionRegistry());
 
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        Pbkdf2PasswordEncoder pbkdf2PasswordEncoder = new Pbkdf2PasswordEncoder("8iekd,a.oa0923.",1850,256);
+        return pbkdf2PasswordEncoder;
     }
 
 }

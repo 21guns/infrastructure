@@ -12,6 +12,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -68,7 +69,7 @@ class ApiExceptionHandlerAdvice {
     /**
      * 处理validation 注解校验信息
      */
-    @ExceptionHandler(value = BindException.class)
+    @ExceptionHandler(value = {BindException.class, MethodArgumentNotValidException.class })
     @ResponseBody
     public Result exception(BindException exception, BindingResult bindingResult) {
         return validation(bindingResult.getFieldErrors());

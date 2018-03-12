@@ -81,7 +81,11 @@ public class MessageResult<T> extends AbstractResult<T> {
         return success(code, message, ResultType.MESSAGE, null);
     }
 
-    public static <T> MessageResult<T> success(String message, ResultType resultType, T object) {
+    public static <T> MessageResult<T> success(String code, T object) {
+        return success(code, "", ResultType.MESSAGE, object);
+    }
+
+    private static <T> MessageResult<T> success(String message, ResultType resultType, T object) {
         return success(String.valueOf(HttpStatus.OK.value()), message,resultType,  object);
     }
 
@@ -93,7 +97,7 @@ public class MessageResult<T> extends AbstractResult<T> {
      * @param object  对象信息
      * @return 返回成功结果
      */
-    public static <T> MessageResult<T> success(String code, String message, ResultType resultType, T object) {
+    private static <T> MessageResult<T> success(String code, String message, ResultType resultType, T object) {
         return getInstance(Boolean.TRUE, message, code, resultType, object);
     }
 
