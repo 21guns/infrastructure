@@ -32,15 +32,14 @@ public class MessageResult<T> extends AbstractResult<T> {
 
         return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase(), ResultType.PAGE, (T) pageData);
     }
+
     public static <T> MessageResult<T> success() {
         return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase());
     }
 
     public static <T> MessageResult<T> success(T object) {
-        if (object instanceof Collection) {
-            return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase(),ResultType.LIST, object);
-        }
-        return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase(),ResultType.ENTITY, object);
+
+        return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase(), object);
     }
 
     /**
@@ -82,9 +81,15 @@ public class MessageResult<T> extends AbstractResult<T> {
     }
 
     public static <T> MessageResult<T> success(String code, T object) {
-        return success(code, "", ResultType.MESSAGE, object);
+        return success(code, HttpStatus.OK.getReasonPhrase(), object);
     }
+    public static <T> MessageResult<T> success(String code, String message, T object) {
+        if (object instanceof Collection) {
+            return success(code, message,ResultType.LIST, object);
+        }
+        return success(code, message,ResultType.ENTITY, object);
 
+    }
     private static <T> MessageResult<T> success(String message, ResultType resultType, T object) {
         return success(String.valueOf(HttpStatus.OK.value()), message,resultType,  object);
     }
