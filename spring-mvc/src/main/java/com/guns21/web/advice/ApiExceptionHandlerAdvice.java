@@ -34,20 +34,6 @@ class ApiExceptionHandlerAdvice {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiExceptionHandlerAdvice.class);
 
-    /**
-     * Handle exceptions thrown by handlers.
-     */
-    @ExceptionHandler(value = Exception.class)
-    @ResponseBody
-    public Result exception(Exception exception, WebRequest request) {
-        LOGGER.error("", exception);
-        if (exception instanceof IllegalInputArgumentException) {
-            return Result.fail(exception.getMessage(), ((IllegalInputArgumentException) exception).getCode());
-        } else {
-            return Result.fail(Throwables.getRootCause(exception).getLocalizedMessage());
-        }
-    }
-
 //    @ExceptionHandler(value = NoHandlerFoundException.class)
 //    @ResponseBody
 //    public Result notFound(Exception exception, WebRequest request) {
@@ -62,17 +48,25 @@ class ApiExceptionHandlerAdvice {
     @ExceptionHandler(value = {NoSuchElementException.class, NullPointerException.class})
     @ResponseBody
     public Result dataNotFound(Exception exception) {
-        LOGGER.error("输入数据无效", exception);
+        LOGGER.error("dataNotFound", exception);
         return Result.fail("输入数据无效", "0000002");
     }
 
     /**
      * 处理validation 注解校验信息
      */
-    @ExceptionHandler(value = {BindException.class, MethodArgumentNotValidException.class })
+    @ExceptionHandler(value = {BindException.class })
     @ResponseBody
-    public Result exception(BindException exception, BindingResult bindingResult) {
+    public Result exceptionBind(BindException exception, BindingResult bindingResult) {
         return validation(bindingResult.getFieldErrors());
+    }
+    /**
+     * 处理validation 注解校验信息
+     */
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class })
+    @ResponseBody
+    public Result exceptionValid(MethodArgumentNotValidException valiException) {
+        return validation(valiException.getBindingResult().getFieldErrors());
     }
 
     /**
@@ -112,7 +106,7 @@ class ApiExceptionHandlerAdvice {
         resultData.setCode(Result.Code.TYPE_VIOLATION.getCode());
         resultData.setMessage(Result.Code.TYPE_VIOLATION.getText() + ":参数需要[" + exception.getRequiredType().getSimpleName() + "]类型，但传入值为{" + exception.getValue() + "}");
 
-        LOGGER.error(resultData.getMessage());
+        LOGGER.error("typeMismatchException", resultData.getMessage());
         return resultData;
     }
 
@@ -129,7 +123,21 @@ class ApiExceptionHandlerAdvice {
         Result resultData = Result.fail();
         resultData.setCode(Result.Code.MISS_PARAMETER.getCode());
         resultData.setMessage(Throwables.getRootCause(exception).getLocalizedMessage());
-        LOGGER.error(resultData.getMessage());
+        LOGGER.error("missingServletRequestParameterException",resultData.getMessage());
         return resultData;
+    }
+
+    /**
+     * Handle exceptions thrown by handlers.
+     */
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    public Result exception(Exception exception, WebRequest request) {
+        LOGGER.error("exception", exception);
+        if (exception instanceof IllegalInputArgumentException) {
+            return Result.fail(exception.getMessage(), ((IllegalInputArgumentException) exception).getCode());
+        } else {
+            return Result.fail(Throwables.getRootCause(exception).getLocalizedMessage());
+        }
     }
 }
