@@ -18,7 +18,7 @@ import java.io.*;
 /**
  * Created by ljj on 17/6/20.
  */
-@Component
+//@Component
 public class HttpAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     @Value("${com.guns21.security.message.login-success:登录成功！}")
     private String loginMessage;

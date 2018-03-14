@@ -22,6 +22,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.data.redis.RedisOperationsSessionRepository;
@@ -53,8 +54,6 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private HttpLogoutSuccessHandler httpLogoutSuccessHandler;
     @Autowired
-    private HttpAuthenticationSuccessHandler httpAuthenticationSuccessHandler;
-    @Autowired
     private HttpAuthenticationFailureHandler httpAuthenticationFailureHandler;
     @Autowired
     private RedisOperationsSessionRepository redisOperationsSessionRepository;
@@ -67,6 +66,13 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     public Filter beforeLoginFilter() {
         return new AccessFilter();
     }
+
+    @Bean
+    @ConditionalOnMissingBean(AuthenticationSuccessHandler.class)
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new HttpAuthenticationSuccessHandler();
+    }
+
 
     @Bean
     @ConditionalOnMissingBean(name = "passwordAuthenticationProvider")
@@ -123,7 +129,7 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 }, UsernamePasswordAuthenticationFilter.class)
                 .formLogin().loginProcessingUrl(login)
-                .successHandler(httpAuthenticationSuccessHandler).failureHandler(httpAuthenticationFailureHandler)
+                .successHandler(authenticationSuccessHandler()).failureHandler(httpAuthenticationFailureHandler)
                 .and().logout().logoutUrl(logout)
                 .logoutSuccessHandler(httpLogoutSuccessHandler).invalidateHttpSession(true)
                 .and().csrf().disable();
