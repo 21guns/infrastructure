@@ -1,4 +1,4 @@
-package com.guns21.web.config;
+package com.guns21.web.boot.config;
 
 import com.guns21.web.converter.StringToDateConvert;
 import com.guns21.web.method.resolver.CurrentUserMethodArgumentResolver;
@@ -18,7 +18,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
-        registry.addInterceptor(new AuthTokenInterceptor()).addPathPatterns("/app/**");
+//        registry.addInterceptor(new AuthTokenInterceptor()).addPathPatterns("/app/**");
     }
 
     @Override
