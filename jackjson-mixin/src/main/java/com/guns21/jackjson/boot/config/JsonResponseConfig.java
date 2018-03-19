@@ -8,9 +8,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
-import com.guns21.jackjson.datatype.StandrdLocalDateDeserializer;
-import com.guns21.jackjson.datatype.StandrdLocalDateTimeDeserializer;
-import com.guns21.jackjson.datatype.StandrdLocalTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import com.guns21.jackjson.datatype.deser.StandrdLocalDateDeserializer;
+import com.guns21.jackjson.datatype.deser.StandrdLocalDateTimeDeserializer;
+import com.guns21.jackjson.datatype.deser.StandrdLocalTimeDeserializer;
+import com.guns21.jackjson.datatype.ser.StandrdLocalDateSerializer;
+import com.guns21.jackjson.datatype.ser.StandrdLocalDateTimeSerializer;
+import com.guns21.jackjson.datatype.ser.StandrdLocalTimeSerializer;
 import com.guns21.jackjson.http.converter.json.ReadWriteMappingJackson2HttpMessageConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +31,10 @@ import java.time.format.DateTimeFormatter;
 
 @Configuration
 public class JsonResponseConfig {
+
+    private static final DateTimeFormatter LOCAL_DATE_TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter LOCAL_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter LOCAL_TIME = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(ObjectMapper objectMapper) throws IllegalAccessException {
@@ -46,21 +56,40 @@ public class JsonResponseConfig {
                 .deserializerByType(LocalDateTime.class, localDateTimeDeserializer() )
                 .deserializerByType(LocalDate.class, localDateDeserializer() )
                 .deserializerByType(LocalTime.class, localTimeDeserializer() )
+                .serializerByType(LocalDateTime.class, localDateTimeSerializer() )
+                .serializerByType(LocalDate.class, localDateSerializer() )
+                .serializerByType(LocalTime.class, localTimeSerializer() )
                 .build();
     }
 
     @Bean
     public LocalDateTimeDeserializer localDateTimeDeserializer() {
-       return new StandrdLocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+       return new StandrdLocalDateTimeDeserializer(LOCAL_DATE_TIME);
     }
 
     @Bean
     public LocalDateDeserializer localDateDeserializer() {
-        return new StandrdLocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return new StandrdLocalDateDeserializer(LOCAL_DATE);
     }
 
     @Bean
     public LocalTimeDeserializer localTimeDeserializer() {
-        return new StandrdLocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        return new StandrdLocalTimeDeserializer(LOCAL_TIME);
+    }
+
+
+    @Bean
+    public LocalDateTimeSerializer localDateTimeSerializer() {
+        return new StandrdLocalDateTimeSerializer(LOCAL_DATE_TIME);
+    }
+
+    @Bean
+    public LocalDateSerializer localDateSerializer() {
+        return new StandrdLocalDateSerializer(LOCAL_DATE);
+    }
+
+    @Bean
+    public LocalTimeSerializer localTimeSerializer() {
+        return new StandrdLocalTimeSerializer(LOCAL_TIME);
     }
 }

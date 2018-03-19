@@ -4,7 +4,6 @@ import com.guns21.jackjson.annotation.JsonMixin;
 import com.guns21.jackjson.annotation.JsonResponse;
 import com.guns21.jackjson.http.converter.json.ReadWriteMappingJackson2HttpMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 

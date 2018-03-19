@@ -1,4 +1,4 @@
-package com.guns21.jackjson.datatype;
+package com.guns21.jackjson.datatype.deser;
 
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 
