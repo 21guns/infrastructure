@@ -49,7 +49,7 @@ class ApiExceptionHandlerAdvice {
     @ResponseBody
     public Result dataNotFound(Exception exception) {
         LOGGER.error("dataNotFound", exception);
-        return Result.fail("输入数据无效", "0000002");
+        return Result.fail("0000002",Throwables.getRootCause(exception).getLocalizedMessage());
     }
 
     /**
