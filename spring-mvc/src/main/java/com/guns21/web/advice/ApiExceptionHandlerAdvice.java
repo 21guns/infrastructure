@@ -34,22 +34,27 @@ class ApiExceptionHandlerAdvice {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiExceptionHandlerAdvice.class);
 
-//    @ExceptionHandler(value = NoHandlerFoundException.class)
-//    @ResponseBody
-//    public Result notFound(Exception exception, WebRequest request) {
-//        LOGGER.error("not found", exception);
-//        return Result.fail("不存在","404");
-//    }
+    /**
+     * @param exception
+     * @return
+     */
+    @ExceptionHandler(value = {NoSuchElementException.class})
+    @ResponseBody
+    public Result dataNotFound(Exception exception) {
+        LOGGER.error("dataNotFound", exception);
+        return Result.fail("0000002", "输入数据无效");
+    }
+
 
     /**
      * @param exception
      * @return
      */
-    @ExceptionHandler(value = {NoSuchElementException.class, NullPointerException.class})
+    @ExceptionHandler(value = {NullPointerException.class})
     @ResponseBody
-    public Result dataNotFound(Exception exception) {
-        LOGGER.error("dataNotFound", exception);
-        return Result.fail("0000002",Throwables.getRootCause(exception).getLocalizedMessage());
+    public Result nullPointerException(Exception exception) {
+        LOGGER.error("nullPointerException", exception);
+        return Result.fail(firstThrowableAsString(exception));
     }
 
     /**
@@ -139,5 +144,12 @@ class ApiExceptionHandlerAdvice {
         } else {
             return Result.fail(Throwables.getRootCause(exception).getLocalizedMessage());
         }
+    }
+
+
+    private String firstThrowableAsString(Throwable throwable) {
+        List<Throwable> causalChain = Throwables.getCausalChain(throwable);
+        String causal = causalChain.size() >= 1 ? Throwables.getStackTraceAsString(causalChain.get(0)) : "空异常信息";
+        return StringUtils.left(causal, 200);
     }
 }
