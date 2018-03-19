@@ -3,7 +3,6 @@ package com.guns21.web.boot.config;
 import com.guns21.web.converter.StringToDateConvert;
 import com.guns21.web.method.resolver.CurrentUserMethodArgumentResolver;
 import com.guns21.web.method.resolver.RequireUuidMethodArgumentResolver;
-import com.guns21.web.servlet.AuthTokenInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

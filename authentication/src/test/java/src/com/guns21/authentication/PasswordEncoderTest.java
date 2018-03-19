@@ -1,6 +1,5 @@
 package src.com.guns21.authentication;
 
-import com.guns21.common.helper.PasswordHelper;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
