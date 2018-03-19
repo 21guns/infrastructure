@@ -20,8 +20,6 @@ public class HttpAuthenticationFailureHandler implements AuthenticationFailureHa
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
-//        request.getSession().setAttribute("message", exception.getLocalizedMessage());
-//        request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, exception);
 
         ResponseUtils.writeResponse(response, Result.fail403(exception.getMessage()));
     }

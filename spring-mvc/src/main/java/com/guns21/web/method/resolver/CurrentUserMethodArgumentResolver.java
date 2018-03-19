@@ -28,7 +28,7 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        return request.getSession().getAttribute(SpringConstant.LOGIN_USER);
+        return request.getSession(false) == null? null:request.getSession(false).getAttribute(SpringConstant.LOGIN_USER);
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        return authentication.getPrincipal();
     }
