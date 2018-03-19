@@ -50,6 +50,8 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     private String login;
     @Value("${com.guns21.security.logout:/logout}")
     private String logout;
+    @Value("${com.guns21.security.username-parameter:username}")
+    private String usernameParameter;
 
     @Autowired
     private HttpLogoutSuccessHandler httpLogoutSuccessHandler;
@@ -129,6 +131,7 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 }, UsernamePasswordAuthenticationFilter.class)
                 .formLogin().loginProcessingUrl(login)
+                .usernameParameter(usernameParameter)
                 .successHandler(authenticationSuccessHandler()).failureHandler(httpAuthenticationFailureHandler)
                 .and().logout().logoutUrl(logout)
                 .logoutSuccessHandler(httpLogoutSuccessHandler).invalidateHttpSession(true)
