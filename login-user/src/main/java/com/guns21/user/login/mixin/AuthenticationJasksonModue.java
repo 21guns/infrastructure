@@ -1,10 +1,10 @@
-package com.guns21.authentication.mixin;
+package com.guns21.user.login.mixin;
 
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.guns21.authentication.api.entity.UserRoleDetails;
-import com.guns21.web.entity.Role;
-import com.guns21.web.entity.UserInfo;
+import com.guns21.user.login.domain.Role;
+import com.guns21.user.login.domain.UserInfo;
+import com.guns21.user.login.domain.UserRoleDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public class AuthenticationJasksonModue extends SimpleModule {

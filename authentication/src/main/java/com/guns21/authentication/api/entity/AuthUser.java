@@ -1,6 +1,6 @@
 package com.guns21.authentication.api.entity;
 
-import com.guns21.web.entity.Role;
+import com.guns21.user.login.domain.Role;
 import lombok.Data;
 
 import java.util.List;

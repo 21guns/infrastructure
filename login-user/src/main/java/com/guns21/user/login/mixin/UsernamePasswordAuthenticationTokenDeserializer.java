@@ -3,7 +3,7 @@
 // (powered by Fernflower decompiler)
 //
 
-package com.guns21.authentication.mixin;
+package com.guns21.user.login.mixin;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
-import com.guns21.authentication.api.entity.UserRoleDetails;
+import com.guns21.user.login.domain.UserRoleDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 

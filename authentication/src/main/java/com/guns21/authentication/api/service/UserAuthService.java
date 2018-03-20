@@ -5,7 +5,7 @@ package com.guns21.authentication.api.service;
  */
 
 import com.guns21.authentication.api.entity.AuthUser;
-import com.guns21.web.entity.Role;
+import com.guns21.user.login.domain.Role;
 
 import java.util.List;
 

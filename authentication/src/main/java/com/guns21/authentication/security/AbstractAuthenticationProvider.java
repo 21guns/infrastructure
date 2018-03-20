@@ -1,11 +1,11 @@
 package com.guns21.authentication.security;
 
 import com.guns21.authentication.api.entity.AuthUser;
-import com.guns21.authentication.api.entity.UserRoleDetails;
 import com.guns21.authentication.api.service.UserAuthService;
 import com.guns21.common.util.ObjectUtils;
 import com.guns21.common.util.RegexChkUtils;
-import com.guns21.web.entity.Role;
+import com.guns21.user.login.domain.Role;
+import com.guns21.user.login.domain.UserRoleDetails;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

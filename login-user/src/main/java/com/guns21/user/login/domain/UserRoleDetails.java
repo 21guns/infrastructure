@@ -1,7 +1,6 @@
-package com.guns21.authentication.api.entity;
+package com.guns21.user.login.domain;
 
 
-import com.guns21.web.entity.Role;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

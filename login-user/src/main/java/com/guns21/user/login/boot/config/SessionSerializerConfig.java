@@ -1,7 +1,7 @@
-package com.guns21.authentication.boot.config;
+package com.guns21.user.login.boot.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.guns21.authentication.mixin.AuthenticationJasksonModue;
+import com.guns21.user.login.mixin.AuthenticationJasksonModue;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

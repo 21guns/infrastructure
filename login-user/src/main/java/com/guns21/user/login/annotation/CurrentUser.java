@@ -1,6 +1,6 @@
-package com.guns21.web.bind.annotation;
+package com.guns21.user.login.annotation;
 
-import com.guns21.web.constant.SpringConstant;
+import com.guns21.user.login.constant.LoginConstant;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -16,6 +16,6 @@ public @interface CurrentUser {
     /**
      * 当前用户在request中的名字.
      */
-    String value() default SpringConstant.LOGIN_USER;
+    String value() default LoginConstant.LOGIN_USER;
 
 }

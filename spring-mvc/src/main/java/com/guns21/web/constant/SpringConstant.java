@@ -4,7 +4,6 @@ package com.guns21.web.constant;
  * Created by jliu on 16/7/4.
  */
 public class SpringConstant {
-    public static final String LOGIN_USER = "loginUser";
 
     public static final String CHARSET_UTF8 = "utf-8";
 

@@ -1,0 +1,8 @@
+//apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/spring-boot.gradle'
+apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-boot.gradle'
+dependencies {
+    compile 'javax.servlet:javax.servlet-api'
+    compile 'org.springframework:spring-webmvc'
+    compile 'org.springframework.data:spring-data-redis'
+    compile 'org.springframework.security:spring-security-cas'
+}

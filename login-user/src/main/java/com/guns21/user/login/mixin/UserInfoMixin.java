@@ -1,4 +1,4 @@
-package com.guns21.authentication.mixin;
+package com.guns21.user.login.mixin;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -18,9 +18,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
         ignoreUnknown = true
 )
 @JsonDeserialize(
-        using = RoleDeserializer.class
+        using = UserInfoDeserializer.class
 )
-public abstract class RoleMixin {
-    RoleMixin() {
+public abstract class UserInfoMixin {
+    UserInfoMixin() {
     }
 }

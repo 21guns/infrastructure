@@ -1,7 +1,6 @@
 package com.guns21.web.boot.config;
 
 import com.guns21.web.converter.StringToDateConvert;
-import com.guns21.web.method.resolver.CurrentUserMethodArgumentResolver;
 import com.guns21.web.method.resolver.RequireUuidMethodArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -23,14 +22,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         super.addArgumentResolvers(argumentResolvers);
-        argumentResolvers.add(new CurrentUserMethodArgumentResolver());
         argumentResolvers.add(new RequireUuidMethodArgumentResolver());
     }
 
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        super.addFormatters(registry);
-        registry.addConverter(new StringToDateConvert());
-    }
+//    @Override
+//    public void addFormatters(FormatterRegistry registry) {
+//        super.addFormatters(registry);
+//        registry.addConverter(new StringToDateConvert());
+//    }
 
 }

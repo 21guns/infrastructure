@@ -1,10 +1,10 @@
 package com.guns21.authentication.security;
 
-import com.guns21.authentication.api.entity.UserRoleDetails;
 import com.guns21.domain.result.light.Result;
 import com.guns21.servlet.util.ResponseUtils;
-import com.guns21.web.constant.SpringConstant;
-import com.guns21.web.entity.UserInfo;
+import com.guns21.user.login.constant.LoginConstant;
+import com.guns21.user.login.domain.UserInfo;
+import com.guns21.user.login.domain.UserRoleDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -31,7 +31,7 @@ public class HttpAuthenticationSuccessHandler implements AuthenticationSuccessHa
 
             UserInfo loginUserInfo = new UserInfo(userRoleDetails.getUserId(),
                     userRoleDetails.getUsername(), userRoleDetails.getNickname(), userRoleDetails.getRoles());
-            request.getSession().setAttribute(SpringConstant.LOGIN_USER, loginUserInfo);
+            request.getSession().setAttribute(LoginConstant.LOGIN_USER, loginUserInfo);
 
             ResponseUtils.writeResponse(response, Result.success(loginMessage, loginUserInfo));
         } else {
