@@ -51,7 +51,6 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
         Collection<ConfigAttribute> configAttributes = new ArrayList<>();
         HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
         //取redis中的数据
-//        HashOperations<String, String, List<String>> ops = template.opsForHash();
         BoundHashOperations<String, String,  List<String>> ops = template.boundHashOps(permissionRedisKey);
         String requestURI = request.getRequestURI();
         List<String> roles = ops.get(requestURI); //TODO 添加过期时间
