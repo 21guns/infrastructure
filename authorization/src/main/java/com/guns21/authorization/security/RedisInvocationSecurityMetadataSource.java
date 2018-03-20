@@ -54,7 +54,6 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
         BoundHashOperations<String, String,  List<String>> ops = template.boundHashOps(permissionRedisKey);
         String requestURI = request.getRequestURI();
         List<String> roles = ops.get(requestURI); //TODO 添加过期时间
-//        List<String> roles = Collections.EMPTY_LIST;
         if (ObjectUtils.isEmpty(roles)) {
             //提供数据来源
             roles = resourceRoleMapping.listRole(requestURI);
