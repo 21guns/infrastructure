@@ -17,13 +17,12 @@ import java.io.*;
  */
 @Service
 public class HttpAccessDeniedHandler implements AccessDeniedHandler {
-    @Value("${com.guns21.security.message.access-denied:没有访问权限！}")
-    private String accessDeniedMessage;
+
 
     public void handle(HttpServletRequest request,
                        HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
-        ResponseUtils.writeResponse(response, Result.fail403(accessDeniedMessage));
+        ResponseUtils.writeResponse(response, Result.fail403(accessDeniedException.getMessage()));
     }
 }
