@@ -83,9 +83,9 @@ class ApiExceptionHandlerAdvice {
     protected Result validation(List<FieldError> fieldErrors) {
         for (FieldError fieldError : fieldErrors) {
             String message = fieldError.getDefaultMessage();
-            LOGGER.error("[" + fieldError.getField() + "]" + message);
+            LOGGER.error("字段[{}] [{}]", fieldError.getField(), message);
             if (!message.contains(":")) {
-                return Result.fail("[" + fieldError.getField() + "]" + message);
+                return Result.fail(message);
             }
             String[] split = StringUtils.split(message, ":");
             if (split.length == 2 && NumberUtils.isNumber(split[0])) {
