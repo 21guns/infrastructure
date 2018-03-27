@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
+ * spring mvc 对日期的处理
  */
 @Configuration
 public class LocalDateConfig {
@@ -44,5 +45,5 @@ public class LocalDateConfig {
                 return LocalDateTime.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             }  
         };  
-    }  
+    }
 }  

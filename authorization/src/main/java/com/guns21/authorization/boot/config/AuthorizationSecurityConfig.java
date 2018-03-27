@@ -55,6 +55,11 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
         return new HttpSessionInformationExpiredStrategy();
     }
 
+    @Bean
+    public HttpAuthenticationEntryPoint httpAuthenticationEntryPoint() {
+        return new HttpAuthenticationEntryPoint();
+    }
+
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         if (anonymous) {
             httpSecurity.anonymous().disable();
@@ -73,7 +78,7 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .accessDecisionManager(accessDecisionManager())
                 .and().exceptionHandling()
-                .authenticationEntryPoint(new HttpAuthenticationEntryPoint())
+                .authenticationEntryPoint(httpAuthenticationEntryPoint())
                 .accessDeniedHandler(new HttpAccessDeniedHandler())
                 .and().csrf().disable();
 
