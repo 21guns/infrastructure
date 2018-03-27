@@ -11,6 +11,7 @@ import java.util.TimeZone;
 
 /**
  * 格式化日期，从字符串产生日期，从日期产生字符串.
+ * @deprecated
  */
 public class DateUtils {
 
