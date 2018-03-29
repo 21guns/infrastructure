@@ -1,6 +1,6 @@
 //apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/spring-boot.gradle'
 apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-boot.gradle'
-
+version '1.0.0'
 dependencies {
     compile 'javax.servlet:javax.servlet-api'
     compile libraries.commonslang3
