@@ -151,6 +151,10 @@ public class MessageResult<T> extends AbstractResult<T> {
         return fail(code, message, null);
     }
 
+    public static <T> MessageResult<T> fail(String message, T object) {
+        return fail(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), message, object);
+    }
+
     /**
      * 通用异常.
      *
