@@ -37,7 +37,7 @@ public class MessageResult<T> extends AbstractResult<T> {
         return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase());
     }
 
-    public static <T> MessageResult<T> success(T object) {
+    public static <T,R> MessageResult<R> success(T object) {
 
         return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase(), object);
     }
@@ -65,7 +65,7 @@ public class MessageResult<T> extends AbstractResult<T> {
      * @param message 成功信息
      * @return 返回成功结果
      */
-    public static <T> MessageResult<T> success(String message) {
+    public static <T,R> MessageResult<R> success(String message) {
         return success(String.valueOf(HttpStatus.OK.value()), message);
     }
 
@@ -76,21 +76,21 @@ public class MessageResult<T> extends AbstractResult<T> {
      * @param message 成功信息
      * @return 返回成功结果
      */
-    public static <T> MessageResult<T> success(String code, String message) {
+    public static <T,R> MessageResult<R> success(String code, String message) {
         return success(code, message, ResultType.MESSAGE, null);
     }
 
-    public static <T> MessageResult<T> success(String code, T object) {
+    public static <T,R> MessageResult<R> success(String code, T object) {
         return success(code, HttpStatus.OK.getReasonPhrase(), object);
     }
-    public static <T> MessageResult<T> success(String code, String message, T object) {
+    public static <T,R> MessageResult<R> success(String code, String message, T object) {
         if (object instanceof Collection) {
             return success(code, message,ResultType.LIST, object);
         }
         return success(code, message,ResultType.ENTITY, object);
 
     }
-    private static <T> MessageResult<T> success(String message, ResultType resultType, T object) {
+    private static <T,R> MessageResult<R> success(String message, ResultType resultType, T object) {
         return success(String.valueOf(HttpStatus.OK.value()), message,resultType,  object);
     }
 
@@ -102,7 +102,7 @@ public class MessageResult<T> extends AbstractResult<T> {
      * @param object  对象信息
      * @return 返回成功结果
      */
-    private static <T> MessageResult<T> success(String code, String message, ResultType resultType, T object) {
+    private static <T,R> MessageResult<R> success(String code, String message, ResultType resultType, T object) {
         return getInstance(Boolean.TRUE, message, code, resultType, object);
     }
 
@@ -167,7 +167,7 @@ public class MessageResult<T> extends AbstractResult<T> {
         return getInstance(Boolean.FALSE, message, code, ResultType.MESSAGE, object);
     }
 
-    private static <T> MessageResult<T> getInstance(Boolean aTrue, String message, String code, ResultType resultType, T object) {
+    private static <T,R> MessageResult<R> getInstance(Boolean aTrue, String message, String code, ResultType resultType, T object) {
 
         MessageResult result = new MessageResult();
         result.setSuccess(aTrue);
