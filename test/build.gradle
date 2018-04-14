@@ -3,6 +3,7 @@ version '1.0.0'
 //apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/spring-boot.gradle'
 apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-boot.gradle'
 dependencies {
+    testCompile 'org.springframework:spring-web'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     // io.rest-assured
     testCompile "io.rest-assured:spring-mock-mvc:${versions.restAssured}"

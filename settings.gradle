@@ -16,4 +16,5 @@ include 'redis'
 include 'upload'
 include 'login-user'
 include 'assembler-starter'
+include 'event'
 
