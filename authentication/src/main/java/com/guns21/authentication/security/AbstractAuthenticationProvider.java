@@ -9,6 +9,7 @@ import com.guns21.user.login.domain.UserRoleDetails;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,18 +26,14 @@ import java.util.stream.Collectors;
  * Created by ljj on 2017/6/17.
  */
 public abstract class AbstractAuthenticationProvider implements AuthenticationProvider {
-    @Value("${com.guns21.security.message.password-error:用户密码错误！}")
-    protected String passwordError;
-    @Value("${com.guns21.security.message.login-error:请提交正确的用户信息！}")
-    protected String loginError;
-    @Value("${com.guns21.security.message.user-not-exist:用户不存在！}")
-    protected String userNotExistMessage;
     @Value("${com.guns21.security.user-name-pattern:#{null}}")
     protected String userNamePattern;
     @Value("${com.guns21.security.password-pattern:#{null}}")
     protected String passwordPattern;
     @Autowired
     protected UserAuthService userAuthService;
+    @Autowired
+    protected MessageSourceAccessor messageSourceAccessor;
 
     /**
      * 自定义用户认证
@@ -47,8 +44,11 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-            throw new BadCredentialsException(loginError);
+        if (StringUtils.isEmpty(username)) {
+            throw new BadCredentialsException(messageSourceAccessor.getMessage("com.guns21.security.message.user.name","输入用户名"));
+        }
+        if (StringUtils.isEmpty(password)) {
+            throw new BadCredentialsException(messageSourceAccessor.getMessage("com.guns21.security.message.user.password","输入密码"));
         }
         if (StringUtils.isNoneEmpty(userNamePattern)) {
             if (!RegexChkUtils.startCheck(userNamePattern, username)) {
@@ -64,7 +64,7 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
         AuthUser authUser = userAuthService.getUser(username);
 
         if (authUser == null) {
-            throw new UsernameNotFoundException(userNotExistMessage);
+            throw new UsernameNotFoundException(messageSourceAccessor.getMessage("com.guns21.security.message.user.notfound","用户不存在"));
         }
 
         passwordValidate(authUser, password);

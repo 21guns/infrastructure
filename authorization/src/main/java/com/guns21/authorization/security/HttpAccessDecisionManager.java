@@ -1,6 +1,8 @@
 package com.guns21.authorization.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -18,10 +20,10 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
 
     private static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
 
-    @Value("${com.guns21.security.message.access-denied:没有访问权限！}")
-    private String accessDeniedMessage;
     @Value("${com.guns21.security.anonymous.disable:true}")
     private boolean anonymous;
+    @Autowired
+    private MessageSourceAccessor messageSourceAccessor;
     /**
      * 判断configAttribute中找角色在authentication中是否存在，如果不存在throws 异常。
      *
@@ -38,7 +40,7 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
          * 1.如果url对应的角色列表为空，禁止访问
          */
         if (null == configAttributes || configAttributes.size() == 0) {
-            throw new AccessDeniedException(accessDeniedMessage);
+            throw new AccessDeniedException(messageSourceAccessor.getMessage("com.guns21.security.message.access.denied","没有访问权限"));
         }
 
         /**
@@ -52,7 +54,7 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
          * 3.没有授权用户，并且授权用户没有权限
          */
         if (null == authentication || authentication.getAuthorities() == null || authentication.getAuthorities().size() == 0) {
-            throw new AccessDeniedException(accessDeniedMessage);
+            throw new AccessDeniedException(messageSourceAccessor.getMessage("com.guns21.security.message.access.denied","没有访问权限"));
         }
 
         /**
@@ -70,7 +72,7 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
                 }
             }
         }
-        throw new AccessDeniedException(accessDeniedMessage);
+        throw new AccessDeniedException(messageSourceAccessor.getMessage("com.guns21.security.message.access.denied","没有访问权限"));
     }
 
     /**

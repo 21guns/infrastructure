@@ -11,7 +11,7 @@ public class PasswordEqualsAuthenticationProvider extends AbstractAuthentication
     protected void passwordValidate(AuthUser authUser, String password) throws AuthenticationException {
 
         if (StringUtils.isNoneEmpty(authUser.getPassword()) && !authUser.getPassword().equals(password)) {
-            throw new BadCredentialsException(passwordError);
+            throw new BadCredentialsException(messageSourceAccessor.getMessage("com.guns21.security.message.password.error","用户密码错误"));
         }
     }
 }

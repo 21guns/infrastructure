@@ -15,9 +15,8 @@ public class PasswordEncryptAuthenticationProvider extends AbstractAuthenticatio
     private PasswordEncoder passwordEncoder;
     @Override
     protected void passwordValidate(AuthUser authUser, String password) throws AuthenticationException {
-
         if (!passwordEncoder.matches(authUser.getPasswordSalt() + password, authUser.getPassword())) {
-            throw new BadCredentialsException(passwordError);
+            throw new BadCredentialsException(messageSourceAccessor.getMessage("com.guns21.security.message.password.error","用户密码错误"));
         }
     }
 }
