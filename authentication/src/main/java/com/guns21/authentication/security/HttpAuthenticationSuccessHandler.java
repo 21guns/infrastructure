@@ -6,7 +6,6 @@ import com.guns21.user.login.constant.LoginConstant;
 import com.guns21.user.login.domain.UserInfo;
 import com.guns21.user.login.domain.UserRoleDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
