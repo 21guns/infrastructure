@@ -1,0 +1,11 @@
+version '1.0.0'
+
+//apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/java.gradle'
+apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/java.gradle'
+
+dependencies {
+    compileOnly 'com.fasterxml.jackson.core:jackson-core:2.9.4'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
+    compileOnly 'org.mybatis:mybatis:3.4.5'
+}
