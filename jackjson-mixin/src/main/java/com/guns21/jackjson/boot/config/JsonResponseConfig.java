@@ -17,7 +17,7 @@ import com.guns21.jackjson.datatype.deser.StandrdLocalTimeDeserializer;
 import com.guns21.jackjson.datatype.ser.StandrdLocalDateSerializer;
 import com.guns21.jackjson.datatype.ser.StandrdLocalDateTimeSerializer;
 import com.guns21.jackjson.datatype.ser.StandrdLocalTimeSerializer;
-import com.guns21.jackjson.http.converter.json.ReadWriteMappingJackson2HttpMessageConverter;
+import com.guns21.jackjson.http.converter.json.JsonResponseAwareJsonMessageConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +38,7 @@ public class JsonResponseConfig {
 
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(ObjectMapper objectMapper) throws IllegalAccessException {
-        MappingJackson2HttpMessageConverter jsonConverter = new ReadWriteMappingJackson2HttpMessageConverter(objectMapper);
+        MappingJackson2HttpMessageConverter jsonConverter = new JsonResponseAwareJsonMessageConverter(objectMapper);
 
         objectMapper.registerModule(new JavaTimeModule());
         return jsonConverter;
