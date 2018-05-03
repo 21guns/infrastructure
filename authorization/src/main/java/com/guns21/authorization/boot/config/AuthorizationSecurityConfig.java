@@ -31,8 +31,10 @@ import java.util.Objects;
 @EnableWebSecurity
 @Order(101)
 public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Value("${com.guns21.security.permit-pages:#{null}}")
+    @Value("${com.guns21.security.permit.pages:#{null}}")
     private String[] permitPages;
+    @Value("${com.guns21.security.permit.matcher:ant}")
+    private String matcher;
     @Value("${com.guns21.security.anonymous.disable:true}")
     private boolean anonymous;
 
@@ -97,9 +99,20 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity webSecurity) throws Exception {
         if (Objects.nonNull(permitPages)) {
-            webSecurity
-                    .ignoring()
-                    .antMatchers(permitPages);
+            if ("regex".equalsIgnoreCase(matcher)) {
+                webSecurity
+                        .ignoring()
+                        .regexMatchers(permitPages);
+            } else if ("ant".equalsIgnoreCase(matcher)) {
+                webSecurity
+                        .ignoring()
+                        .antMatchers(permitPages);
+            } else {
+                webSecurity
+                        .ignoring()
+                        .antMatchers(permitPages);
+            }
+
         }
     }
 
