@@ -25,7 +25,7 @@ public class HttpAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException)
             throws IOException, ServletException {
-            log.warn("commence", authException);
+            log.warn("commence {}", authException.toString());
         ResponseUtils.writeResponse(response, Result.fail401(messageSourceAccessor.getMessage("com.guns21.security.message.login.commence","请登录")));
     }
 
