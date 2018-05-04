@@ -7,28 +7,29 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+/**
+ * 1.implements WebMvcRegistrations spring boot 2 support
+ * 2.extend WebMvcConfigurerAdapter spring boot < 2
+ */
 @Configuration
-public class WebMvcConfig extends WebMvcConfigurerAdapter {
+public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        super.addInterceptors(registry);
 //        registry.addInterceptor(new AuthTokenInterceptor()).addPathPatterns("/app/**");
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        super.addArgumentResolvers(argumentResolvers);
         argumentResolvers.add(new RequireUuidMethodArgumentResolver());
     }
 
 //    @Override
 //    public void addFormatters(FormatterRegistry registry) {
-//        super.addFormatters(registry);
 //        registry.addConverter(new StringToDateConvert());
 //    }
 
