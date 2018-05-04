@@ -9,6 +9,7 @@ import com.guns21.common.util.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.ConfigAttribute;
@@ -31,12 +32,13 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
 
     @Resource(name = "redisTemplate")
     private RedisTemplate<String, Map<String, List<String>>> template;
-
+    @Value("${com.guns21.security.anonymous.disable:true}")
+    private boolean anonymous;
     @Autowired
     private ResourceRoleMapping resourceRoleMapping;
     //    private HashMap<String, Collection<ConfigAttribute>> map =null;
 
-
+    private static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
     /**
      * 获取访问权限的角色集合
      * 返回空集合是表示白名单，任何人都有权限
@@ -60,9 +62,18 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
             ops.put(requestURI, roles);
         }
 
+        /**
+         * 如果对应的资源没有配置角色：
+         * 1.返回空集合是白名单
+         * 2.返回非空集合是黑名单,匿名访问时是黑名单
+         */
         if (null == roles || roles.size() == 0) {
             LOGGER.warn("url {} hasn't roles", requestURI);
-            return Collections.EMPTY_LIST;
+            if (anonymous) {
+                return Collections.singleton(new SecurityConfig(ROLE_ANONYMOUS));
+            } else {
+                return Collections.EMPTY_LIST;
+            }
         }
 
         return roles.stream().map(r -> new SecurityConfig(r))
