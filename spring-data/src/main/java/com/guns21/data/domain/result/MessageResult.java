@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.guns21.domain.result.AbstractResult;
 import com.guns21.domain.result.ResultType;
 import com.guns21.http.HttpStatus;
+import org.springframework.data.domain.Page;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,6 +28,17 @@ public class MessageResult<T> extends AbstractResult<T> {
                 .totalElements(page.getTotal())
                 .pageData(page.getList())
                 .page(page.getPageNum())
+                .size(page.getSize())
+                .build();
+
+        return success(String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.getReasonPhrase(), ResultType.PAGE, (T) pageData);
+    }
+    public static <T> MessageResult<T> successPage(Page<T> page) {
+        PageData pageData = PageData.<T>builder()
+                .totalPages(page.getTotalPages())
+                .totalElements(page.getTotalElements())
+                .pageData(page.getContent())
+                .page(page.getNumber())
                 .size(page.getSize())
                 .build();
 
