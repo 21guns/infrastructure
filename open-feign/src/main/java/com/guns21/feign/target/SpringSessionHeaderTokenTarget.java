@@ -30,7 +30,7 @@ public class SpringSessionHeaderTokenTarget<T> implements Target<T> {
     }
 
     private SpringSessionHeaderTokenTarget(Class<T> type, String url) {
-        this(HEADER_X_AUTH_TOKEN,type, null, url);
+        this(HEADER_X_AUTH_TOKEN,type, url, url);
     }
 
     private SpringSessionHeaderTokenTarget(String headerName, Class<T> type, String name, String url) {
