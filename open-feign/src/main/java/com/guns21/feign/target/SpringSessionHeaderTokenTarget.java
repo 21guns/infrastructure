@@ -10,39 +10,45 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static feign.Util.checkNotNull;
+import static feign.Util.emptyToNull;
+
 /**
  * 使用feign调用http设置相关参数
  */
-public class SpringSessionHeaderTokenTarget implements Target {
+public class SpringSessionHeaderTokenTarget<T> implements Target<T> {
     private static Logger logger = LoggerFactory.getLogger(SpringSessionHeaderTokenTarget.class);
     private static final String HEADER_X_AUTH_TOKEN = "X-Auth-Token";
 
     private final String headerName;
+    private final Class<T> type;
+    private final String name;
+    private final String url;
 
-    public SpringSessionHeaderTokenTarget() {
-        this(HEADER_X_AUTH_TOKEN);
+    public SpringSessionHeaderTokenTarget(Class<T> type, String url) {
+        this(HEADER_X_AUTH_TOKEN,type, null, url);
     }
 
-    public SpringSessionHeaderTokenTarget(String headerName) {
-        if (headerName == null) {
-            throw new IllegalArgumentException("headerName cannot be null");
-        }
-        this.headerName = headerName;
+    public SpringSessionHeaderTokenTarget(String headerName, Class<T> type, String name, String url) {
+        this.headerName = checkNotNull(headerName, "headerName");
+        this.type = checkNotNull(type, "type");
+        this.name = checkNotNull(emptyToNull(name), "name");
+        this.url = checkNotNull(emptyToNull(url), "url");
     }
 
     @Override
     public Class type() {
-        return null;
+        return type;
     }
 
     @Override
     public String name() {
-        return null;
+        return name;
     }
 
     @Override
     public String url() {
-        return null;
+        return url;
     }
 
     @Override
