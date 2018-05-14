@@ -25,11 +25,15 @@ public class SpringSessionHeaderTokenTarget<T> implements Target<T> {
     private final String name;
     private final String url;
 
-    public SpringSessionHeaderTokenTarget(Class<T> type, String url) {
+    public static <T> SpringSessionHeaderTokenTarget<T> newTarget(Class<T> type, String url) {
+        return new SpringSessionHeaderTokenTarget(type, url);
+    }
+
+    private SpringSessionHeaderTokenTarget(Class<T> type, String url) {
         this(HEADER_X_AUTH_TOKEN,type, null, url);
     }
 
-    public SpringSessionHeaderTokenTarget(String headerName, Class<T> type, String name, String url) {
+    private SpringSessionHeaderTokenTarget(String headerName, Class<T> type, String name, String url) {
         this.headerName = checkNotNull(headerName, "headerName");
         this.type = checkNotNull(type, "type");
         this.name = checkNotNull(emptyToNull(name), "name");
@@ -59,6 +63,10 @@ public class SpringSessionHeaderTokenTarget<T> implements Target<T> {
             logger.warn("header's key [{}] is null ", headerName);
         }
         input.header(headerName, headerValue);
+        //@see HardCodedTarget
+        if (input.url().indexOf("http") != 0) {
+            input.insert(0, url());
+        }
         return input.request();
     }
 }
