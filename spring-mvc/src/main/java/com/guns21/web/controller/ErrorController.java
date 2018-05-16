@@ -20,7 +20,7 @@ public class ErrorController {
     @RequestMapping(value = "/error", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public MessageResult error(HttpServletRequest request) {
         HttpStatus status = getStatus(request);
-        log.error("error {} ", status);
+        log.error("error status {} for url [{}] ", status, request.getRequestURI());
         return MessageResult.fail(String.valueOf(status.value()), status.getReasonPhrase());
     }
 

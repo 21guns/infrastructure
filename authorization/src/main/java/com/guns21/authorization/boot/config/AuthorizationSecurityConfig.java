@@ -98,19 +98,17 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity webSecurity) throws Exception {
+        WebSecurity.IgnoredRequestConfigurer ignoredRequestConfigurer = webSecurity
+                .ignoring();
+        //some help url
+        ignoredRequestConfigurer.antMatchers("/error");
         if (Objects.nonNull(permitPages)) {
             if ("regex".equalsIgnoreCase(matcher)) {
-                webSecurity
-                        .ignoring()
-                        .regexMatchers(permitPages);
+                ignoredRequestConfigurer.regexMatchers(permitPages);
             } else if ("ant".equalsIgnoreCase(matcher)) {
-                webSecurity
-                        .ignoring()
-                        .antMatchers(permitPages);
+                ignoredRequestConfigurer.antMatchers(permitPages);
             } else {
-                webSecurity
-                        .ignoring()
-                        .antMatchers(permitPages);
+                ignoredRequestConfigurer.antMatchers(permitPages);
             }
 
         }
