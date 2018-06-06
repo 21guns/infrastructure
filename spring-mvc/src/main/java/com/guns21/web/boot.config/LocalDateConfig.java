@@ -36,13 +36,13 @@ public class LocalDateConfig {
         return new Formatter<LocalDateTime>() {
             @Override
             public String print(LocalDateTime localDateTime, Locale locale) {
-                DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
                 return formatter.format(localDateTime);
             }
 
             @Override
             public LocalDateTime parse(String text, Locale locale) throws ParseException {
-                return LocalDateTime.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                return LocalDateTime.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
             }  
         };  
     }
