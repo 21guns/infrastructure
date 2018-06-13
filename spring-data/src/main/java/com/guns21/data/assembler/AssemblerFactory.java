@@ -1,7 +1,6 @@
 package com.guns21.data.assembler;
 
 import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.util.Assert;
 
 import java.util.Map;
 import java.util.Objects;
@@ -22,7 +21,9 @@ public class AssemblerFactory {
      * @return
      */
     public static <T> T to(Object source, Class<T> targetClass) {
-        Objects.requireNonNull(source,"source is null");
+        if (Objects.isNull(source)) {
+            return null;
+        }
         return toAnother(source, targetClass);
     }
 
