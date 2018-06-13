@@ -1,8 +1,11 @@
 package com.guns21.data.assembler;
 
 import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.util.Assert;
 
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.lang.String.format;
@@ -19,6 +22,25 @@ public class AssemblerFactory {
      * @return
      */
     public static <T> T to(Object source, Class<T> targetClass) {
+        Objects.requireNonNull(source,"source is null");
+        return toAnother(source, targetClass);
+    }
+
+    /**
+     *
+     * @param source 原对象
+     * @param targetClass 目标类，需要有无参构造方法
+     * @param <T>
+     * @return
+     */
+    public static <T> Optional<T> toOptional(Object source, Class<T> targetClass) {
+        if (Objects.isNull(source) ) {
+            return Optional.empty();
+        }
+        return Optional.of(toAnother(source, targetClass));
+    }
+
+    private static <T> T toAnother(Object source, Class<T> targetClass) {
         T t = null;
         try {
             t = targetClass.newInstance();
@@ -28,7 +50,6 @@ public class AssemblerFactory {
         copyProperties(source, t);
         return t;
     }
-
     private static void copyProperties(Object source, Object target) {
         BeanCopier copier = getBeanCopier(source.getClass(), target.getClass());
         copier.copy(source, target, null);
