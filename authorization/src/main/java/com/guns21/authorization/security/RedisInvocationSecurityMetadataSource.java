@@ -96,9 +96,11 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
                     for (int i = 0; i < accessResources.size(); i++) {
                         AccessResource accessResource = accessResources.get(i);
                         //访问资源
-                        if (resourceList.contains(accessResource.getResource())) {
+                        if (resourceList.contains(accessResource.getResource())
+                                || AccessResource.FULL_RESOURCE.equals(accessResource.getResource()) ) {
                             //比较访问方式
-                            if (matchingCondition.getMethodsCondition().getMethods().contains(RequestMethod.valueOf(accessResource.getAccess()))) {
+                            if (matchingCondition.getMethodsCondition().getMethods().contains(RequestMethod.valueOf(accessResource.getAccess()))
+                                    || AccessResource.FULL_ACCESS.equals(accessResource.getAccess())) {
                                 roles = accessResource.getRole();
                                 ops.put(key, roles);
                                 break;

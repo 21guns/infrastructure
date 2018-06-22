@@ -1,6 +1,7 @@
 package com.guns21.authorization.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,8 +11,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
-@AllArgsConstructor
+@Builder
 public class AccessResource implements Serializable {
+
+    public static final String FULL_RESOURCE = "FULL";
+
+    public static final String FULL_ACCESS = "FULL";
 
     /**
      * 资源 使用ant表达方式
@@ -34,5 +39,9 @@ public class AccessResource implements Serializable {
             return new ArrayList(Arrays.asList(roleName.split(",")));
         }
         return null;
+    }
+
+    public static AccessResource getAllWithRole(String roleName) {
+        return AccessResource.builder().resource(FULL_RESOURCE).access(FULL_ACCESS).roleName(roleName).build();
     }
 }
