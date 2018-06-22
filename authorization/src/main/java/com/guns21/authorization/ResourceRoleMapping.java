@@ -1,5 +1,7 @@
 package com.guns21.authorization;
 
+import com.guns21.authorization.domain.AccessResource;
+
 import java.util.List;
 
 /**
@@ -11,7 +13,8 @@ public interface ResourceRoleMapping {
      * 返回资源所对应的角色
      *
      * @param resource url资源
+     * @param access  资源的访问方式
      * @return 返回资源所对应的角色,只能使用ArrayList封装
      */
-    List<String> listRole(String resource);
+    List<AccessResource> listRole(String resource, String access);
 }
