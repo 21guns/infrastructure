@@ -86,7 +86,7 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
             //TODO 添加过期时间
             roles = ops.get(key);
             if (ObjectUtils.isEmpty(roles)) {
-                ///api/usermanage/v1/org/{no:MD[0-9]{19}}/salesman --> /api/usermanage/v1/org/*/salesman
+                //  使用ant表达式 /api/usermanage/v1/org/{no:MD[0-9]{19}}/salesman --> /api/usermanage/v1/org/*/salesman
                 List<String> resourceList = matchingCondition.getPatternsCondition().getPatterns().stream()
                         .map(s -> replaceBrace(s, "*", Arrays.asList("{", "}")))
                         .collect(Collectors.toList());

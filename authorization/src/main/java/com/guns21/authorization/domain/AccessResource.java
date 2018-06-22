@@ -14,7 +14,7 @@ import java.util.Objects;
 public class AccessResource implements Serializable {
 
     /**
-     * 资源
+     * 资源 使用ant表达方式
      */
     private String resource;
 
