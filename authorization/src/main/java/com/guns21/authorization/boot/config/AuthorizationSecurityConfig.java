@@ -37,7 +37,8 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
     private String matcher;
     @Value("${com.guns21.security.anonymous.disable:true}")
     private boolean anonymous;
-
+    @Value("${com.guns21.session.maximum:1}")
+    private int maximumSessions;
 
     @Autowired
     private SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry;
@@ -87,7 +88,7 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
         //同一个账户多次登录限制，对url访问进行监控
         httpSecurity
                 .sessionManagement()
-                .maximumSessions(1)
+                .maximumSessions(maximumSessions)
 //                .maxSessionsPreventsLogin(true) 为true是多次登录时抛出异常
                 .sessionRegistry(springSessionBackedSessionRegistry)
                 //被登录时，第一次返回的错误信息
