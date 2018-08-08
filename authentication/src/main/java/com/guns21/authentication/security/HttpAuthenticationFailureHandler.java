@@ -20,7 +20,6 @@ public class HttpAuthenticationFailureHandler implements AuthenticationFailureHa
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
-
-        ResponseUtils.writeResponse(response, Result.fail403(exception.getMessage()));
+        ResponseUtils.writeResponse(response, Result.fail401(exception.getMessage()));
     }
 }

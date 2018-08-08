@@ -19,6 +19,6 @@ public class HttpSessionInformationExpiredStrategy implements SessionInformation
     @Override
     public void onExpiredSessionDetected(SessionInformationExpiredEvent sessionInformationExpiredEvent) throws IOException, ServletException {
         HttpServletResponse response = sessionInformationExpiredEvent.getResponse();
-        ResponseUtils.writeResponse(response, Result.fail403(messageSourceAccessor.getMessage("com.guns21.security.message.logined", "已经被最新登录替代")));
+        ResponseUtils.writeResponse(response, Result.fail("901", messageSourceAccessor.getMessage("com.guns21.security.message.logined", "已经被最新登录替代")));
     }
 }
