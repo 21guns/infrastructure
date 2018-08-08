@@ -1,5 +1,6 @@
 package com.guns21.authorization.boot.config;
 
+import com.guns21.authentication.boot.config.SecurityConfig;
 import com.guns21.authorization.security.HttpAccessDecisionManager;
 import com.guns21.authorization.security.HttpAccessDeniedHandler;
 import com.guns21.authorization.security.HttpAuthenticationEntryPoint;
@@ -30,18 +31,20 @@ import java.util.Objects;
 @Configuration
 @EnableWebSecurity
 @Order(101)
+
 public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Value("${com.guns21.security.permit.pages:#{null}}")
-    private String[] permitPages;
+
     @Value("${com.guns21.security.permit.matcher:ant}")
     private String matcher;
-    @Value("${com.guns21.security.anonymous.disable:true}")
-    private boolean anonymous;
-    @Value("${com.guns21.session.maximum:1}")
-    private int maximumSessions;
 
     @Autowired
     private SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry;
+
+    @Autowired
+    private SecurityConfig securityConfig;
+    @Autowired
+    private SecurityConfig.SecurityPermitConfig securityPermitConfig;
+
 
     @Bean
     public AccessDecisionManager accessDecisionManager() {
@@ -64,7 +67,7 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        if (anonymous) {
+        if (securityConfig.isAnonymous()) {
             httpSecurity.anonymous().disable();
         }
 
@@ -88,7 +91,7 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
         //同一个账户多次登录限制，对url访问进行监控
         httpSecurity
                 .sessionManagement()
-                .maximumSessions(maximumSessions)
+                .maximumSessions(securityConfig.getMaximumSessions())
 //                .maxSessionsPreventsLogin(true) 为true是多次登录时抛出异常
                 .sessionRegistry(springSessionBackedSessionRegistry)
                 //被登录时，第一次返回的错误信息
@@ -103,13 +106,13 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoring();
         //some help url
         ignoredRequestConfigurer.antMatchers("/error");
-        if (Objects.nonNull(permitPages)) {
+        if (Objects.nonNull(securityPermitConfig.getPermitPages())) {
             if ("regex".equalsIgnoreCase(matcher)) {
-                ignoredRequestConfigurer.regexMatchers(permitPages);
+                ignoredRequestConfigurer.regexMatchers(securityPermitConfig.getPermitPages());
             } else if ("ant".equalsIgnoreCase(matcher)) {
-                ignoredRequestConfigurer.antMatchers(permitPages);
+                ignoredRequestConfigurer.antMatchers(securityPermitConfig.getPermitPages());
             } else {
-                ignoredRequestConfigurer.antMatchers(permitPages);
+                ignoredRequestConfigurer.antMatchers(securityPermitConfig.getPermitPages());
             }
 
         }

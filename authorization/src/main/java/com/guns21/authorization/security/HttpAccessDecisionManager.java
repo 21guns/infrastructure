@@ -1,7 +1,7 @@
 package com.guns21.authorization.security;
 
+import com.guns21.authentication.boot.config.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,10 +20,12 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
 
     private static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
 
-    @Value("${com.guns21.security.anonymous.disable:true}")
-    private boolean anonymous;
     @Autowired
     private MessageSourceAccessor messageSourceAccessor;
+
+    @Autowired
+    private SecurityConfig securityConfig;
+
     /**
      * 判断configAttribute中找角色在authentication中是否存在，如果不存在throws 异常。
      *
@@ -46,7 +48,7 @@ public class HttpAccessDecisionManager implements AccessDecisionManager {
         /**
          * 2.启用匿名访问时，检查角色列表是否包含匿名用户
          */
-        if (!anonymous && configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals(ROLE_ANONYMOUS))) {
+        if (!securityConfig.isAnonymous() && configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals(ROLE_ANONYMOUS))) {
             return;
         }
 

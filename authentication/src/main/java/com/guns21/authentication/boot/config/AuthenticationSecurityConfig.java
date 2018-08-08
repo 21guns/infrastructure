@@ -54,8 +54,9 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     private String usernameParameter;
     @Value("${com.guns21.security.password-parameter:password}")
     private String passwordParameter;
-    @Value("${com.guns21.session.maximum:1}")
-    private int maximumSessions;
+
+    @Autowired
+    private SecurityConfig securityConfig;
 
     @Autowired
     private HttpLogoutSuccessHandler httpLogoutSuccessHandler;
@@ -145,7 +146,7 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
         //同一个账户多次登录限制，针对等是需要对之前的session进行表示
         httpSecurity
                 .sessionManagement()
-                .maximumSessions(maximumSessions)
+                .maximumSessions(securityConfig.getMaximumSessions())
 //                .maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
                 .sessionRegistry(springSessionBackedSessionRegistry());
 

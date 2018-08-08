@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.ConfigAttribute;
@@ -41,13 +40,14 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
 
     @Resource(name = "redisTemplate")
     private RedisTemplate<String, Map<String, List<String>>> template;
-    @Value("${com.guns21.security.anonymous.disable:true}")
-    private boolean anonymous;
     @Autowired
     private ResourceRoleMapping resourceRoleMapping;
 
     @Autowired
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
+
+    @Autowired
+    private com.guns21.authentication.boot.config.SecurityConfig securityConfig;
 
     private static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
     /**
@@ -125,7 +125,7 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
          */
         if (null == roles || roles.size() == 0) {
             LOGGER.warn("url {} hasn't roles", requestURI);
-            if (anonymous) {
+            if (securityConfig.isAnonymous()) {
                 return Collections.singleton(new SecurityConfig(ROLE_ANONYMOUS));
             } else {
                 return Collections.EMPTY_LIST;
