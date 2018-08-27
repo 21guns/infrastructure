@@ -4,5 +4,5 @@ group 'com.guns21'
 apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/java.gradle'
 
 dependencies {
-    compileOnly 'org.projectlombok:lombok:1.16.20'
+    compileOnly 'org.projectlombok:lombok:1.16.22'
 }

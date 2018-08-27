@@ -9,6 +9,9 @@ import java.util.Optional;
  */
 public abstract class BaseEvent<T> implements Serializable {
 
+    /**
+     * 该事件的唯一标示
+     */
     protected String id;
 
     protected final long timestamp = System.currentTimeMillis();
@@ -80,7 +83,16 @@ public abstract class BaseEvent<T> implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hashCode(id);
     }
 
+    @Override
+    public String toString() {
+        return "BaseEvent{" +
+                "id='" + id + '\'' +
+                ", timestamp=" + timestamp +
+                ", source=" + source +
+                ", eventType='" + eventType + '\'' +
+                '}';
+    }
 }

@@ -1,7 +1,8 @@
 package com.guns21.user.login.domain;
 
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -11,7 +12,8 @@ import java.util.List;
 /**
  * Created by ljj on 17/6/28.
  */
-@Data
+@Setter
+@Getter
 public class UserRoleDetails extends User {
     private static final long serialVersionUID = 1L;
 
