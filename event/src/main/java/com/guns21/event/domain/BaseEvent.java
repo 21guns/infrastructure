@@ -88,7 +88,7 @@ public abstract class BaseEvent<T> implements Serializable {
 
     @Override
     public String toString() {
-        return "BaseEvent{" +
+        return getClass().getSimpleName() + "{" +
                 "id='" + id + '\'' +
                 ", timestamp=" + timestamp +
                 ", source=" + source +
