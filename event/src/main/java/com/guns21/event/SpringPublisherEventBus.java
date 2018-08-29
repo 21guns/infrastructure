@@ -26,6 +26,12 @@ public class SpringPublisherEventBus implements EventBus {
     }
 
     @Override
+    public void publish(NotifyEvent event, String destination) {
+        logger.debug("publish event for {}", event);
+        throw new UnsupportedOperationException("unsupported destination");
+    }
+
+    @Override
     public void ask(AskEvent event) {
         logger.debug("ask event for {}", event);
         throw new UnsupportedOperationException("unsupported ask");

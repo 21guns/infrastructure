@@ -13,6 +13,14 @@ public interface EventBus {
 
 
     /**
+     * 广播事件
+     * @param event
+     * @param destination
+     */
+    void publish(NotifyEvent event, String destination);
+
+
+    /**
      * 点对点事件
      * @param event
      */
