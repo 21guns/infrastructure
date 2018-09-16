@@ -3,7 +3,7 @@ package com.guns21.common.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.guns21.common.constant.RegexConstants.MOBILE_REGEXP;
+import static com.guns21.common.constant.RegexConstants.MOBILE_REGEXP_2018;
 import static com.guns21.common.constant.RegexConstants.PASSWORD_REGEXP;
 
 /**
@@ -33,10 +33,10 @@ public class RegexChkUtils {
     }
 
     /**
-     * 手机号码验证,11位，不知道详细的手机号码段，只是验证开头必须是1和位数.
+     * 手机号码验证,11位
      */
     public static boolean checkCellPhone(String cellPhoneNr) {
-        return startCheck(MOBILE_REGEXP, cellPhoneNr);
+        return startCheck(MOBILE_REGEXP_2018, cellPhoneNr);
     }
 
     /**
