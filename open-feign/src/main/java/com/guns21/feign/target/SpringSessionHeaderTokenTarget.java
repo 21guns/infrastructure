@@ -10,6 +10,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Objects;
+
 import static feign.Util.checkNotNull;
 import static feign.Util.emptyToNull;
 
@@ -57,12 +59,22 @@ public class SpringSessionHeaderTokenTarget<T> implements Target<T> {
 
     @Override
     public Request apply(RequestTemplate input) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String headerValue = request.getHeader(this.headerName);
-        if (null == headerValue) {
-            logger.warn("header's key [{}] is null ", headerName);
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (Objects.nonNull(requestAttributes)) {
+            HttpServletRequest request = requestAttributes.getRequest();
+            if (Objects.nonNull(request)) {
+                String headerValue = request.getHeader(this.headerName);
+                if (null == headerValue) {
+                    logger.warn("header's key [{}] is null ", headerName);
+                } else {
+                    input.header(headerName, headerValue);
+                }
+            } else {
+                logger.warn("don't find request for requestAttributes.getRequest()");
+            }
+        } else {
+            logger.warn("don't find ServletRequestAttributes for RequestContextHolder.getRequestAttributes()");
         }
-        input.header(headerName, headerValue);
         //@see HardCodedTarget
         if (input.url().indexOf("http") != 0) {
             input.insert(0, url());
