@@ -111,7 +111,7 @@ class ApiExceptionHandlerAdvice {
         resultData.setCode(Result.Code.TYPE_VIOLATION.getCode());
         resultData.setMessage(Result.Code.TYPE_VIOLATION.getText() + ":参数需要[" + exception.getRequiredType().getSimpleName() + "]类型，但传入值为{" + exception.getValue() + "}");
 
-        LOGGER.error("typeMismatchException", resultData.getMessage());
+        LOGGER.error("type mismatch : {} ", resultData.getMessage());
         return resultData;
     }
 
@@ -127,8 +127,8 @@ class ApiExceptionHandlerAdvice {
     public Result missingServletRequestParameterException(MissingServletRequestParameterException exception, WebRequest request) {
         Result resultData = Result.fail();
         resultData.setCode(Result.Code.MISS_PARAMETER.getCode());
-        resultData.setMessage(Throwables.getRootCause(exception).getLocalizedMessage());
-        LOGGER.error("missingServletRequestParameterException",resultData.getMessage());
+        resultData.setMessage(exception.getMessage());
+        LOGGER.error("missing servlet request parameter : {} ",resultData.getMessage());
         return resultData;
     }
 
