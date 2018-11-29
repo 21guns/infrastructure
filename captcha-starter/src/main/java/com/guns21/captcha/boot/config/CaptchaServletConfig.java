@@ -82,7 +82,7 @@ public class CaptchaServletConfig extends HttpServlet {
     }
 
     @Bean
-    public ServletRegistrationBean dispatcherServletRegistration() {
+    public ServletRegistrationBean captchaServletRegistration() {
         ServletRegistrationBean registration = new ServletRegistrationBean(this);
 
         registration.setUrlMappings(Arrays.asList(url));
