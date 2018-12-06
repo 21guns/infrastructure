@@ -1,5 +1,6 @@
 package com.guns21.user.login.boot.config;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guns21.user.login.mixin.AuthenticationJasksonModue;
 import org.springframework.beans.factory.BeanClassLoaderAware;
@@ -40,6 +41,9 @@ public class SessionSerializerConfig implements BeanClassLoaderAware {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModules(SecurityJackson2Modules.getModules(this.loader));
         mapper.registerModule(new AuthenticationJasksonModue());
+        //use set property with NoArgsConstructor
+        //@see org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
+        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
         return mapper;
     }
 
