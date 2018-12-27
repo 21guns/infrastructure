@@ -22,29 +22,12 @@ public class SessionSerializerConfig implements BeanClassLoaderAware {
     private ClassLoader loader;
 
     @Bean
-    public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
-        ObjectMapper objectMapper = objectMapper();
+    public RedisSerializer<Object> springSessionDefaultRedisSerializer(ObjectMapper objectMapper) {
+//        ObjectMapper objectMapper = objectMapper();
         for (SpringSessionRedisSerializerObjectMapperConfigure configurer : configurers) {
             configurer.configureObjectMapper(objectMapper);
         }
         return new GenericJackson2JsonRedisSerializer(objectMapper);
-    }
-
-
-    /**
-     * Customized {@link ObjectMapper} to add mix-in for class that doesn't have default
-     * constructors
-     *
-     * @return the {@link ObjectMapper} to use
-     */
-    ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModules(SecurityJackson2Modules.getModules(this.loader));
-        mapper.registerModule(new AuthenticationJasksonModue());
-        //use set property with NoArgsConstructor
-        //@see org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
-        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-        return mapper;
     }
 
     @Autowired(required = false)
@@ -67,4 +50,16 @@ public class SessionSerializerConfig implements BeanClassLoaderAware {
     }
 
 
+    @Configuration
+    class DefaultSpringSessionRedisSerializerObjectMapperConfigure implements SpringSessionRedisSerializerObjectMapperConfigure {
+        @Override
+        public void configureObjectMapper(ObjectMapper objectMapper) {
+            objectMapper.registerModules(SecurityJackson2Modules.getModules(SessionSerializerConfig.this.loader));
+            objectMapper.registerModule(new AuthenticationJasksonModue());
+            //use set property with NoArgsConstructor
+            //@see org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
+            objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+        }
+    }
 }
