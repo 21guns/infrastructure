@@ -22,8 +22,8 @@ public class SessionSerializerConfig implements BeanClassLoaderAware {
     private ClassLoader loader;
 
     @Bean
-    public RedisSerializer<Object> springSessionDefaultRedisSerializer(ObjectMapper objectMapper) {
-//        ObjectMapper objectMapper = objectMapper();
+    public RedisSerializer<Object> springSessionDefaultRedisSerializer(ObjectMapper mapper) {
+        ObjectMapper objectMapper = mapper.copy();
         for (SpringSessionRedisSerializerObjectMapperConfigure configurer : configurers) {
             configurer.configureObjectMapper(objectMapper);
         }
