@@ -40,8 +40,8 @@ class ApiExceptionHandlerAdvice {
      */
     @ExceptionHandler(value = {NoSuchElementException.class})
     @ResponseBody
-    public Result dataNotFound(Exception exception) {
-        LOGGER.error("dataNotFound", exception);
+    public Result dataNotFound(Exception exception,  WebRequest request) {
+        LOGGER.error("url ["+request.getDescription(false)+"] data Not Found", exception);
         return Result.fail("0000002", "输入数据无效");
     }
 
@@ -52,26 +52,26 @@ class ApiExceptionHandlerAdvice {
      */
     @ExceptionHandler(value = {NullPointerException.class})
     @ResponseBody
-    public Result nullPointerException(Exception exception) {
-        LOGGER.error("nullPointerException", exception);
+    public Result nullPointerException(Exception exception, WebRequest request) {
+        LOGGER.error("url ["+request.getDescription(false)+"] has null Pointer Exception", exception);
         return Result.fail(firstThrowableAsString(exception));
     }
 
     /**
-     * 处理validation 注解校验信息
+     * 处理javax.validation中的各类注解校验信息
      */
     @ExceptionHandler(value = {BindException.class })
     @ResponseBody
-    public Result exceptionBind(BindException exception, BindingResult bindingResult) {
-        return validation(bindingResult.getFieldErrors());
+    public Result exceptionBind(BindException exception, BindingResult bindingResult, WebRequest request) {
+        return validation(bindingResult.getFieldErrors(), request);
     }
     /**
      * 处理validation 注解校验信息
      */
     @ExceptionHandler(value = {MethodArgumentNotValidException.class })
     @ResponseBody
-    public Result exceptionValid(MethodArgumentNotValidException valiException) {
-        return validation(valiException.getBindingResult().getFieldErrors());
+    public Result exceptionValid(MethodArgumentNotValidException valiException, WebRequest request) {
+        return validation(valiException.getBindingResult().getFieldErrors(), request);
     }
 
     /**
@@ -80,10 +80,10 @@ class ApiExceptionHandlerAdvice {
      * @param fieldErrors
      * @return
      */
-    protected Result validation(List<FieldError> fieldErrors) {
+    protected Result validation(List<FieldError> fieldErrors, WebRequest request) {
         for (FieldError fieldError : fieldErrors) {
             String message = fieldError.getDefaultMessage();
-            LOGGER.error("字段[{}] [{}]", fieldError.getField(), message);
+            LOGGER.error("url [{}] validation field [{}] [{}]", request == null ?"":request.getDescription(false), fieldError.getField(), message);
             if (!message.contains(":")) {
                 return Result.fail(message);
             }
@@ -111,7 +111,7 @@ class ApiExceptionHandlerAdvice {
         resultData.setCode(Result.Code.TYPE_VIOLATION.getCode());
         resultData.setMessage(Result.Code.TYPE_VIOLATION.getText() + ":参数需要[" + exception.getRequiredType().getSimpleName() + "]类型，但传入值为{" + exception.getValue() + "}");
 
-        LOGGER.error("type mismatch : {} ", resultData.getMessage());
+        LOGGER.error("url [{}] type mismatch : {} ", request.getDescription(false), resultData.getMessage());
         return resultData;
     }
 
@@ -128,7 +128,7 @@ class ApiExceptionHandlerAdvice {
         Result resultData = Result.fail();
         resultData.setCode(Result.Code.MISS_PARAMETER.getCode());
         resultData.setMessage(exception.getMessage());
-        LOGGER.error("missing servlet request parameter : {} ",resultData.getMessage());
+        LOGGER.error("url [{}] missing servlet request parameter : {} ", request.getDescription(false), resultData.getMessage());
         return resultData;
     }
 
@@ -138,7 +138,7 @@ class ApiExceptionHandlerAdvice {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result exception(Exception exception, WebRequest request) {
-        LOGGER.error("exception", exception);
+        LOGGER.error("url ["+request.getDescription(false)+"] has exception", exception);
         if (exception instanceof IllegalInputArgumentException) {
             return Result.fail(exception.getMessage(), ((IllegalInputArgumentException) exception).getCode());
         } else {
