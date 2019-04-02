@@ -30,8 +30,7 @@ import java.util.Objects;
  */
 @Configuration
 @EnableWebSecurity
-@Order(101)
-
+@Order(110)
 public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${com.guns21.security.permit.matcher:ant}")
