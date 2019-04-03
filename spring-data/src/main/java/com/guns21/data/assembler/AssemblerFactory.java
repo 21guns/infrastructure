@@ -41,6 +41,36 @@ public class AssemblerFactory {
         return Optional.of(toAnother(source, targetClass));
     }
 
+    /**
+     *
+     * @param source 原对象
+     * @param target 目标对象
+     * @param <T>
+     * @return
+     */
+    public static <T> T to(Object source, T target) {
+        if (Objects.isNull(source) || Objects.isNull(target)) {
+            return null;
+        }
+        copyProperties(source, target);
+        return target;
+    }
+
+    /**
+     *
+     * @param source 原对象
+     * @param targetClass 目标类，需要有无参构造方法
+     * @param <T>
+     * @return
+     */
+    public static <T> Optional<T> toOptional(Object source, T target) {
+        if (Objects.isNull(source) || Objects.isNull(target)) {
+            return Optional.empty();
+        }
+        copyProperties(source, target);
+        return Optional.of(target);
+    }
+
     private static <T> T toAnother(Object source, Class<T> targetClass) {
         T t = null;
         try {
