@@ -5,6 +5,7 @@ apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-
 
 dependencies {
     compile project(":result")
+    compile project(":common")
     compile libraries.commonslang3
     compile 'org.springframework:spring-beans'
     compile 'org.springframework:spring-context'

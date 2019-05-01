@@ -1,11 +1,11 @@
 package com.guns21.data.assembler;
 
+import com.guns21.common.util.ObjectUtils;
 import org.springframework.cglib.beans.BeanCopier;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -69,6 +69,25 @@ public class AssemblerFactory {
         }
         copyProperties(source, target);
         return Optional.of(target);
+    }
+
+    /**
+     * 转换list中对象到指定类，会过滤掉null对象
+     *
+     * @param list 源list对象
+     * @param targetClass 目标类
+     * @param <T>
+     * @param <S>
+     * @return
+     */
+    public static <T,S> List<T> toList(List<S> list, Class<T> targetClass ) {
+        if (ObjectUtils.nonEmpty(list)) {
+            return list.stream()
+                    .filter(s -> Objects.nonNull(s))
+                    .map(source -> to(source, targetClass))
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 
     private static <T> T toAnother(Object source, Class<T> targetClass) {
