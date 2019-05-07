@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -40,7 +41,7 @@ public class JsonResponseConfig {
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(ObjectMapper objectMapper) throws IllegalAccessException {
         MappingJackson2HttpMessageConverter jsonConverter = new JsonResponseAwareJsonMessageConverter(objectMapper);
 
-        objectMapper.registerModule(new JavaTimeModule());
+//        objectMapper.registerModule(new JavaTimeModule());
         return jsonConverter;
     }
 
@@ -51,8 +52,8 @@ public class JsonResponseConfig {
                 .featuresToDisable(MapperFeature.DEFAULT_VIEW_INCLUSION)
                 .featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                //java 8 localDate
-                .modules(new JavaTimeModule())
+                //java 8 localDate,jdk8
+                .modules(new JavaTimeModule(),new Jdk8Module())
                 .deserializerByType(LocalDateTime.class, localDateTimeDeserializer() )
                 .deserializerByType(LocalDate.class, localDateDeserializer() )
                 .deserializerByType(LocalTime.class, localTimeDeserializer() )
