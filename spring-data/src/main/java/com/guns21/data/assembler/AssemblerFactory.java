@@ -44,6 +44,19 @@ public class AssemblerFactory {
     /**
      *
      * @param source 原对象
+     * @param targetClass 目标类，需要有无参构造方法
+     * @return
+     */
+    public static <T,S> Optional<T> toOptional(Optional<S> source, Class<T> targetClass) {
+        if (Objects.isNull(source) ) {
+            return Optional.empty();
+        }
+        return source.map(s ->  toAnother(s, targetClass));
+    }
+
+    /**
+     *
+     * @param source 原对象
      * @param target 目标对象
      * @param <T>
      * @return
@@ -59,7 +72,7 @@ public class AssemblerFactory {
     /**
      *
      * @param source 原对象
-     * @param targetClass 目标类，需要有无参构造方法
+     * @param target 目标对象
      * @param <T>
      * @return
      */
