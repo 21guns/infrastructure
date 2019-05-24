@@ -24,10 +24,12 @@ public class JsonResponseRequestMappingHandlerMapping extends RequestMappingHand
         if (Objects.nonNull(objectMapper)) {
             JsonResponse annotation = method.getAnnotation(JsonResponse.class);
             if (Objects.nonNull(annotation)) {
+                ObjectMapper copy = objectMapper.copy();
                 for (JsonMixin jsonMixin : annotation.mixins()) {
-                    JaskonMixinCache.put(method.toString(),objectMapper.copy().addMixIn(jsonMixin.target(), jsonMixin.mixin()));
-                    log.info("Add mixin for mapping {} onto {} ", mapping, method);
+                    copy.addMixIn(jsonMixin.target(), jsonMixin.mixin());
                 }
+                log.info("Add mixin for mapping {} onto {} ", mapping, method);
+                JaskonMixinCache.put(method.toString(),copy);
             }
         }
         super.registerHandlerMethod(handler, method, mapping);
