@@ -30,7 +30,7 @@ public class HttpAuthenticationSuccessHandler implements AuthenticationSuccessHa
 
             UserInfo loginUserInfo = new UserInfo(userRoleDetails.getUserId(),
                     userRoleDetails.getUsername(), userRoleDetails.getNickname(), userRoleDetails.getRoles());
-            request.getSession().setAttribute(LoginConstant.LOGIN_USER, loginUserInfo);
+            request.getSession(false).setAttribute(LoginConstant.LOGIN_USER, loginUserInfo);
 
             ResponseUtils.writeResponse(response,
                     Result.success(messageSourceAccessor.getMessage("com.guns21.security.message.login.success","登录成功")
