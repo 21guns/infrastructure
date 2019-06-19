@@ -15,6 +15,8 @@ import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +26,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -61,7 +62,12 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object)
             throws IllegalArgumentException {
-        Collection<ConfigAttribute> configAttributes = new ArrayList<>();
+
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            throw new AuthenticationCredentialsNotFoundException(
+                    "An Authentication object was not found in the SecurityContext");
+        }
+
         HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
         List<String> roles =  Collections.EMPTY_LIST;
         String requestURI = request.getRequestURI();
