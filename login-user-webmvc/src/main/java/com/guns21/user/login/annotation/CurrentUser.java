@@ -18,4 +18,10 @@ public @interface CurrentUser {
      */
     String value() default LoginConstant.LOGIN_USER;
 
+    /**
+     * 当为true是，当前用户为空，抛出异常
+     * @return
+     */
+    boolean required() default true;
+
 }

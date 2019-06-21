@@ -2,6 +2,7 @@ package com.guns21.web.advice;
 
 
 import com.google.common.base.Throwables;
+import com.guns21.common.exception.CurrentUserIsNullException;
 import com.guns21.domain.result.light.Result;
 import com.guns21.support.exception.IllegalInputArgumentException;
 import org.apache.commons.lang3.StringUtils;
@@ -130,6 +131,13 @@ class ApiExceptionHandlerAdvice {
         resultData.setMessage(exception.getMessage());
         LOGGER.error("url [{}] missing servlet request parameter : {} ", request.getDescription(false), resultData.getMessage());
         return resultData;
+    }
+
+    @ExceptionHandler(value = CurrentUserIsNullException.class)
+    @ResponseBody
+    public Result currrentUserIsNull(CurrentUserIsNullException exception, WebRequest request) {
+        LOGGER.error("url ["+request.getDescription(false)+"] Current user is null");
+        return Result.fail401("请登录.");
     }
 
     /**

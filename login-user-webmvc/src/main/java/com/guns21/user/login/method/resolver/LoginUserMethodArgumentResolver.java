@@ -1,5 +1,6 @@
 package com.guns21.user.login.method.resolver;
 
+import com.guns21.common.exception.CurrentUserIsNullException;
 import com.guns21.user.login.annotation.CurrentUser;
 import com.guns21.user.login.constant.LoginConstant;
 import org.springframework.core.MethodParameter;
@@ -11,6 +12,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 public class LoginUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -19,16 +21,19 @@ public class LoginUserMethodArgumentResolver implements HandlerMethodArgumentRes
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        if (parameter.hasParameterAnnotation(CurrentUser.class)) {
-            return true;
-        }
-        return false;
+        return parameter.hasParameterAnnotation(CurrentUser.class);
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        return request.getSession(false) == null? null:request.getSession(false).getAttribute(LoginConstant.LOGIN_USER);
+        CurrentUser methodAnnotation = parameter.getParameterAnnotation(CurrentUser.class);
+        Object currentUser = request.getSession(false) == null ? null : request.getSession(false).getAttribute(LoginConstant.LOGIN_USER);
+        if (methodAnnotation.required() && Objects.isNull(currentUser)) {
+//            request.getSession(false).invalidate();
+          throw new CurrentUserIsNullException();
+        }
+        return currentUser;
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        return authentication.getPrincipal();
     }
