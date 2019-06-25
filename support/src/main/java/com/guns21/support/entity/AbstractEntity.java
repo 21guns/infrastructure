@@ -1,10 +1,9 @@
 package com.guns21.support.entity;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
 /**
@@ -12,35 +11,34 @@ import java.time.LocalDateTime;
  *
  * @author jliu
  */
-@Data
-@MappedSuperclass
-public abstract class AbstractEntity extends BaseIDEntity {
+@Setter
+@Getter
+@EqualsAndHashCode(callSuper = true)
+public abstract class AbstractEntity<ID> extends BaseIDEntity<ID> {
 
     /**
      * 创建时间
      */
-    private LocalDateTime gmtCreate;
+    protected LocalDateTime gmtCreated;
 
     /**
      * 更新时间
      */
-    private LocalDateTime gmtModified;
+    protected LocalDateTime gmtModified;
 
     /**
      *
      */
     @Override
-    @PrePersist
-    public void prePersist() {
-        super.prePersist();
-        setGmtCreate(LocalDateTime.now());
+    public void preCreate() {
+        super.preCreate();
+        setGmtCreated(LocalDateTime.now());
         setGmtModified(LocalDateTime.now());
     }
 
     /**
      *
      */
-    @PreUpdate
     public void preUpdate() {
         setGmtModified(LocalDateTime.now());
     }
