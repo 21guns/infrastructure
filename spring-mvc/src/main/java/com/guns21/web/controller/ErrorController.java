@@ -1,6 +1,6 @@
 package com.guns21.web.controller;
 
-import com.guns21.data.domain.result.MessageResult;
+import com.guns21.domain.result.light.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -26,7 +26,7 @@ public class ErrorController  {
     private ErrorAttributes errorAttributes;
 
     @RequestMapping(value = "/error", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
-    public MessageResult error(HttpServletRequest request) {
+    public Result error(HttpServletRequest request) {
         WebRequest webRequest = new ServletWebRequest(request);
         Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(webRequest, false);
         Integer status=(Integer)errorAttributes.get("status");
@@ -34,6 +34,6 @@ public class ErrorController  {
         String messageFound = (String)errorAttributes.get("message");
         String message = MessageFormat.format("url {0} error messages {1}", path, messageFound);
         log.error(message);
-        return MessageResult.fail(String.valueOf(status), messageFound);
+        return Result.fail(String.valueOf(status), messageFound);
     }
 }

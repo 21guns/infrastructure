@@ -1,9 +1,9 @@
-package com.guns21.support.exception;
+package com.guns21.common.exception;
 
 /**
  * Created by jliu on 2016/12/7.
  */
-public class IllegalInputArgumentException extends RuntimeException {
+public class IllegalInputArgumentException extends CommonException {
 
     private String code;
 

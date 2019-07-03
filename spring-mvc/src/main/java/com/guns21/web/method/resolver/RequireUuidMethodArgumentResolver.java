@@ -1,6 +1,6 @@
 package com.guns21.web.method.resolver;
 
-import com.guns21.support.exception.IllegalInputArgumentException;
+import com.guns21.common.exception.IllegalInputArgumentException;
 import com.guns21.web.bind.annotation.RequireUuid;
 import com.guns21.web.constant.SpringConstant;
 import org.springframework.core.MethodParameter;

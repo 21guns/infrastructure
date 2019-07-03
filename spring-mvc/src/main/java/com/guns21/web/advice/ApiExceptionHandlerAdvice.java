@@ -3,8 +3,8 @@ package com.guns21.web.advice;
 
 import com.google.common.base.Throwables;
 import com.guns21.common.exception.CurrentUserIsNullException;
+import com.guns21.common.exception.IllegalInputArgumentException;
 import com.guns21.domain.result.light.Result;
-import com.guns21.support.exception.IllegalInputArgumentException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
