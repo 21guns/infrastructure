@@ -21,6 +21,7 @@ public class UserRoleDetails extends User {
     private String userId;
     private String nickname;
     private String organizationId;
+    private Boolean wxAccountBound;
     private List<Role> roles;
 
 
