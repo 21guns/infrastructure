@@ -13,15 +13,15 @@ import java.util.List;
 @Component
 public class AuthExtValidator {
     private List<AuthExtValidation> list = new ArrayList<>();
-    private StringBuilder errorBuilder = new StringBuilder();
+    private StringBuffer errorBuffer = new StringBuffer();
 
     public boolean run(HttpServletRequest request) {
         boolean result = true;
-        errorBuilder.delete(0, errorBuilder.length());
+        errorBuffer.delete(0, errorBuffer.length());
 
         for (AuthExtValidation validation : list) {
             if (validation != null && !validation.validate(request)) {
-                errorBuilder.append(validation.getValidateError());
+                errorBuffer.append(validation.getValidateError());
                 result = false;
             }
         }
@@ -34,6 +34,6 @@ public class AuthExtValidator {
     }
 
     public String getError() {
-        return this.errorBuilder.toString();
+        return this.errorBuffer.toString();
     }
 }
