@@ -7,10 +7,9 @@ import com.guns21.domain.result.ResultType;
 import com.guns21.http.HttpStatus;
 import org.springframework.data.domain.Page;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by ljj on 17/6/7.
@@ -116,6 +115,22 @@ public class MessageResult<T> extends AbstractResult<T> {
      */
     private static <T,R> MessageResult<R> success(String code, String message, ResultType resultType, T object) {
         return getInstance(Boolean.TRUE, message, code, resultType, object);
+    }
+
+    public static <T> MessageResult<T> ofOptional(Optional<T> optionalObject, String code, String errorMessage) {
+        return optionalObject.<MessageResult<T>>map(MessageResult::success).orElse(fail(code, errorMessage));
+    }
+
+    public static <T> MessageResult<T> ofOptional(Optional<T> optionalObject, String errorMessage) {
+        return ofOptional(optionalObject, String.valueOf(HttpStatus.NOT_FOUND), errorMessage);
+    }
+
+    public static <T> MessageResult<T> ofOptional(Optional<T> optionalObject, Class<T> missingObjectClass) {
+        return ofOptional(optionalObject, String.format("%s not found", missingObjectClass.getSimpleName()));
+    }
+
+    public static <T> MessageResult<T> ofOptional(Optional<T> optionalObject) {
+        return ofOptional(optionalObject, "Resource not found");
     }
 
     /**
