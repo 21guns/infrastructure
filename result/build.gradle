@@ -4,5 +4,6 @@ group 'com.guns21'
 apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/java.gradle'
 
 dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.26'
     compileOnly 'org.projectlombok:lombok:1.16.22'
 }

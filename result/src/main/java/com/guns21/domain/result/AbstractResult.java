@@ -1,10 +1,16 @@
 package com.guns21.domain.result;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Created by jliu on 16/7/19.
  */
+@Slf4j
 @Data
 public class AbstractResult<T> {
 
@@ -35,6 +41,32 @@ public class AbstractResult<T> {
 
         public String getText() {
             return text;
+        }
+    }
+
+    public <E> Stream<E> stream() {
+        if (success) {
+            if (data instanceof Collection) {
+                return ((Collection) data).stream();
+            } else {
+                return Stream.of((E) data);
+            }
+        } else {
+            log.warn("Provide failed message result as empty stream, code: {}, message: {}, data: {}", code, message, data);
+        }
+        return Stream.empty();
+    }
+
+    public <E> Stream<E> stream(Class<E> clazz) {
+        return stream();
+    }
+
+    public Optional<T> optional() {
+        if (success) {
+            return Optional.ofNullable(data);
+        } else {
+            log.warn("Provide failed message result as empty optional, code: {}, message: {}, data: {}", code, message, data);
+            return Optional.empty();
         }
     }
 }
