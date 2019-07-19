@@ -83,6 +83,7 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
         userRoleDetails.setNickname(authUser.getNickName());
         userRoleDetails.setOrganizationId(authUser.getOrganizationId());
         userRoleDetails.setWxAccountBound(authUser.getWxAccountBound());
+        userRoleDetails.setWxOpenId(authUser.getWxOpenId());
         userRoleDetails.setRoles(roles);
 
         Authentication auth = new UsernamePasswordAuthenticationToken(userRoleDetails, userRoleDetails.getPassword(), userRoleDetails.getAuthorities());

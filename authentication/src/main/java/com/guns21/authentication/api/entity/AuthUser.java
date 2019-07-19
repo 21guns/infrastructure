@@ -18,6 +18,7 @@ public class AuthUser {
     private String passwordSalt;
     private String organizationId;
     private Boolean wxAccountBound;
+    private String wxOpenId;
     private List<Role> roles;
 
 }
