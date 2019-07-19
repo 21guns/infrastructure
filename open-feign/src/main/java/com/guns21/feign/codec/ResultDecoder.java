@@ -1,5 +1,6 @@
 package com.guns21.feign.codec;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guns21.data.domain.result.MessageResult;
 import feign.Response;
 import feign.jackson.JacksonDecoder;
@@ -15,6 +16,10 @@ import java.util.stream.Stream;
  * Created by Liu Xiang on 2019-07-19.
  */
 public class ResultDecoder extends JacksonDecoder {
+    public ResultDecoder(ObjectMapper objectMapper) {
+        super(objectMapper);
+    }
+
     @Override
     public Object decode(Response response, Type type) throws IOException {
         Type shadeType = type;
