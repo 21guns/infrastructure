@@ -4,8 +4,11 @@ group 'com.guns21'
 apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-boot.gradle'
 dependencies {
 
+    compile project(":spring-data")
+
     compile 'javax.servlet:javax.servlet-api'
     compile 'org.slf4j:slf4j-api'
     compile 'org.springframework:spring-web'
     compile 'io.github.openfeign:feign-core:9.7.0'
+    compile 'io.github.openfeign:feign-jackson:9.7.0'
 }
