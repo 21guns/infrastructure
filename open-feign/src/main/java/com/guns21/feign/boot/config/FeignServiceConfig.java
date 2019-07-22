@@ -1,65 +1,56 @@
 package com.guns21.feign.boot.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guns21.feign.annotation.FeignService;
-import com.guns21.feign.codec.ResultDecoder;
-import com.guns21.feign.target.SpringSessionHeaderTokenTarget;
-import feign.Feign;
-import feign.jackson.JacksonEncoder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
+import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-
-import javax.annotation.PostConstruct;
-import java.util.Set;
 
 /**
  * Created by Liu Xiang on 2019-07-19.
  */
-@Configuration
 @Slf4j
+@Import(FeignServiceConfig.FeignServiceRegistrar.class)
+@Configuration
 public class FeignServiceConfig {
 
-    @Value("${com.guns21.feign.service-package:com.ktjr.ddhc.**.service.feign}")
-    private String servicePackage;
+    private static final String FEIGN_SERVICE_PACKAGE_NAMES_CONFIG_KEY = "com.guns21.open-feign.feign-service-packages";
+    private static final String DEFAULT_FEIGN_SERVICE_PACKAGE_NAMES = "com.ktjr.ddhc.**.service.feign";
 
-    @Autowired
-    private Environment env;
+    public static class FeignServiceRegistrar implements ImportBeanDefinitionRegistrar, EnvironmentAware {
 
-    @PostConstruct
-    public void registerFeignServiceBeans(GenericApplicationContext context, ObjectMapper objectMapper) {
+        private Environment environment;
 
-        final ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+        @Override
+        public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+            FeignServiceScanner scanner = new FeignServiceScanner(registry);
+            scanner.addIncludeFilter(new AnnotationTypeFilter(FeignService.class));
+            scanner.doScan(getBasePackages());
+        }
 
-        provider.addIncludeFilter(new AnnotationTypeFilter(FeignService.class));
-
-        // Aet matching classes defined in the package
-        final Set<BeanDefinition> serviceInterfaces = provider.findCandidateComponents(servicePackage);
-
-        serviceInterfaces.forEach(beanDefinition -> {
-            try {
-                Class clazz = Class.forName(beanDefinition.getBeanClassName());
-                FeignService annotation = (FeignService) clazz.getAnnotation(FeignService.class);
-                String urlPrefix = annotation.value();
-                if (urlPrefix.matches("^\\$\\{.+\\}$")) {
-                    urlPrefix = env.getProperty(urlPrefix.replaceAll("^\\$\\{|\\}$", ""));
-                }
-                String finalUrlPrefix = urlPrefix;
-                context.registerBean(clazz, () -> Feign.builder()
-                        .encoder(new JacksonEncoder(objectMapper))
-                        .decoder(new ResultDecoder(objectMapper))
-                        .target(SpringSessionHeaderTokenTarget.newTarget(clazz, finalUrlPrefix)));
-
-            } catch (ClassNotFoundException e) {
-                log.error("{}", e);
+        private String[] getBasePackages() {
+            if (environment == null) {
+                return DEFAULT_FEIGN_SERVICE_PACKAGE_NAMES.split(",");
             }
-        });
 
+            String pkgName = environment.getProperty(FEIGN_SERVICE_PACKAGE_NAMES_CONFIG_KEY);
+
+            if (StringUtils.isBlank(pkgName)) {
+                return DEFAULT_FEIGN_SERVICE_PACKAGE_NAMES.split(",");
+            }
+
+            return pkgName.split(",");
+        }
+
+        @Override
+        public void setEnvironment(Environment environment) {
+            this.environment = environment;
+        }
     }
 }

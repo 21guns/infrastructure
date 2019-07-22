@@ -1,7 +1,5 @@
 package com.guns21.feign.annotation;
 
-import org.springframework.core.annotation.AliasFor;
-
 import java.lang.annotation.*;
 
 /**
@@ -12,8 +10,8 @@ import java.lang.annotation.*;
 @Documented
 public @interface FeignService {
 
-    @AliasFor("urlPrefix")
+    /**
+     * Set base URL
+     */
     String value();
-
-    String urlPrefix();
 }
