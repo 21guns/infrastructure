@@ -21,12 +21,12 @@ public class AccessResource implements Serializable {
     /**
      * 资源 使用ant表达方式
      */
-    private String resource;
+    private String permissionUrl;
 
     /**
      * 访问方式
      */
-    private String access;
+    private String requestMethod;
 
     /**
      * 资源对应的角色名称
@@ -42,6 +42,6 @@ public class AccessResource implements Serializable {
     }
 
     public static AccessResource getAllWithRole(String roleName) {
-        return AccessResource.builder().resource(FULL_RESOURCE).access(FULL_ACCESS).roleName(roleName).build();
+        return AccessResource.builder().permissionUrl(FULL_RESOURCE).requestMethod(FULL_ACCESS).roleName(roleName).build();
     }
 }
