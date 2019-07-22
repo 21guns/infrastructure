@@ -44,6 +44,18 @@ public class AbstractResult<T> {
         }
     }
 
+    /**
+     * Usage Example:
+     *
+     *   MessageResult<List<CustomerDTO>> result = service.getCustomer();
+     *   Stream<CustomerDTO> stream = result.stream();
+     *
+     *   result.<CustomerDTO>stream().map( ... );
+     *
+     *   result.stream(CustomerDTO.class).map( ... );
+     * @param <E> Type of elements of in the returned stream.
+     * @return If returned data type is list, return it as a stream.
+     */
     public <E> Stream<E> stream() {
         if (success) {
             if (data instanceof Collection) {
