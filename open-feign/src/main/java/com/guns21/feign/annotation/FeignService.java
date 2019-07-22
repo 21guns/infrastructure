@@ -14,4 +14,6 @@ public @interface FeignService {
 
     @AliasFor("urlPrefix")
     String value();
+
+    String urlPrefix();
 }
