@@ -9,9 +9,7 @@ import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -26,7 +24,7 @@ public class ResultDecoder extends JacksonDecoder {
     public Object decode(Response response, Type type) throws IOException {
         Type shadeType = type;
 
-        Boolean returnOptionalOrStream = Stream.of(Optional.class, Stream.class).anyMatch(c -> {
+        boolean returnOptionalOrStream = Stream.of(Optional.class, Stream.class, List.class).anyMatch(c -> {
             if (type instanceof ParameterizedType) {
                 return Objects.equals(c, ((ParameterizedType) type).getRawType());
             } else {
@@ -37,7 +35,7 @@ public class ResultDecoder extends JacksonDecoder {
         if (returnOptionalOrStream) {
             if (type instanceof ParameterizedType) {
                 ParameterizedType pt = (ParameterizedType) type;
-                if (Objects.equals(Stream.class, pt.getRawType())) {
+                if (Objects.equals(Stream.class, pt.getRawType()) || Objects.equals(List.class, pt.getRawType())) {
                     shadeType = ParameterizedTypeImpl.make(MessageResult.class,
                             new Type[]{ ParameterizedTypeImpl.make(ArrayList.class, pt.getActualTypeArguments(), null)}, null);
                 } else {
@@ -57,6 +55,18 @@ public class ResultDecoder extends JacksonDecoder {
 
             if (type.getTypeName().startsWith(Stream.class.getTypeName())) {
                 return messageResult.stream();
+            }
+
+            if (type.getTypeName().startsWith(List.class.getTypeName())) {
+                if (messageResult.getSuccess()) {
+                    if (Objects.equals(messageResult.getType(), "list")) {
+                        return messageResult.getData();
+                    } else {
+                        return Arrays.asList(messageResult.getData());
+                    }
+                } else {
+                    return Collections.emptyList();
+                }
             }
         }
 
