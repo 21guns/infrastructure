@@ -38,6 +38,7 @@ public class FeignServiceFactoryBean<T> implements FactoryBean<T>, ApplicationCo
         }
         ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper.class);
         return Feign.builder()
+                .decode404()
                 .encoder(new JacksonEncoder(objectMapper))
                 .decoder(new ResultDecoder(objectMapper))
                 .target(SpringSessionHeaderTokenTarget.newTarget(this.feignServiceInterface, urlPrefix));

@@ -1,9 +1,11 @@
 package com.guns21.feign.codec;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.CharStreams;
 import com.guns21.data.domain.result.MessageResult;
 import feign.Response;
 import feign.jackson.JacksonDecoder;
+import lombok.extern.slf4j.Slf4j;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.io.IOException;
@@ -15,6 +17,7 @@ import java.util.stream.Stream;
 /**
  * Created by Liu Xiang on 2019-07-19.
  */
+@Slf4j
 public class ResultDecoder extends JacksonDecoder {
     public ResultDecoder(ObjectMapper objectMapper) {
         super(objectMapper);
@@ -46,6 +49,23 @@ public class ResultDecoder extends JacksonDecoder {
             }
         }
 
+        if (response.status() == 404) {
+
+            log.warn("Detect 404 response in ResultDecoder, response body: {}", getResponseBodyAsString(response.body()));
+
+            if (type.getTypeName().startsWith(Optional.class.getTypeName())) {
+                return Optional.empty();
+            }
+
+            if (type.getTypeName().startsWith(Stream.class.getTypeName())) {
+                return Stream.empty();
+            }
+
+            if (type.getTypeName().startsWith(List.class.getTypeName())) {
+                return Collections.emptyList();
+            }
+        }
+
         Object result = super.decode(response, shadeType);
         if (result instanceof MessageResult) {
             MessageResult messageResult = (MessageResult) result;
@@ -71,5 +91,16 @@ public class ResultDecoder extends JacksonDecoder {
         }
 
         return result;
+    }
+
+    private String getResponseBodyAsString(Response.Body nullableBody) {
+        return Optional.ofNullable(nullableBody).map(body -> {
+            try {
+                return CharStreams.toString(body.asReader());
+            } catch (IOException e) {
+                log.error("{}", e);
+                return "";
+            }
+        }).orElse("");
     }
 }
