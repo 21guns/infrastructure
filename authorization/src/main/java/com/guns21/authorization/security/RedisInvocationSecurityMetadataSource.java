@@ -51,6 +51,8 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
     private com.guns21.authentication.boot.config.SecurityConfig securityConfig;
 
     private static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
+
+    private static final String SUPER_ADMIN = "SUPER_ADMIN";
     /**
      * 获取访问权限的角色集合
      * 返回空集合是表示白名单，任何人都有权限
@@ -102,11 +104,11 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
                     for (int i = 0; i < accessResources.size(); i++) {
                         AccessResource accessResource = accessResources.get(i);
                         //访问资源
-                        if (AccessResource.FULL_RESOURCE.equals(accessResource.getResource())
-                                || resourceList.contains(accessResource.getResource()) ) {
+                        if (AccessResource.FULL_RESOURCE.equals(accessResource.getPermissionUrl())
+                                || resourceList.contains(accessResource.getPermissionUrl()) ) {
                             //比较访问方式
-                            if (AccessResource.FULL_ACCESS.equals(accessResource.getAccess())
-                                    || matchingCondition.getMethodsCondition().getMethods().contains(RequestMethod.valueOf(accessResource.getAccess()))) {
+                            if (AccessResource.FULL_ACCESS.equals(accessResource.getRequestMethod())
+                                    || matchingCondition.getMethodsCondition().getMethods().contains(RequestMethod.valueOf(accessResource.getRequestMethod()))) {
                                 roles = accessResource.getRole();
                                 ops.put(key, roles);
                                 break;
@@ -130,11 +132,11 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
          * 2.返回非空集合是黑名单,匿名访问时是黑名单
          */
         if (null == roles || roles.size() == 0) {
-            LOGGER.warn("url {} hasn't roles", requestURI);
+            LOGGER.warn("url {} hasn't roles and return SUPER_ADMIN's role", requestURI);
             if (securityConfig.isAnonymous()) {
                 return Collections.singleton(new SecurityConfig(ROLE_ANONYMOUS));
             } else {
-                return Collections.EMPTY_LIST;
+                return Collections.singleton(new SecurityConfig(SUPER_ADMIN));
             }
         }
 

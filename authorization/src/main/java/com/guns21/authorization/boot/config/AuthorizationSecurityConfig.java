@@ -66,7 +66,7 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        if (securityConfig.isAnonymous()) {
+        if (!securityConfig.isAnonymous()) {
             httpSecurity.anonymous().disable();
         }
 

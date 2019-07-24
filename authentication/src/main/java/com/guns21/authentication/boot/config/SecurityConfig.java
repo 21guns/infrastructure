@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
-import java.util.Objects;
 
 @Configuration
 public class SecurityConfig {
@@ -21,7 +20,7 @@ public class SecurityConfig {
     private int maximumSessions;
 
     public boolean isAnonymous() {
-        return !anonymous;
+        return anonymous;
     }
 
     public int getMaximumSessions() {
