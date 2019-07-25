@@ -1,6 +1,7 @@
 package com.guns21.authorization.security;
 
 import com.guns21.domain.result.light.Result;
+import com.guns21.http.HttpStatus;
 import com.guns21.servlet.util.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -49,9 +50,14 @@ public class HttpAuthenticationEntryPoint implements AuthenticationEntryPoint {
                 ResponseUtils.writeResponse(response, Result.fail401(messageSourceAccessor.getMessage("com.guns21.security.message.login.commence", "请登录")));
             }
 
+        } else if (authException instanceof UrlNotFoundException) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            ResponseUtils.writeResponse(response, Result.fail(String.valueOf(HttpStatus.NOT_FOUND.value()),
+                    HttpStatus.NOT_FOUND.getReasonPhrase() ));
         } else {
             ResponseUtils.writeResponse(response, Result.fail401(messageSourceAccessor.getMessage("com.guns21.security.message.login.commence", "请登录")));
         }
+
     }
 
 }
