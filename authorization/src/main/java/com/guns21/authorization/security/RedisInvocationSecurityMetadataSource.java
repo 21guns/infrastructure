@@ -64,12 +64,6 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object)
             throws IllegalArgumentException {
-
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            throw new AuthenticationCredentialsNotFoundException(
-                    "An Authentication object was not found in the SecurityContext");
-        }
-
         HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
         List<String> roles =  Collections.EMPTY_LIST;
         String requestURI = request.getRequestURI();
@@ -86,6 +80,10 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
             }
         }
         if (Objects.nonNull(matchingCondition)) {
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                throw new AuthenticationCredentialsNotFoundException(
+                        "An Authentication object was not found in the SecurityContext");
+            }
 
             String key = matchingCondition.toString();
             //取redis中的数据
@@ -118,7 +116,7 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
                 }
             }
         } else {
-            LOGGER.warn("don't find [{}] for mapping url", requestURI);
+            LOGGER.error("Not find url [{}]:[{}]", method, requestURI);
         }
 //        String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
 //        String path1 = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
