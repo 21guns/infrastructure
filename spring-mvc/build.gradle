@@ -1,4 +1,4 @@
-version '1.1.1'
+version '1.1.2'
 group 'com.guns21'
 //apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/spring-boot.gradle'
 apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-boot.gradle'

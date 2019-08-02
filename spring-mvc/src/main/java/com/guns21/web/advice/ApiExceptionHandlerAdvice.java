@@ -13,6 +13,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -64,7 +65,7 @@ class ApiExceptionHandlerAdvice {
     @ExceptionHandler(value = {BindException.class })
     @ResponseBody
     public Result exceptionBind(BindException exception, BindingResult bindingResult, WebRequest request) {
-        return validation(bindingResult.getFieldErrors(), request);
+        return validation(bindingResult.getAllErrors(), request);
     }
     /**
      * 处理validation 注解校验信息
@@ -72,19 +73,24 @@ class ApiExceptionHandlerAdvice {
     @ExceptionHandler(value = {MethodArgumentNotValidException.class })
     @ResponseBody
     public Result exceptionValid(MethodArgumentNotValidException valiException, WebRequest request) {
-        return validation(valiException.getBindingResult().getFieldErrors(), request);
+        return validation(valiException.getBindingResult().getAllErrors(), request);
     }
 
     /**
      * 错误信息描述：错误码|错误描述
      *
-     * @param fieldErrors
+     * @param objectErrors
      * @return
      */
-    protected Result validation(List<FieldError> fieldErrors, WebRequest request) {
-        for (FieldError fieldError : fieldErrors) {
+    protected Result validation(List<ObjectError> objectErrors, WebRequest request) {
+        for (ObjectError fieldError : objectErrors) {
             String message = fieldError.getDefaultMessage();
-            LOGGER.error("url [{}] validation field [{}] [{}]", request == null ?"":request.getDescription(false), fieldError.getField(), message);
+            if (fieldError instanceof FieldError) {
+                LOGGER.error("url [{}] validation field [{}] [{}]", request == null ? "" : request.getDescription(false), ((FieldError) fieldError).getField(), message);
+            } else {
+                LOGGER.error("url [{}] validation objectName [{}] [{}]", request == null ? "" : request.getDescription(false), fieldError.getObjectName(), message);
+            }
+
             if (!message.contains(":")) {
                 return Result.fail(message);
             }
