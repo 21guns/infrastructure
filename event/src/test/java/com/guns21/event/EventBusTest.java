@@ -45,6 +45,10 @@ public class EventBusTest {
 
     public static class Listener {
         @EventListener
+         /*
+            开启异步支持
+          */
+        //@Async
         public void test(NotifyEvent event) {
             System.err.println("dds");
         }
