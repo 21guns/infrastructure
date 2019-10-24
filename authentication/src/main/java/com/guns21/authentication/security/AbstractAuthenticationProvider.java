@@ -17,9 +17,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -31,9 +34,13 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
     @Value("${com.guns21.security.password-pattern:#{null}}")
     protected String passwordPattern;
     @Autowired
-    protected UserAuthService userAuthService;
-    @Autowired
     protected MessageSourceAccessor messageSourceAccessor;
+
+    protected UserAuthService userAuthService;
+
+    public AbstractAuthenticationProvider(UserAuthService userAuthService) {
+        this.userAuthService = userAuthService;
+    }
 
     /**
      * 自定义用户认证
@@ -72,11 +79,16 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
         //生成认证对象
         List<Role> roles = userAuthService.getUserRoles(username);
 
-        List<GrantedAuthority> grantedAuthorities = null;
+        return buildAuthentication(buildUserDetails(authUser, roles));
+
+    }
+
+    protected UserDetails buildUserDetails( AuthUser authUser, List<Role> roles) {
+
+        List<GrantedAuthority> grantedAuthorities = Collections.emptyList();
         if (ObjectUtils.nonEmpty(roles)) {
             grantedAuthorities = roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
         }
-
         UserRoleDetails userRoleDetails = new UserRoleDetails(authUser.getUserName(), authUser.getPassword(), grantedAuthorities);
         userRoleDetails.setPasswordSalt(authUser.getPasswordSalt());
         userRoleDetails.setUserId(authUser.getId());
@@ -86,14 +98,7 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
         userRoleDetails.setWxOpenId(authUser.getWxOpenId());
         userRoleDetails.setRoles(roles);
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(userRoleDetails, userRoleDetails.getPassword(), userRoleDetails.getAuthorities());
-
-        return auth;
-    }
-
-    @Override
-    public boolean supports(Class<?> arg0) {
-        return true;
+        return userRoleDetails;
     }
 
     /**
@@ -104,4 +109,10 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
      */
     protected abstract void passwordValidate(AuthUser authUser, String password) throws AuthenticationException;
 
+    /**
+     * 构建 Authentication
+     * @param userDetails
+     * @return
+     */
+    protected abstract  Authentication buildAuthentication(UserDetails userDetails);
 }

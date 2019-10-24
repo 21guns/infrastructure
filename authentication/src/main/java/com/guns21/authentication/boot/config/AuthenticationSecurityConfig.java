@@ -1,5 +1,6 @@
 package com.guns21.authentication.boot.config;
 
+import com.guns21.authentication.api.service.UserAuthService;
 import com.guns21.authentication.ext.AuthExtValidator;
 import com.guns21.authentication.filter.AccessFilter;
 import com.guns21.authentication.security.HttpAuthenticationFailureHandler;
@@ -7,6 +8,7 @@ import com.guns21.authentication.security.HttpAuthenticationSuccessHandler;
 import com.guns21.authentication.security.HttpLogoutSuccessHandler;
 import com.guns21.authentication.security.PasswordEncryptAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +30,7 @@ import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
+import javax.annotation.Resource;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -35,7 +38,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.IOException;
 
 /**
  * 认证
@@ -54,17 +57,16 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     private String usernameParameter;
     @Value("${com.guns21.security.password-parameter:password}")
     private String passwordParameter;
-
     @Autowired
     private SecurityConfig securityConfig;
-
     @Autowired
     private HttpLogoutSuccessHandler httpLogoutSuccessHandler;
     @Autowired
     private HttpAuthenticationFailureHandler httpAuthenticationFailureHandler;
     @Autowired
     private RedisOperationsSessionRepository redisOperationsSessionRepository;
-
+    @Resource(name = "passwordAuthenticationProvider")
+    private AuthenticationProvider authenticationProvider;
     @Autowired
     private AuthExtValidator authExtValidator;
 
@@ -80,16 +82,16 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
         return new HttpAuthenticationSuccessHandler();
     }
 
-
     @Bean
     @ConditionalOnMissingBean(name = "passwordAuthenticationProvider")
-    public AuthenticationProvider passwordAuthenticationProvider() {
-        return new PasswordEncryptAuthenticationProvider();
+    public AuthenticationProvider passwordAuthenticationProvider(@Qualifier("passwordUserAuthService") UserAuthService userAuthService) {
+        return new PasswordEncryptAuthenticationProvider(userAuthService);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(passwordAuthenticationProvider());
+        auth.authenticationProvider(authenticationProvider);
+
     }
 
     @Bean

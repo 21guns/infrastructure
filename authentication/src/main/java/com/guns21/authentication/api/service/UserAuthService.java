@@ -17,7 +17,7 @@ import java.util.List;
 public interface UserAuthService {
 
     /**
-     * 登录时根据用户登录名称获取MyUser类型的用户信息（需要子类实现）
+     * 登录时根据用户登录名称获取AuthUser类型的用户信息（需要子类实现）
      *
      * @param username 用户名
      * @return
