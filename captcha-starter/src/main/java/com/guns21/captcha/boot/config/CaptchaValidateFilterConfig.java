@@ -12,14 +12,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +27,8 @@ import java.util.List;
 public class CaptchaValidateFilterConfig {
 
     private String[] validate = {"/login"};
+
+    private String captchaParameterName = "captcha";
 
     @Bean
     public BeforeLoginFilter beforeLoginFilter() {
@@ -54,6 +51,9 @@ public class CaptchaValidateFilterConfig {
         this.validate = validate;
     }
 
+    public void setCaptchaParameterName(String captchaParameterName) {
+        this.captchaParameterName = captchaParameterName;
+    }
 
     public class BeforeLoginFilter implements Filter {
 
@@ -79,7 +79,7 @@ public class CaptchaValidateFilterConfig {
                 filterChain.doFilter(request, response);
                 return;
             }
-            String qCaptcha = request.getParameter("captcha");
+            String qCaptcha = request.getParameter(captchaParameterName);
             if (StringUtils.hasText(qCaptcha)) {
                 String captcha = template.opsForValue().get(CaptchaServletConfig.KEY_PREFIX + qCaptcha);
                 if (StringUtils.hasText(captcha)) {
