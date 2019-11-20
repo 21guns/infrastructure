@@ -19,16 +19,22 @@ import com.guns21.jackjson.datatype.ser.StandrdLocalDateSerializer;
 import com.guns21.jackjson.datatype.ser.StandrdLocalDateTimeSerializer;
 import com.guns21.jackjson.datatype.ser.StandrdLocalTimeSerializer;
 import com.guns21.jackjson.http.converter.json.JsonResponseAwareJsonMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class JsonResponseConfig {
@@ -37,8 +43,16 @@ public class JsonResponseConfig {
     private static final DateTimeFormatter LOCAL_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter LOCAL_TIME = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
 
+    private List<JacksonObjectMapperBuilderConfigure> configurers = new ArrayList<JacksonObjectMapperBuilderConfigure>();
+
+    @Autowired(required = false)
+    public void setConfigurers(List<JacksonObjectMapperBuilderConfigure> configurers) {
+        if (!CollectionUtils.isEmpty(configurers)) {
+            this.configurers.addAll(configurers);
+        }
+    }
     @Bean
-    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(ObjectMapper objectMapper) throws IllegalAccessException {
+    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(@Qualifier("jacksonObjectMapper") ObjectMapper objectMapper) throws IllegalAccessException {
         MappingJackson2HttpMessageConverter jsonConverter = new JsonResponseAwareJsonMessageConverter(objectMapper);
 
 //        objectMapper.registerModule(new JavaTimeModule());
@@ -46,21 +60,27 @@ public class JsonResponseConfig {
     }
 
     @Bean
-    @ConditionalOnMissingBean(ObjectMapper.class)
-    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
-        return builder
+    @Primary
+    @ConditionalOnMissingBean(name = "jacksonObjectMapper")
+    public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
+        builder
                 .featuresToDisable(MapperFeature.DEFAULT_VIEW_INCLUSION)
                 .featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 //java 8 localDate,jdk8
-                .modules(new JavaTimeModule(),new Jdk8Module())
-                .deserializerByType(LocalDateTime.class, localDateTimeDeserializer() )
-                .deserializerByType(LocalDate.class, localDateDeserializer() )
-                .deserializerByType(LocalTime.class, localTimeDeserializer() )
-                .serializerByType(LocalDateTime.class, localDateTimeSerializer() )
-                .serializerByType(LocalDate.class, localDateSerializer() )
-                .serializerByType(LocalTime.class, localTimeSerializer() )
-                .build();
+                .modules(new JavaTimeModule(), new Jdk8Module())
+                .deserializerByType(LocalDateTime.class, localDateTimeDeserializer())
+                .deserializerByType(LocalDate.class, localDateDeserializer())
+                .deserializerByType(LocalTime.class, localTimeDeserializer())
+                .serializerByType(LocalDateTime.class, localDateTimeSerializer())
+                .serializerByType(LocalDate.class, localDateSerializer())
+                .serializerByType(LocalTime.class, localTimeSerializer());
+
+        for (JacksonObjectMapperBuilderConfigure configurer : configurers) {
+            configurer.configureObjectMapper(builder);
+        }
+
+        return builder.build();
     }
 
     @Bean

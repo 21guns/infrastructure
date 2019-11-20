@@ -7,6 +7,7 @@ import com.guns21.jackjson.annotation.JsonResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -16,8 +17,11 @@ import java.util.Objects;
 public class JsonResponseRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
     private  static final Logger log = LoggerFactory.getLogger(JsonResponseRequestMappingHandlerMapping.class);
 
-    @Autowired(required = false)
     private ObjectMapper objectMapper;
+
+    public JsonResponseRequestMappingHandlerMapping(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     protected void registerHandlerMethod(Object handler, Method method, RequestMappingInfo mapping) {

@@ -1,9 +1,10 @@
-version '1.2.1'
+version '1.2.2'
 group 'com.guns21'
 //apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/spring-boot.gradle'
 apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-boot.gradle'
 dependencies {
     compile 'javax.servlet:javax.servlet-api'
+    compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile 'org.springframework.data:spring-data-redis'
     compile 'org.springframework.security:spring-security-cas'
 }
