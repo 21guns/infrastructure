@@ -11,7 +11,7 @@ dependencies {
     compile 'org.springframework:spring-web'
     compile 'org.springframework:spring-webmvc'
     compile 'org.springframework.security:spring-security-core'
-    compile 'org.springframework.boot:spring-boot'
+    compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile libraries.fastjson
     compile libraries.guava
 }
