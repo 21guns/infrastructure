@@ -1,7 +1,9 @@
 package com.guns21.data.domain.result;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -9,6 +11,8 @@ import java.io.Serializable;
  * Created by ljj on 17/6/7.
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class PageData implements Serializable {
     /**
