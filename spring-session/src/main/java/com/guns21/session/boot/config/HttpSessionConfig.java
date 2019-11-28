@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.session.data.redis.RedisOperationsSessionRepository;
+import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
@@ -45,7 +45,7 @@ public class HttpSessionConfig {
         private Integer maxInactiveIntervalInSeconds;
 
         @Autowired
-        public void setRedisOperationsSessionRepository(RedisOperationsSessionRepository redisOperationsSessionRepository) {
+        public void setRedisOperationsSessionRepository(RedisIndexedSessionRepository redisOperationsSessionRepository) {
             redisOperationsSessionRepository.setDefaultMaxInactiveInterval(maxInactiveIntervalInSeconds);
         }
     }

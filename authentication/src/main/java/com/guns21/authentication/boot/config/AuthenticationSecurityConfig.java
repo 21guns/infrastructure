@@ -27,16 +27,11 @@ import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.session.FindByIndexNameSessionRepository;
-import org.springframework.session.data.redis.RedisOperationsSessionRepository;
+import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
 import javax.annotation.Resource;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -64,7 +59,7 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private HttpAuthenticationFailureHandler httpAuthenticationFailureHandler;
     @Autowired
-    private RedisOperationsSessionRepository redisOperationsSessionRepository;
+    private RedisIndexedSessionRepository redisOperationsSessionRepository;
     @Resource(name = "passwordAuthenticationProvider")
     private AuthenticationProvider authenticationProvider;
     @Autowired

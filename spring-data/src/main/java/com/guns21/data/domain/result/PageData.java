@@ -18,9 +18,13 @@ public class PageData implements Serializable {
     /**
      * 当前页
      */
+    @Builder.Default
     private int page = 1;
+    @Builder.Default
     private int size = 10;
+    @Builder.Default
     private int totalPages = 0;
+    @Builder.Default
     private long totalElements = 0;
     private Iterable pageData = null;
 }

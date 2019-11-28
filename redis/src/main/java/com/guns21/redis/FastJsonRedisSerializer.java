@@ -20,7 +20,7 @@ public class FastJsonRedisSerializer implements RedisSerializer {
 
     public FastJsonRedisSerializer(Charset charset)
     {
-        Assert.notNull(charset);
+        Assert.notNull(charset, "charset is null");
         this.charset = charset;
     }
 

@@ -1,6 +1,5 @@
 package com.guns21.upload.util;
 
-import com.guns21.common.util.DateUtils;
 import com.guns21.common.uuid.ID;
 import com.guns21.support.boot.config.WebConfig;
 import com.guns21.support.util.WebUtils;
@@ -21,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.security.MessageDigest;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -294,7 +295,7 @@ public class UploadUtils {
     }
 
     private static String getDateDir() {
-        return DateUtils.format(DateUtils.newDate(), "yyyy/MM/dd") + "/";
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) + "/";
     }
 
     private static String getQiniuFileKey(Attachment attachment) {

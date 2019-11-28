@@ -95,7 +95,7 @@ class ApiExceptionHandlerAdvice {
                 return Result.fail(message);
             }
             String[] split = StringUtils.split(message, ":");
-            if (split.length == 2 && NumberUtils.isNumber(split[0])) {
+            if (split.length == 2 && NumberUtils.isCreatable(split[0])) {
                 return Result.fail(split[1], split[0]);
             } else {
                 return Result.fail(message);

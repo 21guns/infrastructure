@@ -6,7 +6,7 @@ import com.guns21.data.domain.result.MessageResult;
 import feign.Response;
 import feign.jackson.JacksonDecoder;
 import lombok.extern.slf4j.Slf4j;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
+import org.apache.commons.lang3.reflect.TypeUtils;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -39,13 +39,11 @@ public class ResultDecoder extends JacksonDecoder {
             if (type instanceof ParameterizedType) {
                 ParameterizedType pt = (ParameterizedType) type;
                 if (Objects.equals(Stream.class, pt.getRawType()) || Objects.equals(List.class, pt.getRawType())) {
-                    shadeType = ParameterizedTypeImpl.make(MessageResult.class,
-                            new Type[]{ ParameterizedTypeImpl.make(ArrayList.class, pt.getActualTypeArguments(), null)}, null);
+                    shadeType = TypeUtils.parameterize(MessageResult.class, TypeUtils.parameterize(ArrayList.class, pt.getActualTypeArguments()));
                 } else if (Objects.equals(Set.class, pt.getRawType())) {
-                    shadeType = ParameterizedTypeImpl.make(MessageResult.class,
-                            new Type[]{ ParameterizedTypeImpl.make(HashSet.class, pt.getActualTypeArguments(), null)}, null);
+                    shadeType = TypeUtils.parameterize(MessageResult.class, TypeUtils.parameterize(HashSet.class, pt.getActualTypeArguments()));
                 } else {
-                    shadeType = ParameterizedTypeImpl.make(MessageResult.class, pt.getActualTypeArguments(), null);
+                    shadeType = TypeUtils.parameterize(MessageResult.class, pt.getActualTypeArguments());
                 }
             } else {
                 shadeType = MessageResult.class;

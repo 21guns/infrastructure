@@ -1,7 +1,7 @@
-//apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/spring-boot.gradle'
+//apply from: 'http://git.oschina.net/21hulk/gradle/raw/2.2.x/spring-boot.gradle'
 version '1.2.6'
 group 'com.guns21'
-apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-boot.gradle'
+apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.2.x/spring-boot.gradle'
 
 dependencies {
 //    compile 'com.guns21:authentication:1.0.0-SNAPSHOT'

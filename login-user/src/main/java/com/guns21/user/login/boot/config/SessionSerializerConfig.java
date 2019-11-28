@@ -37,7 +37,7 @@ public class SessionSerializerConfig implements BeanClassLoaderAware {
         objectMapper.registerModule(new AuthenticationJasksonModue());
         //use set property with NoArgsConstructor
         //@see org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+        objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(),ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
 
         for (SpringSessionRedisSerializerObjectMapperConfigure configurer : configurers) {
             configurer.configureObjectMapper(objectMapper);
