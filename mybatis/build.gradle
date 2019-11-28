@@ -3,10 +3,11 @@ group 'com.guns21'
 //apply from: 'http://git.oschina.net/21hulk/gradle/raw/2.2.x/java.gradle'
 apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.2.x/java.gradle'
 
+ext.jacksonVersion = '2.10.0'
 dependencies {
-    compileOnly 'com.fasterxml.jackson.core:jackson-core:2.9.4'
-    compileOnly 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
-    compileOnly 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
-    compileOnly 'org.mybatis:mybatis:3.4.5'
-    compileOnly 'com.github.pagehelper:pagehelper:5.1.8'
+    compileOnly "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    compileOnly "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    compileOnly "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    compileOnly 'org.mybatis:mybatis:3.5.3'
+    compileOnly 'com.github.pagehelper:pagehelper:5.1.10'
 }

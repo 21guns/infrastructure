@@ -10,7 +10,7 @@ dependencies {
     testCompile "io.rest-assured:rest-assured:${versions.restAssured}"
     testCompile "io.rest-assured:json-schema-validator:${versions.restAssured}"
 
-    testCompile "org.mockito:mockito-core:2.9.0"
+    testCompile "org.mockito:mockito-core:3.1.0"
 }
 
 //configurations {

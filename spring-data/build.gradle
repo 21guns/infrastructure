@@ -10,7 +10,7 @@ dependencies {
     compile 'org.springframework:spring-beans'
     compile 'org.springframework:spring-context'
     compile 'org.springframework.data:spring-data-commons'
-    compileOnly 'com.github.pagehelper:pagehelper:5.1.2'
+    compileOnly 'com.github.pagehelper:pagehelper:5.1.10'
 
 //    compile "org.springframework.boot:spring-boot-starter-web"
 
