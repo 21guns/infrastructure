@@ -10,6 +10,6 @@ dependencies {
     compile 'javax.servlet:javax.servlet-api'
     compile 'org.slf4j:slf4j-api'
     compile 'org.springframework:spring-web'
-    compile 'io.github.openfeign:feign-core:9.7.0'
-    compile 'io.github.openfeign:feign-jackson:9.7.0'
+    compile 'io.github.openfeign:feign-core:10.7.0'
+    compile 'io.github.openfeign:feign-jackson:10.7.0'
 }
