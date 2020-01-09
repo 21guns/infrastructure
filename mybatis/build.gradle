@@ -5,6 +5,8 @@ apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.2.x/java.gra
 
 ext.jacksonVersion = '2.10.0'
 dependencies {
+    compile project(":common")
+
     compileOnly "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     compileOnly "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
     compileOnly "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
