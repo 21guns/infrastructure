@@ -1,13 +1,9 @@
 package com.guns21.session.boot.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
@@ -38,15 +34,4 @@ public class HttpSessionConfig {
         return new GenericJackson2JsonRedisSerializer();
     }
 
-    @Configuration
-    public class RedisSessionConfig {
-
-        @Value("${server.session.timeout:1800}")
-        private Integer maxInactiveIntervalInSeconds;
-
-        @Autowired
-        public void setRedisOperationsSessionRepository(RedisIndexedSessionRepository redisOperationsSessionRepository) {
-            redisOperationsSessionRepository.setDefaultMaxInactiveInterval(maxInactiveIntervalInSeconds);
-        }
-    }
 }
