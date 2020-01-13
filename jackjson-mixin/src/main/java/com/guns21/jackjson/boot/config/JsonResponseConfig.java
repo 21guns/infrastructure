@@ -14,6 +14,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.guns21.common.enums.ValuableEnum;
+import com.guns21.common.util.ObjectUtils;
 import com.guns21.jackjson.datatype.deser.StandrdLocalDateDeserializer;
 import com.guns21.jackjson.datatype.deser.StandrdLocalDateTimeDeserializer;
 import com.guns21.jackjson.datatype.deser.StandrdLocalTimeDeserializer;
@@ -75,6 +76,9 @@ public class JsonResponseConfig {
     }
 
     private void registerEnumConverter(ObjectMapper objectMapper) {
+        if (!ObjectUtils.hasText(valuableEnumPackage)) {
+            return;
+        }
         SimpleModule module = new SimpleModule();
 
         final ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
