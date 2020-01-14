@@ -23,6 +23,7 @@ import com.guns21.jackjson.datatype.ser.StandrdLocalDateTimeSerializer;
 import com.guns21.jackjson.datatype.ser.StandrdLocalTimeSerializer;
 import com.guns21.jackjson.deserializer.ValuableEnumDeserializer;
 import com.guns21.jackjson.http.converter.json.JsonResponseAwareJsonMessageConverter;
+import com.guns21.jackjson.serializers.ValuableEnumSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +95,7 @@ public class JsonResponseConfig {
                 Class<Object> clazz = (Class<Object>) Class.forName(beanDefinition.getBeanClassName());
                 if (ValuableEnum.class.isAssignableFrom(clazz) && Enum.class.isAssignableFrom(clazz)) {
                     module.addDeserializer(clazz, new ValuableEnumDeserializer(clazz));
+                    module.addSerializer(clazz, new ValuableEnumSerializer(clazz));
                 }
             } catch (ClassNotFoundException e) {
                 logger.error("class not found", e);
