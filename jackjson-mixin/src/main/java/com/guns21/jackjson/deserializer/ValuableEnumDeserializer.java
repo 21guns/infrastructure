@@ -8,6 +8,7 @@ import com.guns21.common.enums.ValuableEnum;
 import com.guns21.common.enums.ValuableEnumFactory;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Created by Liu Xiang on 2018/8/2.
@@ -25,8 +26,12 @@ public class ValuableEnumDeserializer<E extends Enum<E> & ValuableEnum> extends 
     }
 
     @Override
-    public E deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public E deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         Byte v = p.readValueAs(Byte.class);
+        if (Objects.isNull(v)) {
+            return null;
+        }
+
         return ValuableEnumFactory.getEnum(clazz, v);
     }
 }
