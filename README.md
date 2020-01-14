@@ -159,3 +159,48 @@ public interface FinancialSchemeLeadsService {
 `@FeignService` 注解的参数为 Base URL，和 `@Value` 注解类似，支持 `${PROP_KEY}`
 语法从配置文件或环境中取值。 `@FeignService` 注解自动提供的代 理对象使用的 decoder 为
 `ResultDecoder` 。
+
+
+## ValuableEnum 完成枚举对象的自动格式化、序列化和反序列化
+
+1.  实现 `ValuableEnum` 接口的 `getValue()` 方法（手动或使用 `Lombok` 实现），这个方法的返回值应该是这个枚举类包裹的那个整型值
+2.  确保实现了 `ValuableEnum` 的枚举类的包名匹配模式： `com.ktjr.ddhc.**.enums`
+3.  `mapper.xml` 中不需要为枚举类型的字段手动配置 `typeHandler` 属性
+    
+    ```java
+    package com.ktjr.ddhc.docking.api.enums;
+    
+    import com.fasterxml.jackson.annotation.JsonValue;
+    import com.ktjr.ddhc.enums.ValuableEnum;
+    import lombok.Getter;
+    
+    public enum ChannelEnum implements ValuableEnum {
+        TONGDUN(1,  "同盾"),
+        PENGYUAN(2, "鹏元"),
+        XINYAN(3,   "新颜"),
+        BAIRONG(4,  "百融");
+    
+        @JsonValue
+        @Getter
+        private Integer value;
+    
+        @Getter
+        private String desc;
+    
+        ChannelEnum(Integer value, String desc) {
+            this.value = value;
+            this.desc = desc;
+        }
+    }
+    ```
+5.  `application.yml` 添加以下配置：
+    
+    ```yaml
+    mybatis:
+      type-handlers-package: com.guns21.mybatis.handler
+    com:
+      guns21:
+        spring:
+          mvc:
+            valuable-enum-package: com.ktjr.**.enums
+    ```
