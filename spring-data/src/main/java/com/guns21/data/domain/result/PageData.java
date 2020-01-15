@@ -25,6 +25,6 @@ public class PageData implements Serializable {
     @Builder.Default
     private int totalPages = 0;
     @Builder.Default
-    private long totalElements = 0;
+    private int totalElements = 0;
     private Iterable pageData = null;
 }
