@@ -5,15 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-final public class JaskonMixinCache {
+final public class JacksonMixinCache {
 
-    private static final Map<String, ObjectMapper> jasksonMixinCache = new ConcurrentHashMap<String, ObjectMapper>(64);
+    private static final Map<String, ObjectMapper> JACKSON_MIXIN_CACHE = new ConcurrentHashMap<String, ObjectMapper>(64);
 
     public static ObjectMapper put(String key, ObjectMapper objectMapper) {
-        return jasksonMixinCache.put(key, objectMapper);
+        return JACKSON_MIXIN_CACHE.put(key, objectMapper);
     }
 
     public static ObjectMapper get(String key) {
-        return jasksonMixinCache.get(key);
+        return JACKSON_MIXIN_CACHE.get(key);
     }
 }

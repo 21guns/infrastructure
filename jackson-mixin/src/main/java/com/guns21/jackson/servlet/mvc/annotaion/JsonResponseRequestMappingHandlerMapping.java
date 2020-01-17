@@ -1,7 +1,7 @@
 package com.guns21.jackson.servlet.mvc.annotaion;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.guns21.jackson.JaskonMixinCache;
+import com.guns21.jackson.JacksonMixinCache;
 import com.guns21.jackson.annotation.JsonMixin;
 import com.guns21.jackson.annotation.JsonResponse;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class JsonResponseRequestMappingHandlerMapping extends RequestMappingHand
                     copy.addMixIn(jsonMixin.target(), jsonMixin.mixin());
                 }
                 log.info("Add mixin for mapping {} onto {} ", mapping, method);
-                JaskonMixinCache.put(method.toString(),copy);
+                JacksonMixinCache.put(method.toString(),copy);
             }
         }
         super.registerHandlerMethod(handler, method, mapping);

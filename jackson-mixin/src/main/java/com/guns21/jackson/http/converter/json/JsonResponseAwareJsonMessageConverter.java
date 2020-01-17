@@ -3,7 +3,7 @@ package com.guns21.jackson.http.converter.json;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.guns21.jackson.JaskonMixinCache;
+import com.guns21.jackson.JacksonMixinCache;
 import com.guns21.jackson.annotation.JsonResponse;
 import com.guns21.jackson.wrapper.ResponseWrapper;
 import org.springframework.http.HttpOutputMessage;
@@ -50,7 +50,7 @@ public final class JsonResponseAwareJsonMessageConverter extends MappingJackson2
 
         JsonEncoding encoding = getJsonEncoding(outputMessage.getHeaders().getContentType());
 
-        ObjectMapper mapper = JaskonMixinCache.get(response.getMethodName());
+        ObjectMapper mapper = JacksonMixinCache.get(response.getMethodName());
 
         if (Objects.isNull(mapper)) {
             throw new HttpMessageNotWritableException("ObjectMapper is null for method name = " + response.getMethodName());
