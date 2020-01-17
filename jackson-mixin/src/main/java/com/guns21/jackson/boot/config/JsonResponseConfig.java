@@ -1,9 +1,11 @@
 package com.guns21.jackson.boot.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.introspect.Annotated;
+import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
+import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -13,8 +15,10 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import com.google.common.collect.Sets;
 import com.guns21.common.enums.ValuableEnum;
 import com.guns21.common.util.ObjectUtils;
+import com.guns21.jackson.annotation.JsonOnlyProperties;
 import com.guns21.jackson.datatype.deser.StandrdLocalDateDeserializer;
 import com.guns21.jackson.datatype.deser.StandrdLocalDateTimeDeserializer;
 import com.guns21.jackson.datatype.deser.StandrdLocalTimeDeserializer;
@@ -44,9 +48,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Configuration
 public class JsonResponseConfig {
@@ -120,7 +124,36 @@ public class JsonResponseConfig {
                 .deserializerByType(LocalTime.class, localTimeDeserializer())
                 .serializerByType(LocalDateTime.class, localDateTimeSerializer())
                 .serializerByType(LocalDate.class, localDateSerializer())
-                .serializerByType(LocalTime.class, localTimeSerializer());
+                .serializerByType(LocalTime.class, localTimeSerializer())
+
+                .annotationIntrospector(new AnnotationIntrospector(){
+                    @Override
+                    public Version version() {
+                        return Version.unknownVersion();
+                    }
+
+                    @Override
+                    public JsonIgnoreProperties.Value findPropertyIgnorals(Annotated ac) {
+                        JsonOnlyProperties annotation = ac.getAnnotation(JsonOnlyProperties.class);
+                        if (Objects.isNull(annotation)) {
+                            return super.findPropertyIgnorals(ac);
+
+                        }
+                        if (ac instanceof AnnotatedClass) {
+                            AnnotatedClass annotatedClass = (AnnotatedClass) ac;
+                            Set<String> allFieldName = StreamSupport.stream(annotatedClass.fields().spliterator(), false)
+                                    .map(AnnotatedField::getName)
+                                    .collect(Collectors.toSet());
+
+                            Set<String> onlyFieldName = Sets.newHashSet(annotation.value());
+                            allFieldName.removeAll(onlyFieldName);
+                            return JsonIgnoreProperties.Value.forIgnoredProperties(allFieldName);
+
+                        }
+                        return super.findPropertyIgnorals(ac);
+                    }
+
+                });
 
         for (JacksonObjectMapperBuilderConfigure configurer : configurers) {
             configurer.configureObjectMapper(builder);
