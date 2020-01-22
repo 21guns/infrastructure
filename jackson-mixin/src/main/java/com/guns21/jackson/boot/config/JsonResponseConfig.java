@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.AnnotatedField;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -126,11 +127,7 @@ public class JsonResponseConfig {
                 .serializerByType(LocalDate.class, localDateSerializer())
                 .serializerByType(LocalTime.class, localTimeSerializer())
 
-                .annotationIntrospector(new AnnotationIntrospector(){
-                    @Override
-                    public Version version() {
-                        return Version.unknownVersion();
-                    }
+                .annotationIntrospector(new JacksonAnnotationIntrospector(){
 
                     @Override
                     public JsonIgnoreProperties.Value findPropertyIgnorals(Annotated ac) {
@@ -153,7 +150,8 @@ public class JsonResponseConfig {
                         return super.findPropertyIgnorals(ac);
                     }
 
-                });
+                })
+        ;
 
         for (JacksonObjectMapperBuilderConfigure configurer : configurers) {
             configurer.configureObjectMapper(builder);
