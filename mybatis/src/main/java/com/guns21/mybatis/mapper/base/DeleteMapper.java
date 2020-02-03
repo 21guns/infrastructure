@@ -8,5 +8,5 @@ public interface DeleteMapper<DO> {
 
     Integer deleteById(@Param("id") String id);
 
-    Integer deleteByIds(@Param("list") Set<String> list);
+    Integer deleteByIds(@Param("ids") Set<String> list);
 }
