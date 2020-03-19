@@ -21,8 +21,8 @@ public abstract class BaseEvent<T> implements Serializable {
     protected String eventType;
 
     public BaseEvent(T source) {
+        this();
         this.source = source;
-        this.eventType = getClass().getSimpleName();
     }
 
     public BaseEvent() {

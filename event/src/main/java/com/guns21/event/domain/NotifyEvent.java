@@ -11,5 +11,6 @@ public abstract class NotifyEvent<T> extends BaseEvent<T> {
     }
 
     public NotifyEvent() {
+        super();
     }
 }

@@ -10,5 +10,6 @@ public abstract class AskEvent<T> extends BaseEvent<T> {
     }
 
     public AskEvent() {
+        super();
     }
 }
