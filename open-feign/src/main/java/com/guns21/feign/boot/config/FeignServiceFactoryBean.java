@@ -5,6 +5,7 @@ import com.guns21.feign.annotation.FeignService;
 import com.guns21.feign.codec.ResultDecoder;
 import com.guns21.feign.target.SpringSessionHeaderTokenTarget;
 import feign.Feign;
+import feign.form.FormEncoder;
 import feign.jackson.JacksonEncoder;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
@@ -39,7 +40,7 @@ public class FeignServiceFactoryBean<T> implements FactoryBean<T>, ApplicationCo
         ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper.class);
         return Feign.builder()
                 .decode404()
-                .encoder(new JacksonEncoder(objectMapper))
+                .encoder(new FormEncoder(new JacksonEncoder(objectMapper)))
                 .decoder(new ResultDecoder(objectMapper))
                 .target(SpringSessionHeaderTokenTarget.newTarget(this.feignServiceInterface, urlPrefix));
     }
