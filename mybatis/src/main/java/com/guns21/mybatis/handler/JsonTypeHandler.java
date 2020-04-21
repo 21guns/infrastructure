@@ -37,12 +37,6 @@ public class JsonTypeHandler<T extends Object> extends BaseTypeHandler<T> {
         this.clazz = clazz;
     }
 
-    /**
-     * since 3.5.0 need no args constructor
-     */
-    public JsonTypeHandler() {
-    }
-
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException {
         ps.setString(i, this.toJson(parameter));
