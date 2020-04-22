@@ -1,4 +1,4 @@
-package com.guns21.mybatis.handler;
+package com.guns21.mybatis;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
@@ -27,6 +27,8 @@ import java.sql.SQLException;
  *      </typeHandlers>
  * 2)在MyClassMapper.xml里直接select/update/insert。
  *
+ *
+ * ps: since mybatis-spring 2.0.3 need No Args Constructor
  */
 public class JsonTypeHandler<T extends Object> extends BaseTypeHandler<T> {
     private static final ObjectMapper mapper = new ObjectMapper();
