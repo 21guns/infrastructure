@@ -7,6 +7,7 @@ import com.guns21.feign.target.SpringSessionHeaderTokenTarget;
 import feign.Feign;
 import feign.form.FormEncoder;
 import feign.jackson.JacksonEncoder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
@@ -34,8 +35,12 @@ public class FeignServiceFactoryBean<T> implements FactoryBean<T>, ApplicationCo
     public T getObject() throws Exception {
         FeignService annotation = feignServiceInterface.getAnnotation(FeignService.class);
         String urlPrefix = annotation.value();
+        String originalUrlPrefix = urlPrefix;
         if (urlPrefix.matches("^\\$\\{.+\\}$")) {
             urlPrefix = environment.getProperty(urlPrefix.replaceAll("^\\$\\{|\\}$", ""));
+        }
+        if (StringUtils.isEmpty(urlPrefix)) {
+            throw new Exception(String.format("Missing config: %s", originalUrlPrefix));
         }
         ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper.class);
         return Feign.builder()
