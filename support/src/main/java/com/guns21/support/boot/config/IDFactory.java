@@ -1,6 +1,7 @@
 package com.guns21.support.boot.config;
 
 import com.sohu.idcenter.IdWorker;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Configuration
+@Slf4j
 public class IDFactory {
     @Value("${com.guns21.id.worker:0}")
     private Long workerId;
@@ -40,6 +42,8 @@ public class IDFactory {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         long ec = calendar.getTimeInMillis();
+
+        log.info("workerId[{}] dataCenterId[{}] sequence[{}] ec[{}]", workerId, dataCenterId, sequence, ec);
         idWorker= new IdWorker(workerId, dataCenterId, sequence, ec);
     }
 
