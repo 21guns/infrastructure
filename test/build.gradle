@@ -6,9 +6,9 @@ dependencies {
     testCompile 'org.springframework:spring-web'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     // io.rest-assured
-    testCompile "io.rest-assured:spring-mock-mvc:${versions.restAssured}"
-    testCompile "io.rest-assured:rest-assured:${versions.restAssured}"
-    testCompile "io.rest-assured:json-schema-validator:${versions.restAssured}"
+    testCompile "io.rest-assured:spring-mock-mvc"
+    testCompile "io.rest-assured:rest-assured"
+    testCompile "io.rest-assured:json-schema-validator"
 
     testCompile "org.mockito:mockito-core:3.1.0"
 }
