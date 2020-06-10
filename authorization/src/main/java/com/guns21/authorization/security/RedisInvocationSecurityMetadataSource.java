@@ -74,9 +74,11 @@ public class RedisInvocationSecurityMetadataSource implements FilterInvocationSe
 
         for(Iterator it = pathMatcher.keySet().iterator(); it.hasNext(); ) {
             RequestMappingInfo requestMappingInfo = (RequestMappingInfo) it.next();
-            matchingCondition = requestMappingInfo.getMatchingCondition(request);
-            if (Objects.nonNull(matchingCondition)) {
+            RequestMappingInfo condition = requestMappingInfo.getMatchingCondition(request);
+            if (Objects.nonNull(condition) && Objects.equals(requestURI, condition.toString())) {
                 break;
+            }else if(Objects.nonNull(condition)){
+                matchingCondition = condition;
             }
         }
         if (Objects.nonNull(matchingCondition)) {
