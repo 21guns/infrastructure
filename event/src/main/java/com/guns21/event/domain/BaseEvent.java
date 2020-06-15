@@ -29,15 +29,6 @@ public abstract class BaseEvent<T> implements Serializable {
         this.eventType = getClass().getSimpleName();
     }
 
-    /**
-     * 获得Optional事件
-     *
-     * @return
-     */
-    public Optional<T> getValue() {
-        return Optional.ofNullable(source);
-    }
-
     public T getSource() {
         return source;
     }
