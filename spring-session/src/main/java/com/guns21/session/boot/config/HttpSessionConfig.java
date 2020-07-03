@@ -19,7 +19,8 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class HttpSessionConfig extends RedisHttpSessionConfiguration {
 
-    @Value("${com.guns21.session.timeout:1800}")
+    // unit minutes
+    @Value("${com.guns21.session.timeout:30}")
     private int sessionTimeout;
 
     /**
@@ -45,7 +46,7 @@ public class HttpSessionConfig extends RedisHttpSessionConfiguration {
     @Override
     public void init() {
         super.init();
-        super.setMaxInactiveIntervalInSeconds(sessionTimeout);
+        super.setMaxInactiveIntervalInSeconds(sessionTimeout * 60);
     }
 
 }
