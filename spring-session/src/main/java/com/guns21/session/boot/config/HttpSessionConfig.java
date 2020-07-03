@@ -19,7 +19,7 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class HttpSessionConfig extends RedisHttpSessionConfiguration {
 
-    @Value("${server.servlet.session.timeout:1800}")
+    @Value("${com.guns21.session.timeout:1800}")
     private int sessionTimeout;
 
     /**
