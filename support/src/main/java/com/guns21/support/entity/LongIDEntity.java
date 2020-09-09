@@ -1,9 +1,7 @@
 package com.guns21.support.entity;
 
 import com.guns21.support.boot.config.IDFactory;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Objects;
@@ -11,6 +9,7 @@ import java.util.Objects;
 @SuperBuilder
 @Setter
 @Getter
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public abstract class LongIDEntity extends AbstractEntity<Long> {
     @Override
