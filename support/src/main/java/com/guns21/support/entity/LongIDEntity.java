@@ -4,9 +4,11 @@ import com.guns21.support.boot.config.IDFactory;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Objects;
 
+@SuperBuilder
 @Setter
 @Getter
 @EqualsAndHashCode(callSuper = true)

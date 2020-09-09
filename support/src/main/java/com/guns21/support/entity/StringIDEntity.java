@@ -5,7 +5,9 @@ import com.guns21.common.uuid.ID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
+@SuperBuilder
 @Setter
 @Getter
 @EqualsAndHashCode(callSuper = true)
