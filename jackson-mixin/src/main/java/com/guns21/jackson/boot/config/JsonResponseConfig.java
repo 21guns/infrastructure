@@ -77,7 +77,6 @@ public class JsonResponseConfig {
         MappingJackson2HttpMessageConverter jsonConverter = new JsonResponseAwareJsonMessageConverter(objectMapper);
 
 //        objectMapper.registerModule(new JavaTimeModule());
-        registerEnumConverter(objectMapper);
         return jsonConverter;
     }
 
@@ -157,7 +156,10 @@ public class JsonResponseConfig {
             configurer.configureObjectMapper(builder);
         }
 
-        return builder.build();
+        ObjectMapper objectMapper = builder.build();
+        registerEnumConverter(objectMapper);
+
+        return objectMapper;
     }
 
     @Bean
