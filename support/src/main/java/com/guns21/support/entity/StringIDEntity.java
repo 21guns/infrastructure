@@ -5,7 +5,7 @@ import com.guns21.common.uuid.ID;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @Setter
 @Getter
 @AllArgsConstructor

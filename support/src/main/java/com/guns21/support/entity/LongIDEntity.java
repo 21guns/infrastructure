@@ -6,7 +6,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.Objects;
 
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @Setter
 @Getter
 @AllArgsConstructor

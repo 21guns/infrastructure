@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  *
  * @author jliu
  */
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @Setter
 @Getter
 @AllArgsConstructor

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 实体抽象父类
  * @author jliu
  */
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
