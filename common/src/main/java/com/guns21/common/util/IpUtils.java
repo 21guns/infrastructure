@@ -23,7 +23,7 @@ public class IpUtils {
 
     }
 
-    private static Optional<InetAddress> getFirstNonLoopbackAddress() throws SocketException {
+    public static Optional<InetAddress> getFirstNonLoopbackAddress() throws SocketException {
         Enumeration en = NetworkInterface.getNetworkInterfaces();
         while (en.hasMoreElements()) {
             NetworkInterface i = (NetworkInterface) en.nextElement();
