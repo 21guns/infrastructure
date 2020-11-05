@@ -37,4 +37,22 @@ public class IpUtils {
         }
         return Optional.empty();
     }
+
+    public Optional<String> getFirstNonLoopbackHostName() throws SocketException {
+        Enumeration en = NetworkInterface.getNetworkInterfaces();
+
+        while(en.hasMoreElements()) {
+            NetworkInterface i = (NetworkInterface)en.nextElement();
+            Enumeration en2 = i.getInetAddresses();
+
+            while(en2.hasMoreElements()) {
+                InetAddress addr = (InetAddress)en2.nextElement();
+                if (!addr.isLoopbackAddress()) {
+                    return Optional.of(addr.getHostName());
+                }
+            }
+        }
+
+        return Optional.empty();
+    }
 }
