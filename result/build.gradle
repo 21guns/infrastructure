@@ -1,7 +1,7 @@
 version '1.0.1'
 group 'com.guns21'
-//apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/java.gradle'
-apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/java.gradle'
+//apply from: 'http://git.oschina.net/21hulk/gradle/raw/1.x.x/java.gradle'
+apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/1.x.x/java.gradle'
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.26'

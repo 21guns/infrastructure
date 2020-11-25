@@ -1,7 +1,7 @@
 version '1.0.0'
 group 'com.guns21'
-//apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/java.gradle'
-apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/java.gradle'
+//apply from: 'http://git.oschina.net/21hulk/gradle/raw/1.x.x/java.gradle'
+apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/1.x.x/java.gradle'
 
 dependencies {
     compileOnly 'com.fasterxml.jackson.core:jackson-core:2.9.4'
