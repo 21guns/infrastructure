@@ -43,7 +43,7 @@ class ApiExceptionHandlerAdvice {
     @ExceptionHandler(value = {NoSuchElementException.class})
     @ResponseBody
     public Result dataNotFound(Exception exception,  WebRequest request) {
-        LOGGER.error("url ["+request.getDescription(false)+"] data Not Found", exception);
+        LOGGER.warn("url ["+request.getDescription(false)+"] data Not Found", exception);
         return Result.fail("0000002", "输入数据无效");
     }
 
@@ -118,7 +118,7 @@ class ApiExceptionHandlerAdvice {
         resultData.setCode(Result.Code.TYPE_VIOLATION.getCode());
         resultData.setMessage(Result.Code.TYPE_VIOLATION.getText() + ":参数需要[" + exception.getRequiredType().getSimpleName() + "]类型，但传入值为{" + exception.getValue() + "}");
 
-        LOGGER.error("url [{}] type mismatch : {} ", request.getDescription(false), resultData.getMessage());
+        LOGGER.warn("url [{}] type mismatch : {} ", request.getDescription(false), resultData.getMessage());
         return resultData;
     }
 
@@ -135,14 +135,14 @@ class ApiExceptionHandlerAdvice {
         Result resultData = Result.fail();
         resultData.setCode(Result.Code.MISS_PARAMETER.getCode());
         resultData.setMessage(exception.getMessage());
-        LOGGER.error("url [{}] missing servlet request parameter : {} ", request.getDescription(false), resultData.getMessage());
+        LOGGER.warn("url [{}] missing request parameter : {} ", request.getDescription(false), resultData.getMessage());
         return resultData;
     }
 
     @ExceptionHandler(value = CurrentUserIsNullException.class)
     @ResponseBody
-    public Result currrentUserIsNull(CurrentUserIsNullException exception, WebRequest request) {
-        LOGGER.error("url ["+request.getDescription(false)+"] Current user is null");
+    public Result currentUserIsNull(CurrentUserIsNullException exception, WebRequest request) {
+        LOGGER.warn("url ["+request.getDescription(false)+"] Current user is null");
         return Result.fail401("请登录.");
     }
 
