@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  *  使用方式
  *  1.手动指定workerId 默认方式，不配置workerId是0
- *  2.使用ip生成workerId, 使用低16位进行运算
+ *  2.使用ip生成: workerId = ip[3]%32 dataCenterId= ip[2]%32 sequence=sum(ip[:])
  *  3.使用id center 生成workerId
  */
 @Configuration
@@ -70,7 +70,8 @@ public class IDFactory {
                 if (IpUtils.validate(ips)) {
                     dataCenterId = Long.parseLong(ips[2]) % 32;
                     workerId = Long.parseLong(ips[3]) % 32;
-                    log.info("ip[{}] --> workerId[{}], dataCenterId[{}]", Arrays.toString(ips), workerId, dataCenterId);
+                    sequence = Arrays.stream(ips).mapToLong(Long::parseLong).sum();
+                    log.info("ip[{}] --> workerId[{}], dataCenterId[{}], sequence[{}]", Arrays.toString(ips), workerId, dataCenterId, sequence);
                     log.info("workerId[{}] dataCenterId[{}] sequence[{}] ec[{}]", workerId, dataCenterId, sequence, ec);
                     idGen = new SohuIDGen(workerId, dataCenterId, sequence, ec);
                 } else  {
