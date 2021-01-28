@@ -1,33 +1,53 @@
 package com.guns21.support.boot.config;
 
+import com.guns21.common.exception.UnCheckException;
+import com.guns21.common.util.IpUtils;
+import com.guns21.common.util.ObjectUtils;
+import com.guns21.support.idgen.IDGen;
+import com.guns21.support.idgen.snowflake.LeadIDGen;
+import com.guns21.support.idgen.snowflake.SohuIDGen;
 import com.sohu.idcenter.IdWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ *  使用方式
+ *  1.手动指定workerId 默认方式，不配置workerId是0
+ *  2.使用ip生成: workerId = ip[3]%32 dataCenterId= ip[2]%32 sequence=sum(ip[:])
+ *  3.使用id center 生成workerId
+ */
 @Configuration
 @Slf4j
 public class IDFactory {
+    /**
+     * 1
+     */
     @Value("${com.guns21.id.worker:0}")
     private Long workerId;
     @Value("${com.guns21.id.data-center:0}")
     private Long dataCenterId;
     @Value("${com.guns21.id.sequence:0}")
     private Long sequence;
+    @Value("${com.guns21.id.type:DEFAULT}")
+    private IDType type;
 
-    private static IdWorker idWorker;
+    /**
+     * 3
+     */
+    @Value("${com.guns21.id.center.url:#{null}}")
+    private String url;
 
-    public static IdWorker getIdWorker() {
-        return idWorker;
-    }
+    private static IDGen idGen;
 
     public static long getId() {
-        return getIdWorker().getId();
+        return idGen.getId();
     }
 
     @PostConstruct
@@ -43,14 +63,58 @@ public class IDFactory {
         calendar.set(Calendar.MILLISECOND, 0);
         long ec = calendar.getTimeInMillis();
 
-        log.info("workerId[{}] dataCenterId[{}] sequence[{}] ec[{}]", workerId, dataCenterId, sequence, ec);
-        idWorker= new IdWorker(workerId, dataCenterId, sequence, ec);
+        log.info("id use type[{}]", type);
+        switch (type) {
+            case IP:
+                String[] ips = IpUtils.getIps();
+                if (IpUtils.validate(ips)) {
+                    dataCenterId = Long.parseLong(ips[2]) % 32;
+                    workerId = Long.parseLong(ips[3]) % 32;
+                    sequence = Arrays.stream(ips).mapToLong(Long::parseLong).sum();
+                    log.info("ip[{}] --> workerId[{}], dataCenterId[{}], sequence[{}]", Arrays.toString(ips), workerId, dataCenterId, sequence);
+                    log.info("workerId[{}] dataCenterId[{}] sequence[{}] ec[{}]", workerId, dataCenterId, sequence, ec);
+                    idGen = new SohuIDGen(workerId, dataCenterId, sequence, ec);
+                } else  {
+                    log.error("don't find ip");
+                    throw new UnCheckException("don't find ip");
+                }
+                break;
+            case CENTER:
+                if (!ObjectUtils.hasText(url)) {
+                    throw new UnCheckException("don't set url");
+                }
+                idGen = new LeadIDGen(url);
+                break;
+            default:
+                log.info("workerId[{}] dataCenterId[{}] sequence[{}] ec[{}]", workerId, dataCenterId, sequence, ec);
+                idGen = new SohuIDGen(workerId, dataCenterId, sequence, ec);
+                break;
+        }
     }
+
+    public enum IDType {
+        /**
+         * 默认算法，
+         */
+        DEFAULT,
+        /**
+         * 使用ip计算workerId
+         */
+        IP,
+        /**
+         * 从id中心那workerId
+         */
+        CENTER
+
+    }
+
+//    @Bean
+//    @ConditionalOnProperty(name="com.guns21.web.request.logging", havingValue="true")
 
 
     static class IdWorkThread implements Runnable {
-        private Set<Long> set;
-        private IdWorker idWorker;
+        private final Set<Long> set;
+        private final IdWorker idWorker;
 
         public IdWorkThread(Set<Long> set, IdWorker idWorker) {
             this.set = set;

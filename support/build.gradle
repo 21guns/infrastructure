@@ -1,4 +1,4 @@
-version (Boolean.valueOf(System.getProperty("snapshot")) ? "0.0.1-SNAPSHOT" : "2.0.1")
+version (Boolean.valueOf(System.getProperty("snapshot")) ? "0.0.1-SNAPSHOT" : "2.1.0")
 group 'com.guns21'
 //apply from: 'http://git.oschina.net/21hulk/gradle/raw/master/spring-boot.gradle'
 apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/master/spring-boot.gradle'
@@ -7,6 +7,7 @@ dependencies {
     compile project(":common")
     compile project(":result")
     compile project(":spring-data")
+    compile project(":open-feign")
 
     compileOnly 'javax.persistence:persistence-api:1.0.2'
     compile 'javax.annotation:javax.annotation-api'
