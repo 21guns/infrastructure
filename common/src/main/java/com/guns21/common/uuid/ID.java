@@ -20,8 +20,8 @@ public class ID {
 
     /**
      * 生成一个流水号
-     *
-     * @return 14位数字流水号
+     * ps : 注意该方法并发是每毫秒100个并发
+     * @return 19位数字流水号
      */
     public static long generateId() {
         return SidWorker.nextSid();
