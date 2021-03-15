@@ -14,6 +14,7 @@ import com.guns21.user.login.domain.UserInfo;
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 class UserInfoDeserializer extends JsonDeserializer<UserInfo> {
     UserInfoDeserializer() {
@@ -27,7 +28,8 @@ class UserInfoDeserializer extends JsonDeserializer<UserInfo> {
         if (jsonNode.has("managedUserIds")) {
             managedUserIds = mapper.convertValue(jsonNode.get("managedUserIds"), new TypeReference<List<String>>() { });
         } else {
-            managedUserIds = Arrays.asList(id);
+            managedUserIds = new ArrayList<String>();
+            managedUserIds.add(id);
         }
         UserInfo role = new UserInfo(
                 id,
