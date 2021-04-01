@@ -1,6 +1,7 @@
 package com.guns21.user.login.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
 import java.io.*;
@@ -10,7 +11,7 @@ import java.util.List;
  * 由于用户登录成功后返回给客户端
  * Created by ljj on 17/7/14.
  */
-@Getter
+@Data
 @AllArgsConstructor
 public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -23,5 +24,6 @@ public class UserInfo implements Serializable {
 
     private List<Role> roles;
 
+    private List<String> managedUserIds;
 
 }

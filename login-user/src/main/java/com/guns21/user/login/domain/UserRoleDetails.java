@@ -24,6 +24,7 @@ public class UserRoleDetails extends User {
     private Boolean wxAccountBound;
     private String wxOpenId;
     private List<Role> roles;
+    private List<String> managedUserIds;
 
 
     public UserRoleDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {

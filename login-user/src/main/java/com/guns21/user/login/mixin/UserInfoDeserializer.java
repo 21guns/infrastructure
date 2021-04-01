@@ -12,7 +12,9 @@ import com.guns21.user.login.domain.Role;
 import com.guns21.user.login.domain.UserInfo;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 class UserInfoDeserializer extends JsonDeserializer<UserInfo> {
     UserInfoDeserializer() {
@@ -21,10 +23,20 @@ class UserInfoDeserializer extends JsonDeserializer<UserInfo> {
     public UserInfo deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         JsonNode jsonNode = (JsonNode) mapper.readTree(jp);
-        UserInfo role = new UserInfo(readJsonNode(jsonNode, "id").asText(),
-                readJsonNode(jsonNode, "name").asText(), readJsonNode(jsonNode, "nickname").asText(),
-                mapper.convertValue(jsonNode.get("roles"), new TypeReference<List<Role>>() {
-                }));
+        String id = readJsonNode(jsonNode, "id").asText();
+        List<String> managedUserIds;
+        if (jsonNode.has("managedUserIds")) {
+            managedUserIds = mapper.convertValue(jsonNode.get("managedUserIds"), new TypeReference<List<String>>() { });
+        } else {
+            managedUserIds = new ArrayList<String>();
+            managedUserIds.add(id);
+        }
+        UserInfo role = new UserInfo(
+                id,
+                readJsonNode(jsonNode, "name").asText(),
+                readJsonNode(jsonNode, "nickname").asText(),
+                mapper.convertValue(jsonNode.get("roles"), new TypeReference<List<Role>>() { }),
+                managedUserIds);
         return role;
     }
 

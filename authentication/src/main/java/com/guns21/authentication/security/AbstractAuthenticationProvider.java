@@ -97,6 +97,7 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
         userRoleDetails.setWxAccountBound(authUser.getWxAccountBound());
         userRoleDetails.setWxOpenId(authUser.getWxOpenId());
         userRoleDetails.setRoles(roles);
+        userRoleDetails.setManagedUserIds(authUser.getManagedUserIds());
 
         return userRoleDetails;
     }
