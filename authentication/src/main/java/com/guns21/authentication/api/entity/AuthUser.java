@@ -20,5 +20,5 @@ public class AuthUser {
     private Boolean wxAccountBound;
     private String wxOpenId;
     private List<Role> roles;
-
+    private List<String> managedUserIds;
 }

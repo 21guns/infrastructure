@@ -28,8 +28,8 @@ public class HttpAuthenticationSuccessHandler implements AuthenticationSuccessHa
         if (auth.getPrincipal() instanceof UserRoleDetails) {
             UserRoleDetails userRoleDetails = (UserRoleDetails) auth.getPrincipal();
 
-            UserInfo loginUserInfo = new UserInfo(userRoleDetails.getUserId(),
-                    userRoleDetails.getUsername(), userRoleDetails.getNickname(), userRoleDetails.getRoles());
+            UserInfo loginUserInfo = new UserInfo(userRoleDetails.getUserId(), userRoleDetails.getUsername(),
+                    userRoleDetails.getNickname(), userRoleDetails.getRoles(), userRoleDetails.getManagedUserIds());
             request.getSession(false).setAttribute(LoginConstant.LOGIN_USER, loginUserInfo);
 
             ResponseUtils.writeResponse(response,

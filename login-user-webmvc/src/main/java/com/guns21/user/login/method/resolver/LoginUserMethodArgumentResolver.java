@@ -3,6 +3,7 @@ package com.guns21.user.login.method.resolver;
 import com.guns21.common.exception.CurrentUserIsNullException;
 import com.guns21.user.login.annotation.CurrentUser;
 import com.guns21.user.login.constant.LoginConstant;
+import com.guns21.user.login.domain.UserInfo;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -12,6 +13,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class LoginUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
@@ -32,6 +34,12 @@ public class LoginUserMethodArgumentResolver implements HandlerMethodArgumentRes
         if (methodAnnotation.required() && Objects.isNull(currentUser)) {
 //            request.getSession(false).invalidate();
           throw new CurrentUserIsNullException();
+        }
+        if (currentUser != null && currentUser instanceof UserInfo) {
+            UserInfo currentUserInfo = (UserInfo) currentUser;
+            if (currentUserInfo.getManagedUserIds() == null || currentUserInfo.getManagedUserIds().isEmpty()) {
+                currentUserInfo.setManagedUserIds(Arrays.asList(currentUserInfo.getId()));
+            }
         }
         return currentUser;
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
