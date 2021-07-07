@@ -104,6 +104,11 @@ public class AdvancedCommonsRequestLoggingFilter extends CommonsRequestLoggingFi
     }
 
     private String getUser(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return request.getRemoteUser();
+        }
+
         Object user = request.getSession(false).getAttribute(userSessionKey);
         String userId = getUserId(user);
         if (StringUtils.isEmpty(userId)) {
