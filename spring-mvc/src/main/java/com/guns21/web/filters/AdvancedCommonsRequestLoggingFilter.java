@@ -9,10 +9,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by Liu Xiang on 2021/7/7.
@@ -25,6 +22,8 @@ public class AdvancedCommonsRequestLoggingFilter extends CommonsRequestLoggingFi
     protected String userSessionKey;
 
     protected List<String> userIdFieldNames;
+
+    protected List<String> userNameFieldNames;
 
     protected boolean enabled = true;
 
@@ -111,10 +110,13 @@ public class AdvancedCommonsRequestLoggingFilter extends CommonsRequestLoggingFi
 
         Object user = request.getSession(false).getAttribute(userSessionKey);
         String userId = getUserId(user);
-        if (StringUtils.isEmpty(userId)) {
+        String userName = getUserName(user);
+        if (StringUtils.isEmpty(userId) && StringUtils.isEmpty(userName)) {
             return request.getRemoteUser();
         }
-        return userId;
+        return String.format("id:%s,name:%s",
+                Optional.ofNullable(userId).orElse(""),
+                Optional.ofNullable(userName).orElse(""));
     }
 
     private String getUserId(Object user) {
@@ -125,6 +127,21 @@ public class AdvancedCommonsRequestLoggingFilter extends CommonsRequestLoggingFi
         Class<?> clazz = user.getClass();
 
         return userIdFieldNames.stream().map(fieldName ->
+                Optional.ofNullable(ReflectionUtils.findField(clazz, fieldName)).map(field -> {
+                    ReflectionUtils.makeAccessible(field);
+                    return ReflectionUtils.getField(field, user);
+                }).orElse(null)
+        ).filter(Objects::nonNull).findFirst().map(Objects::toString).orElse(null);
+    }
+
+    private String getUserName(Object user) {
+        if (null == user) {
+            return null;
+        }
+
+        Class<?> clazz = user.getClass();
+
+        return userNameFieldNames.stream().map(fieldName ->
             Optional.ofNullable(ReflectionUtils.findField(clazz, fieldName)).map(field -> {
                 ReflectionUtils.makeAccessible(field);
                 return ReflectionUtils.getField(field, user);

@@ -1,6 +1,8 @@
 package com.guns21.web.boot.config;
 
 import com.guns21.web.filters.AdvancedCommonsRequestLoggingFilter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,15 @@ import java.util.Arrays;
 @Configuration
 public class ControllerLoggingConfig {
 
+    @Value("${com.guns21.web.request.user-session-key:loginUser}")
+    private String userSessionKey;
+
+    @Value("${com.guns21.web.request.user-id-field-names:id}")
+    private String userIdFieldNames;
+
+    @Value("${com.guns21.web.request.user-name-field-names:name,username,userName}")
+    private String userNameFieldNames;
+
     @Bean
     @ConditionalOnProperty(name="com.guns21.web.request.logging", havingValue="true")
     public CommonsRequestLoggingFilter requestLoggingFilter() {
@@ -34,8 +45,19 @@ public class ControllerLoggingConfig {
         crlf.setIncludeQueryString(true);
         crlf.setIncludePayload(true);
         crlf.setMaxPayloadLength(2000);
-        crlf.setUserSessionKey("loginUser");
-        crlf.setUserIdFieldNames(Arrays.asList("id", "userId"));
+
+        if (StringUtils.isNotBlank(userSessionKey)) {
+            crlf.setUserSessionKey(userSessionKey);
+        }
+
+        if (StringUtils.isNotBlank(userIdFieldNames)) {
+            crlf.setUserIdFieldNames(Arrays.asList(userIdFieldNames.split(",")));
+        }
+
+        if (StringUtils.isNotBlank(userNameFieldNames)) {
+            crlf.setUserNameFieldNames(Arrays.asList(userNameFieldNames.split(",")));
+        }
+
         return crlf;
     }
 }
