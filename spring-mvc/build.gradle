@@ -3,15 +3,15 @@ group 'com.guns21'
 apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/2.x.x/spring-boot.gradle')
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
 dependencies {
-    implementation project(":common")
-    implementation project(":result")
+    compile project(":common")
+    compile project(":result")
 
-    implementation 'javax.servlet:javax.servlet-api'
-    implementation 'org.slf4j:slf4j-api'
-    implementation 'org.springframework:spring-web'
-    implementation 'org.springframework:spring-webmvc'
-    implementation 'org.springframework.security:spring-security-core'
-    implementation 'org.springframework.boot:spring-boot-autoconfigure'
-    implementation libraries.fastjson
-    implementation libraries.guava
+    compile 'javax.servlet:javax.servlet-api'
+    compile 'org.slf4j:slf4j-api'
+    compile 'org.springframework:spring-web'
+    compile 'org.springframework:spring-webmvc'
+    compile 'org.springframework.security:spring-security-core'
+    compile 'org.springframework.boot:spring-boot-autoconfigure'
+    compile libraries.fastjson
+    compile libraries.guava
 }

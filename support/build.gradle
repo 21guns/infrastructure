@@ -4,17 +4,17 @@ apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.github
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
 
 dependencies {
-    implementation project(":common")
-    implementation project(":result")
-    implementation project(":spring-data")
-    implementation project(":open-feign")
+    compile project(":common")
+    compile project(":result")
+    compile project(":spring-data")
+    compile project(":open-feign")
 
     compileOnly 'javax.persistence:persistence-api:1.0.2'
-    implementation 'javax.annotation:javax.annotation-api'
-    implementation 'org.springframework:spring-beans'
-    implementation 'org.springframework:spring-context'
-    implementation 'org.springframework.boot:spring-boot'
+    compile 'javax.annotation:javax.annotation-api'
+    compile 'org.springframework:spring-beans'
+    compile 'org.springframework:spring-context'
+    compile 'org.springframework.boot:spring-boot'
 
-//    implementation "org.springframework.boot:spring-boot-starter-web"
+//    compile "org.springframework.boot:spring-boot-starter-web"
 
 }

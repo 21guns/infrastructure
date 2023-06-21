@@ -5,11 +5,9 @@ import com.guns21.authorization.security.HttpAccessDecisionManager;
 import com.guns21.authorization.security.HttpAccessDeniedHandler;
 import com.guns21.authorization.security.HttpAuthenticationEntryPoint;
 import com.guns21.authorization.security.HttpSessionInformationExpiredStrategy;
-import com.guns21.authentication.filter.AccessFilter;
 import com.guns21.authorization.security.RedisInvocationSecurityMetadataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -19,19 +17,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import javax.servlet.Filter;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -54,9 +45,6 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
     private SecurityConfig.SecurityPermitConfig securityPermitConfig;
 
 
-    @Autowired
-    private RequestMappingHandlerMapping requestMappingHandlerMapping;
-
     @Bean
     public AccessDecisionManager accessDecisionManager() {
         return new HttpAccessDecisionManager();
@@ -64,14 +52,7 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public FilterInvocationSecurityMetadataSource securityMetadataSource() {
-        Map<RequestMappingInfo, HandlerMethod> pathMatcher = requestMappingHandlerMapping.getHandlerMethods();
-        for(Iterator it = pathMatcher.keySet().iterator(); it.hasNext(); ) {
-            RequestMappingInfo requestMappingInfo = (RequestMappingInfo) it.next();
-            System.out.println(requestMappingInfo.toString());
-//            new AntPathRequestMatcher(re)
-        }
-
-                return new RedisInvocationSecurityMetadataSource();
+        return new RedisInvocationSecurityMetadataSource();
     }
 
     @Bean
@@ -84,12 +65,6 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
         return new HttpAuthenticationEntryPoint();
     }
 
-    @Bean
-    @ConditionalOnMissingBean(name = "beforeAuthFilter")
-    public Filter beforeAuthFilter() {
-        return new AccessFilter();
-    }
-
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         if (!securityConfig.isAnonymous()) {
             httpSecurity.anonymous().disable();
@@ -98,7 +73,6 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .requestCache().requestCache(new NullRequestCache())//不缓存request
                 .and()
-                .addFilterBefore(beforeAuthFilter(), ChannelProcessingFilter.class)
                 .authorizeRequests().anyRequest().authenticated()
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override

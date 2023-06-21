@@ -3,9 +3,9 @@ group 'com.guns21'
 apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/2.x.x/spring-boot.gradle')
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'org.springframework.session:spring-session-core'
-    implementation 'org.springframework.session:spring-session-data-redis'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    compile 'org.springframework.boot:spring-boot-starter-data-redis'
+    compile 'org.springframework.session:spring-session-core'
+    compile 'org.springframework.session:spring-session-data-redis'
+    compile 'com.fasterxml.jackson.core:jackson-databind'
 
 }

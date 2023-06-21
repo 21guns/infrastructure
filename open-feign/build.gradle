@@ -4,13 +4,13 @@ apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.github
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
 dependencies {
 
-    implementation project(":spring-data")
+    compile project(":spring-data")
 
-    implementation libraries.guava
-    implementation 'javax.servlet:javax.servlet-api'
-    implementation 'org.slf4j:slf4j-api'
-    implementation 'org.springframework:spring-web'
-    implementation 'io.github.openfeign:feign-core:10.7.0'
-    implementation 'io.github.openfeign:feign-jackson:10.7.0'
-    implementation 'io.github.openfeign.form:feign-form:3.8.0'
+    compile libraries.guava
+    compile 'javax.servlet:javax.servlet-api'
+    compile 'org.slf4j:slf4j-api'
+    compile 'org.springframework:spring-web'
+    compile 'io.github.openfeign:feign-core:10.7.0'
+    compile 'io.github.openfeign:feign-jackson:10.7.0'
+    compile 'io.github.openfeign.form:feign-form:3.8.0'
 }

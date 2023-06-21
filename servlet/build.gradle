@@ -3,8 +3,8 @@ group 'com.guns21'
 apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/2.x.x/spring-boot.gradle')
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
 dependencies {
-    implementation project(":result")
+    compile project(":result")
 
-    implementation 'javax.servlet:javax.servlet-api'
-    implementation libraries.fastjson
+    compile 'javax.servlet:javax.servlet-api'
+    compile libraries.fastjson
 }

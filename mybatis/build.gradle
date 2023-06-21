@@ -5,7 +5,7 @@ apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.github
 
 ext.jacksonVersion = '2.10.0'
 dependencies {
-    implementation project(":common")
+    compile project(":common")
 
     compileOnly "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     compileOnly "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
