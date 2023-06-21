@@ -3,13 +3,13 @@ group 'com.guns21'
 apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/2.x.x/spring-boot.gradle')
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
 dependencies {
-    compile libraries.fastjson
-    compile libraries.commonslang3
+    implementation libraries.fastjson
+    implementation libraries.commonslang3
 
-    compile 'org.springframework:spring-beans'
-    compile 'org.springframework:spring-context'
-    compile 'org.springframework.boot:spring-boot'
-    compile 'org.springframework.data:spring-data-redis'
+    implementation 'org.springframework:spring-beans'
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework.boot:spring-boot'
+    implementation 'org.springframework.data:spring-data-redis'
     compileOnly 'redis.clients:jedis'
-    compile 'org.slf4j:slf4j-api'
+    implementation 'org.slf4j:slf4j-api'
 }

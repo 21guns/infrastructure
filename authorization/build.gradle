@@ -4,8 +4,8 @@ apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.github
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
 
 dependencies {
-//    compile 'com.guns21:authentication:1.0.0-SNAPSHOT'
+//    implementation 'com.guns21:authentication:1.0.0-SNAPSHOT'
 
-    compile project(":authentication")
-    compile project(":redis")
+    implementation project(":authentication")
+    implementation project(":redis")
 }
