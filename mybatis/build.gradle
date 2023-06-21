@@ -1,11 +1,11 @@
 version (Boolean.valueOf(System.getProperty("snapshot")) ? "0.0.1-SNAPSHOT" : "2.0.0")
 group 'com.guns21'
-apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/java.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/2.x.x/java.gradle')
-//apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/java.gradle'
+apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/java.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/3.x/java.gradle')
+//apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/java.gradle'
 
 ext.jacksonVersion = '2.10.0'
 dependencies {
-    compile project(":common")
+    implementation project(":common")
 
     compileOnly "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     compileOnly "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"

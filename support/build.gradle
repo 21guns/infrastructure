@@ -1,20 +1,20 @@
 version (Boolean.valueOf(System.getProperty("snapshot")) ? "0.0.1-SNAPSHOT" : "2.1.0")
 group 'com.guns21'
-apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/2.x.x/spring-boot.gradle')
-//apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
+apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/3.x/spring-boot.gradle')
+//apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle'
 
 dependencies {
-    compile project(":common")
-    compile project(":result")
-    compile project(":spring-data")
-    compile project(":open-feign")
+    implementation project(":common")
+    implementation project(":result")
+    implementation project(":spring-data")
+    implementation project(":open-feign")
 
     compileOnly 'javax.persistence:persistence-api:1.0.2'
-    compile 'javax.annotation:javax.annotation-api'
-    compile 'org.springframework:spring-beans'
-    compile 'org.springframework:spring-context'
-    compile 'org.springframework.boot:spring-boot'
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    implementation 'org.springframework:spring-beans'
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework.boot:spring-boot'
 
-//    compile "org.springframework.boot:spring-boot-starter-web"
+//    implementation "org.springframework.boot:spring-boot-starter-web"
 
 }

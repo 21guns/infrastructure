@@ -1,22 +1,22 @@
 version (Boolean.valueOf(System.getProperty("snapshot")) ? "0.0.1-SNAPSHOT" : "2.0.1")
 group 'com.guns21'
-apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/2.x.x/spring-boot.gradle')
-//apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
+apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/3.x/spring-boot.gradle')
+//apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle'
 
 dependencies {
-    compile project(":common")
-    compile project(":result")
-    compile project(":servlet")
-    compile project(":spring-session")
-    compile project(":spring-mvc")
-    compile project(":login-user")
+    implementation project(":common")
+    implementation project(":result")
+    implementation project(":servlet")
+    implementation project(":spring-session")
+    implementation project(":spring-mvc")
+    implementation project(":login-user")
 
-//    compile 'nl.captcha:SimpleCaptcha:1.3.0'
-    compile 'javax.servlet:javax.servlet-api'
+//    implementation 'nl.captcha:SimpleCaptcha:1.3.0'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
-    compile libraries.commonslang3
-    compile 'org.springframework:spring-web'
-    compile 'org.springframework.data:spring-data-redis'
-    compile 'org.springframework.boot:spring-boot-starter-security'
-    compile 'org.springframework.security:spring-security-cas'
+    implementation libraries.commonslang3
+    implementation 'org.springframework:spring-web'
+    implementation 'org.springframework.data:spring-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-cas'
 }

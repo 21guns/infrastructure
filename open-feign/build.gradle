@@ -1,16 +1,16 @@
 version (Boolean.valueOf(System.getProperty("snapshot")) ? "0.0.1-SNAPSHOT" : "2.0.1")
 group 'com.guns21'
-apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/2.x.x/spring-boot.gradle')
-//apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
+apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/3.x/spring-boot.gradle')
+//apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle'
 dependencies {
 
-    compile project(":spring-data")
+    implementation project(":spring-data")
 
-    compile libraries.guava
-    compile 'javax.servlet:javax.servlet-api'
-    compile 'org.slf4j:slf4j-api'
-    compile 'org.springframework:spring-web'
-    compile 'io.github.openfeign:feign-core:10.7.0'
-    compile 'io.github.openfeign:feign-jackson:10.7.0'
-    compile 'io.github.openfeign.form:feign-form:3.8.0'
+    implementation libraries.guava
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'org.springframework:spring-web'
+    implementation 'io.github.openfeign:feign-core:10.7.0'
+    implementation 'io.github.openfeign:feign-jackson:10.7.0'
+    implementation 'io.github.openfeign.form:feign-form:3.8.0'
 }
