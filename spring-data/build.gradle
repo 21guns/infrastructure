@@ -4,11 +4,11 @@ apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.github
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
 
 dependencies {
-    implementation project(":result")
-    implementation project(":common")
-    implementation libraries.commonslang3
+    api project(":result")
+    api project(":common")
+    api libraries.commonslang3
     implementation 'org.springframework:spring-beans'
-    implementation 'org.springframework:spring-context'
+    api 'org.springframework:spring-context'
     implementation 'org.springframework.data:spring-data-commons'
     compileOnly 'com.github.pagehelper:pagehelper:5.1.10'
 

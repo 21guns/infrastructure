@@ -5,9 +5,9 @@ apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.github
 
 dependencies {
     //id 生成器
-    implementation 'com.sohu:idcenter:1.1.1'
+    api 'com.sohu:idcenter:1.1.1'
     //common
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
-    implementation group: 'commons-codec', name: 'commons-codec', version: '1.13'
-    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.1'
+    api group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    api group: 'commons-codec', name: 'commons-codec', version: '1.13'
+    api group: 'org.apache.commons', name: 'commons-text', version: '1.1'
 }

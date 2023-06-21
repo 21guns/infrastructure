@@ -4,19 +4,19 @@ apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.github
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
 
 dependencies {
-    implementation project(":common")
-    implementation project(":result")
-    implementation project(":servlet")
-    implementation project(":spring-session")
-    implementation project(":spring-mvc")
+    api project(":common")
+    api project(":result")
+    api project(":servlet")
+    api project(":spring-session")
+    api project(":spring-mvc")
     implementation project(":login-user")
 
 //    implementation 'nl.captcha:SimpleCaptcha:1.3.0'
     implementation 'javax.servlet:javax.servlet-api'
 
     implementation libraries.commonslang3
-    implementation 'org.springframework:spring-web'
-    implementation 'org.springframework.data:spring-data-redis'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.security:spring-security-cas'
+    api 'org.springframework:spring-web'
+    api 'org.springframework.data:spring-data-redis'
+    api 'org.springframework.boot:spring-boot-starter-security'
+    api 'org.springframework.security:spring-security-cas'
 }

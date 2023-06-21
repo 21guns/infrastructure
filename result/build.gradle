@@ -4,7 +4,7 @@ apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.github
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/java.gradle'
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:1.7.26'
+    api 'org.slf4j:slf4j-api:1.7.26'
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 }
