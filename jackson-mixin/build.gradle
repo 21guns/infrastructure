@@ -3,19 +3,19 @@ group 'com.guns21'
 apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/2.x.x/spring-boot.gradle')
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/2.x.x/spring-boot.gradle'
 dependencies {
-    compile project(":common")
+    implementation project(":common")
 
-    compile 'org.springframework:spring-beans'
-    compile 'org.springframework:spring-context'
-    compile 'org.springframework:spring-web'
-    compile 'org.springframework:spring-webmvc'
-    compile 'org.springframework.boot:spring-boot-autoconfigure'
-    compile 'com.fasterxml.jackson.core:jackson-databind'
-    compile 'org.slf4j:slf4j-api'
-    compile libraries.guava
-    compile libraries.commonslang3
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+    implementation 'org.springframework:spring-beans'
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework:spring-web'
+    implementation 'org.springframework:spring-webmvc'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.slf4j:slf4j-api'
+    implementation libraries.guava
+    implementation libraries.commonslang3
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
 
 
 }
