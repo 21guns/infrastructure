@@ -6,10 +6,11 @@ dependencies {
     implementation project(":common")
     implementation project(":result")
 
-    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+//    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
     implementation 'org.slf4j:slf4j-api'
     implementation 'org.springframework:spring-web'
-    implementation 'org.springframework:spring-webmvc'
+    api 'org.springframework:spring-webmvc'
     implementation 'org.springframework.security:spring-security-core'
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
     implementation libraries.fastjson

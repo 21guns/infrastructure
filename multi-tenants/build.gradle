@@ -3,7 +3,9 @@ group 'com.guns21'
 apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/3.x/spring-boot.gradle')
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle'
 dependencies {
-    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+//    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
     implementation libraries.commonslang3
 
     implementation 'org.springframework:spring-web'

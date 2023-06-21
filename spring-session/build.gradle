@@ -5,7 +5,7 @@ apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.github
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-core'
-    implementation 'org.springframework.session:spring-session-data-redis'
+    api 'org.springframework.session:spring-session-data-redis'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
 
 }
