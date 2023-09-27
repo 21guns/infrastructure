@@ -3,13 +3,13 @@ package com.guns21.web.method.resolver;
 import com.guns21.common.exception.IllegalInputArgumentException;
 import com.guns21.web.bind.annotation.RequireUuid;
 import com.guns21.web.constant.SpringConstant;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.annotation.ValueConstants;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver;
 import org.springframework.web.multipart.support.MultipartResolutionDelegate;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

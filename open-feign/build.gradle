@@ -9,7 +9,7 @@ dependencies {
     implementation libraries.guava
     implementation 'javax.servlet:javax.servlet-api:4.0.1'
 //    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
-    implementation 'org.slf4j:slf4-api'
+//    implementation 'org.slf4j:slf4-api'
     implementation 'org.springframework:spring-web'
     api 'io.github.openfeign:feign-core:10.7.0'
     api 'io.github.openfeign:feign-jackson:10.7.0'

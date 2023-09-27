@@ -1,6 +1,5 @@
 package com.guns21.session.boot.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +9,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.RedisHt
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
 
-import javax.annotation.PostConstruct;
 
 /**
  * Created by ljj on 17/5/24.
@@ -19,9 +17,6 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class HttpSessionConfig extends RedisHttpSessionConfiguration {
 
-    // unit minutes
-    @Value("${server.servlet.session.timeout:30}")
-    private int sessionTimeout;
 
     /**
      * 通过header传递session ID.
@@ -40,13 +35,6 @@ public class HttpSessionConfig extends RedisHttpSessionConfiguration {
     @ConditionalOnMissingBean(RedisSerializer.class)
     public RedisSerializer springSessionDefaultRedisSerializer() {
         return new GenericJackson2JsonRedisSerializer();
-    }
-
-    @PostConstruct
-    @Override
-    public void init() {
-        super.init();
-        super.setMaxInactiveIntervalInSeconds(sessionTimeout * 60);
     }
 
 }

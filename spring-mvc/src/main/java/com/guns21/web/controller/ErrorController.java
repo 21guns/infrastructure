@@ -1,8 +1,10 @@
 package com.guns21.web.controller;
 
 import com.guns21.domain.result.light.Result;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.Map;
 
@@ -28,7 +29,8 @@ public class ErrorController  {
     @RequestMapping(value = "/error", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public Result error(HttpServletRequest request) {
         WebRequest webRequest = new ServletWebRequest(request);
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(webRequest, false);
+
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(webRequest, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.values()));
         Integer status=(Integer)errorAttributes.get("status");
         String path = (String)errorAttributes.get("path");
         String messageFound = (String)errorAttributes.get("message");
