@@ -1,4 +1,4 @@
-version (Boolean.valueOf(System.getProperty("snapshot")) ? "0.0.1-SNAPSHOT" : "2.0.0")
+version (Boolean.valueOf(System.getProperty("snapshot")) ? "0.0.3-SNAPSHOT" : "3.0.0")
 group 'com.guns21'
 apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/3.x/spring-boot.gradle')
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle'
@@ -10,7 +10,6 @@ dependencies {
 
 //    implementation 'nl.captcha:SimpleCaptcha:1.3.0'
     implementation 'com.github.whvcse:easy-captcha:1.6.2'
-    implementation 'javax.servlet:javax.servlet-api:4.0.1'
 //    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 //    implementation libraries.commonslang3
 //    implementation libraries.fastjson

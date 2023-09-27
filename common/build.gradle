@@ -1,4 +1,4 @@
-version (Boolean.valueOf(System.getProperty("snapshot")) ? "0.0.1-SNAPSHOT" : "2.0.1")
+version (Boolean.valueOf(System.getProperty("snapshot")) ? "0.0.3-SNAPSHOT" : "3.0.0")
 group 'com.guns21'
 apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/java.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/3.x/java.gradle')
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/java.gradle'
