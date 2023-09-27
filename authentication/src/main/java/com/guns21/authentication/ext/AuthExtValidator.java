@@ -1,9 +1,9 @@
 package com.guns21.authentication.ext;
 
 import com.guns21.authentication.api.service.AuthExtValidation;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 

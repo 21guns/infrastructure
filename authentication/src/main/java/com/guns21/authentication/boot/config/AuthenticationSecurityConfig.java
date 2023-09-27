@@ -3,10 +3,14 @@ package com.guns21.authentication.boot.config;
 import com.guns21.authentication.api.service.UserAuthService;
 import com.guns21.authentication.ext.AuthExtValidator;
 import com.guns21.authentication.filter.AccessFilter;
+import com.guns21.authentication.filter.ValidatorFilter;
 import com.guns21.authentication.security.HttpAuthenticationFailureHandler;
 import com.guns21.authentication.security.HttpAuthenticationSuccessHandler;
 import com.guns21.authentication.security.HttpLogoutSuccessHandler;
 import com.guns21.authentication.security.PasswordEncryptAuthenticationProvider;
+import jakarta.annotation.Resource;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,9 +24,9 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -30,20 +34,19 @@ import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
-import javax.annotation.Resource;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
  * 认证
- * * see https://stackoverflow.com/questions/34314084/howto-additionally-add-spring-security-captcha-filter-for-specific-urls-only
+ * migration to  6.0
+ * see https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter
+ * see https://www.baeldung.com/spring-deprecated-websecurityconfigureradapter
  */
 @Configuration
 @EnableWebSecurity
 @Order(100)
 //@ConfigurationProperties(prefix = "com.guns21.security") TODO 当有多处需要注入相同的prefix时不能使用ConfigurationProperties注入
-public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
+public class AuthenticationSecurityConfig {
     @Value("${com.guns21.security.login:/login}")
     private String login;
     @Value("${com.guns21.security.logout:/logout}")
@@ -83,12 +86,6 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
         return new PasswordEncryptAuthenticationProvider(userAuthService);
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider);
-
-    }
-
     @Bean
     public SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry() {
         return new SpringSessionBackedSessionRegistry((FindByIndexNameSessionRepository) this.redisOperationsSessionRepository);
@@ -99,59 +96,54 @@ public class AuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
      * @return
      * @throws Exception
      */
+//    @Bean
+//    public AuthenticationManager authenticationManager(
+//            AuthenticationConfiguration authenticationConfiguration) throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager();
+//    }
     @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+    public AuthenticationManager authenticationManager(
+            AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.authenticationProvider(authenticationProvider);
+        return authenticationManagerBuilder.build();
     }
 
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
+    @Bean
+    public SecurityFilterChain authenticationSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 //当有多个 HttpSecurity patterns 只能匹配Order优先级最好的HttpSecurity
-                .requestMatchers().antMatchers(login, logout)
-                .and().authorizeRequests().anyRequest().authenticated()
-                .and()
+                .authorizeHttpRequests(auth -> auth.requestMatchers(login, logout).permitAll()
+                            .anyRequest().authenticated()
+                )
                 .addFilterBefore(beforeLoginFilter(), ChannelProcessingFilter.class)
-                .addFilterBefore(new Filter() {
-                    @Override
-                    public void init(FilterConfig filterConfig) throws ServletException {
-                    }
-
-                    @Override
-                    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-                        /**
-                         * 通用扩展验证，用于其他项目在引用时，自定义validation
-                         */
-                        if (!authExtValidator.run((HttpServletRequest) request)) {
-                            throw new InsufficientAuthenticationException(authExtValidator.getError());
-                        }
-                        filterChain.doFilter(request, response);
-                    }
-
-                    @Override
-                    public void destroy() {
-                    }
-                }, UsernamePasswordAuthenticationFilter.class)
-                .formLogin().loginProcessingUrl(login)
-                .usernameParameter(usernameParameter)
-                .passwordParameter(passwordParameter)
-                .successHandler(authenticationSuccessHandler()).failureHandler(httpAuthenticationFailureHandler)
-                .and().logout().logoutUrl(logout)
-                .logoutSuccessHandler(httpLogoutSuccessHandler).invalidateHttpSession(true)
-                .and().csrf().disable();
+                .addFilterBefore(new ValidatorFilter(authExtValidator), UsernamePasswordAuthenticationFilter.class)
+                .formLogin(formLogin -> formLogin.loginPage(login)
+                                .usernameParameter(usernameParameter)
+                                .passwordParameter(passwordParameter)
+                                .successHandler(authenticationSuccessHandler())
+                                .failureHandler(httpAuthenticationFailureHandler)
+                )
+                .logout(fromLogout -> fromLogout.logoutUrl(logout)
+                                .logoutSuccessHandler(httpLogoutSuccessHandler)
+                                .invalidateHttpSession(true)
+                )
+                .csrf(csrf -> csrf.disable());
 
         //同一个账户多次登录限制，针对等是需要对之前的session进行表示
         httpSecurity
-                .sessionManagement()
-                .maximumSessions(securityConfig.getMaximumSessions())
-//                .maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
-                .sessionRegistry(springSessionBackedSessionRegistry());
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.maximumSessions(securityConfig.getMaximumSessions())
+                                //.maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
+                                .sessionRegistry(springSessionBackedSessionRegistry())
+                );
+
+        return httpSecurity.build();
 
     }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        Pbkdf2PasswordEncoder pbkdf2PasswordEncoder = new Pbkdf2PasswordEncoder("8iekd,a.oa0923.",1850,256);
+        Pbkdf2PasswordEncoder pbkdf2PasswordEncoder = new Pbkdf2PasswordEncoder("8iekd,a.oa0923.",1850,256, Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA1);
         return pbkdf2PasswordEncoder;
     }
 

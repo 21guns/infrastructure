@@ -1,6 +1,7 @@
 package com.guns21.servlet.util;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.net.*;
 
 /**

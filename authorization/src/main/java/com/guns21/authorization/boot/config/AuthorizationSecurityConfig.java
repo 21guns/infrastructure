@@ -1,13 +1,10 @@
 package com.guns21.authorization.boot.config;
 
 import com.guns21.authentication.boot.config.SecurityConfig;
-import com.guns21.authorization.security.HttpAccessDecisionManager;
-import com.guns21.authorization.security.HttpAccessDeniedHandler;
-import com.guns21.authorization.security.HttpAuthenticationEntryPoint;
-import com.guns21.authorization.security.HttpSessionInformationExpiredStrategy;
-import com.guns21.authorization.security.RedisInvocationSecurityMetadataSource;
+import com.guns21.authorization.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -16,7 +13,11 @@ import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.UrlAuthorizationConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.savedrequest.NullRequestCache;
@@ -31,7 +32,7 @@ import java.util.Objects;
 @Configuration
 @EnableWebSecurity
 @Order(110)
-public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
+public class AuthorizationSecurityConfig {
 
     @Value("${com.guns21.security.permit.matcher:ant}")
     private String matcher;
@@ -65,56 +66,51 @@ public class AuthorizationSecurityConfig extends WebSecurityConfigurerAdapter {
         return new HttpAuthenticationEntryPoint();
     }
 
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        if (!securityConfig.isAnonymous()) {
-            httpSecurity.anonymous().disable();
-        }
+    @Bean
+    public AccessDecisionManagerAuthorizationManagerAdapter accessDecisionManagerAuthorizationManagerAdapter() {
+        return new AccessDecisionManagerAuthorizationManagerAdapter();
+    }
 
+    @Bean
+    public SecurityFilterChain authorizationSecurityFilterChain(HttpSecurity httpSecurity,ApplicationContext applicationContext) throws Exception {
+        if (!securityConfig.isAnonymous()) {
+            httpSecurity.anonymous(AbstractHttpConfigurer::disable);
+        }
         httpSecurity
-                .requestCache().requestCache(new NullRequestCache())//不缓存request
-                .and()
-                .authorizeRequests().anyRequest().authenticated()
-                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-                    @Override
-                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
-                        o.setSecurityMetadataSource(securityMetadataSource());
-                        return o;
-                    }
-                })
-                .accessDecisionManager(accessDecisionManager())
-                .and().exceptionHandling()
-                .authenticationEntryPoint(httpAuthenticationEntryPoint())
-                .accessDeniedHandler(new HttpAccessDeniedHandler())
-                .and().csrf().disable();
+                .requestCache(cache -> cache.requestCache(new NullRequestCache()))//不缓存request
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .exceptionHandling(exception-> exception.authenticationEntryPoint(httpAuthenticationEntryPoint())
+//                                .accessDeniedHandler(new HttpAccessDeniedHandler())
+                )
+                .csrf(csrf -> csrf.disable());
 
         //同一个账户多次登录限制，对url访问进行监控
         httpSecurity
-                .sessionManagement()
-                .maximumSessions(securityConfig.getMaximumSessions())
-//                .maxSessionsPreventsLogin(true) 为true是多次登录时抛出异常
-                .sessionRegistry(springSessionBackedSessionRegistry)
-                //被登录时，第一次返回的错误信息
-                .expiredSessionStrategy(sessionInformationExpiredStrategy());
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.maximumSessions(securityConfig.getMaximumSessions())
+//                                .maxSessionsPreventsLogin(true) //为true是多次登录时抛出异常
+                                .sessionRegistry(springSessionBackedSessionRegistry)
+                                //被登录时，第一次返回的错误信息
+                                .expiredSessionStrategy(sessionInformationExpiredStrategy()));
 
-
+        return httpSecurity.build();
     }
 
-    @Override
-    public void configure(WebSecurity webSecurity) throws Exception {
-        WebSecurity.IgnoredRequestConfigurer ignoredRequestConfigurer = webSecurity
-                .ignoring();
-        //some help url
-        ignoredRequestConfigurer.antMatchers("/error");
-        if (Objects.nonNull(securityPermitConfig.getPermitPages())) {
-            if ("regex".equalsIgnoreCase(matcher)) {
-                ignoredRequestConfigurer.regexMatchers(securityPermitConfig.getPermitPages());
-            } else if ("ant".equalsIgnoreCase(matcher)) {
-                ignoredRequestConfigurer.antMatchers(securityPermitConfig.getPermitPages());
-            } else {
-                ignoredRequestConfigurer.antMatchers(securityPermitConfig.getPermitPages());
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return  web -> {
+            WebSecurity.IgnoredRequestConfigurer ignoring = web.ignoring();
+            ignoring.requestMatchers("/error");
+            if (Objects.nonNull(securityPermitConfig.getPermitPages())) {
+                if ("regex".equalsIgnoreCase(matcher)) {
+                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
+                } else if ("ant".equalsIgnoreCase(matcher)) {
+                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
+                } else {
+                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
+                }
             }
-
-        }
+        };
     }
 
 

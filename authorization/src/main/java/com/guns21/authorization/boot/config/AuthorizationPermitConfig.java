@@ -3,12 +3,12 @@ package com.guns21.authorization.boot.config;
 import com.guns21.authentication.boot.config.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
@@ -19,7 +19,7 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 @Configuration
 @EnableWebSecurity
 @Order(101)
-public class AuthorizationPermitConfig extends WebSecurityConfigurerAdapter {
+public class AuthorizationPermitConfig {
     @Value("${com.guns21.security.permit.authorize-any:false}")
     private boolean permitAny;
 
@@ -32,28 +32,30 @@ public class AuthorizationPermitConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
 
-    @Override
-    public void init(WebSecurity web) throws Exception {
+
+    @Bean
+    public SecurityFilterChain authorizationPermitSecurityFilterChain(HttpSecurity http) throws Exception {
         if (permitAny) {
-            super.init(web);
+            http
+                .authorizeHttpRequests(
+                        authorize -> authorize
+                                .anyRequest().permitAll()
+                )
+                .csrf(csrf -> csrf.disable());
+
+
+            //同一个账户多次登录限制，对url访问进行监控
+            http
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.maximumSessions(securityConfig.getMaximumSessions())
+//                                .maxSessionsPreventsLogin(true) //为true是多次登录时抛出异常
+                                .sessionRegistry(springSessionBackedSessionRegistry)
+                                //被登录时，第一次返回的错误信息
+                                .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                );
+            return  http.build();
         }
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests().anyRequest().permitAll()
-                .and().csrf().disable();
-
-
-        //同一个账户多次登录限制，对url访问进行监控
-        http
-                .sessionManagement()
-                .maximumSessions(securityConfig.getMaximumSessions())
-//                .maxSessionsPreventsLogin(true) 为true是多次登录时抛出异常
-                .sessionRegistry(springSessionBackedSessionRegistry)
-                //被登录时，第一次返回的错误信息
-                .expiredSessionStrategy(sessionInformationExpiredStrategy);
+        return  null;
     }
 
 }

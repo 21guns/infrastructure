@@ -9,7 +9,7 @@ dependencies {
     testImplementation "io.rest-assured:spring-mock-mvc"
     testImplementation "io.rest-assured:rest-assured"
     testImplementation "io.rest-assured:json-schema-validator"
-
+    testImplementation "junit:junit"
     testImplementation "org.mockito:mockito-core:3.1.0"
 }
 

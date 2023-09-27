@@ -49,7 +49,7 @@ public class JpaConfig {
         entityManagerFactory.setJpaVendorAdapter(hibernateJpaVendorAdapter);
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.globally_quoted_identifiers", true);
-        jpaProperties.put("hibernate.dialect", org.hibernate.dialect.MySQL5Dialect.class);
+        jpaProperties.put("hibernate.dialect", org.hibernate.dialect.MySQLDialect.class);
         jpaProperties.put("hibernate.multi_tenant_connection_provider", multiTenantConnectionProvider);
         jpaProperties.put("hibernate.tenant_identifier_resolver", currentTenantIdentifierResolver);
         jpaProperties.put("hibernate.multiTenancy", "SCHEMA");

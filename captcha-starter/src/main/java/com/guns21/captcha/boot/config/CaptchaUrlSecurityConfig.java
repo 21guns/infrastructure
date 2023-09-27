@@ -1,11 +1,12 @@
 package com.guns21.captcha.boot.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * 对产生验证码的url开放权限
@@ -14,7 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 @Order(20)
 @ConfigurationProperties(prefix = "com.guns21.captcha")
-public class CaptchaUrlSecurityConfig extends WebSecurityConfigurerAdapter {
+public class CaptchaUrlSecurityConfig {
 
     //产生captcha的url
     private String url = "/api/v1/captcha";
@@ -25,11 +26,12 @@ public class CaptchaUrlSecurityConfig extends WebSecurityConfigurerAdapter {
      * @param httpSecurity
      * @throws Exception
      */
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
+    @Bean
+    public SecurityFilterChain captchaSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
 
-        httpSecurity.requestMatchers().antMatchers(url).and().authorizeRequests().anyRequest().permitAll();
+        httpSecurity.authorizeHttpRequests(authorize -> authorize.requestMatchers(url).permitAll());
+        return httpSecurity.build();
     }
 
     public void setUrl(String url) {

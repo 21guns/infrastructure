@@ -11,8 +11,7 @@ dependencies {
 
     implementation group: 'com.qiniu', name: 'qiniu-java-sdk', version: '7.2.8'
 
-    implementation 'javax.servlet:javax.servlet-api:4.0.1'
-//    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'jakarta.servlet:jakarta.servlet-api'
     implementation 'org.springframework:spring-webmvc'
     implementation 'org.springframework.boot:spring-boot'
     implementation libraries.guava

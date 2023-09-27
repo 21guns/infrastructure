@@ -1,6 +1,6 @@
 package com.guns21.authentication.api.service;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Created by ljj on 17/8/15.

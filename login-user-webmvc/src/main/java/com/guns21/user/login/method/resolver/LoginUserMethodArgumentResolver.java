@@ -4,6 +4,7 @@ import com.guns21.common.exception.CurrentUserIsNullException;
 import com.guns21.user.login.annotation.CurrentUser;
 import com.guns21.user.login.constant.LoginConstant;
 import com.guns21.user.login.domain.UserInfo;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -12,7 +13,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Objects;
 
