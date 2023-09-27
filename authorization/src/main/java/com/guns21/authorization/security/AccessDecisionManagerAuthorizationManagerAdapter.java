@@ -15,6 +15,12 @@ import java.util.function.Supplier;
 public class AccessDecisionManagerAuthorizationManagerAdapter implements AuthorizationManager<Object> {
     private  AccessDecisionManager accessDecisionManager;
     private  SecurityMetadataSource securityMetadataSource;
+
+    public AccessDecisionManagerAuthorizationManagerAdapter(AccessDecisionManager accessDecisionManager, SecurityMetadataSource securityMetadataSource) {
+        this.accessDecisionManager = accessDecisionManager;
+        this.securityMetadataSource = securityMetadataSource;
+    }
+
     @Override
     public AuthorizationDecision check(Supplier<Authentication> authentication, Object object) {
         try {

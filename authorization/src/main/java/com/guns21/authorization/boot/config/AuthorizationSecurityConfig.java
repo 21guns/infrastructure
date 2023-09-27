@@ -68,7 +68,7 @@ public class AuthorizationSecurityConfig {
 
     @Bean
     public AccessDecisionManagerAuthorizationManagerAdapter accessDecisionManagerAuthorizationManagerAdapter() {
-        return new AccessDecisionManagerAuthorizationManagerAdapter();
+        return new AccessDecisionManagerAuthorizationManagerAdapter(accessDecisionManager(), securityMetadataSource());
     }
 
     @Bean
