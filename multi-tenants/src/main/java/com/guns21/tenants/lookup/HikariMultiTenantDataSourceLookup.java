@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.lang.reflect.InvocationTargetException;
-import java.net.*;
+import java.net.URI;
 
 /**
  * 针对Hikari数据源的多租户配置

@@ -9,7 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.IOException;
 
 /**
  * Created by ljj on 17/6/20.

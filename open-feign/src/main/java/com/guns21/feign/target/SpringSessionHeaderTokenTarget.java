@@ -3,12 +3,11 @@ package com.guns21.feign.target;
 import feign.Request;
 import feign.RequestTemplate;
 import feign.Target;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Objects;
 

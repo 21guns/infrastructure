@@ -1,8 +1,7 @@
 package com.guns21.event.domain;
 
-import java.io.*;
+import java.io.Serializable;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Created by jliu on 2017/6/2.

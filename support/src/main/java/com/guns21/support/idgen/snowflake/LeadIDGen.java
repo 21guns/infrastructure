@@ -1,8 +1,6 @@
 package com.guns21.support.idgen.snowflake;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.guns21.data.domain.result.MessageResult;
-import com.guns21.feign.target.SpringSessionHeaderTokenTarget;
 import com.guns21.support.idgen.IDGen;
 import feign.Feign;
 import feign.Headers;

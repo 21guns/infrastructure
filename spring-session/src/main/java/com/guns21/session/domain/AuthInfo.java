@@ -1,6 +1,6 @@
 package com.guns21.session.domain;
 
-import java.io.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**

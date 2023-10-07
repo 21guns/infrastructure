@@ -7,6 +7,7 @@ import com.guns21.upload.Constants;
 import com.guns21.upload.boot.config.QiNiuConfig;
 import com.guns21.upload.boot.config.UploadConfig;
 import com.guns21.upload.provider.Attachment;
+import jakarta.servlet.http.HttpServletRequest;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
@@ -17,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.security.MessageDigest;
 import java.time.LocalDate;

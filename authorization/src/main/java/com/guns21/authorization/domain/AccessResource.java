@@ -1,6 +1,5 @@
 package com.guns21.authorization.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 

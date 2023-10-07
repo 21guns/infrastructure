@@ -9,8 +9,7 @@ import com.guns21.authentication.security.HttpAuthenticationSuccessHandler;
 import com.guns21.authentication.security.HttpLogoutSuccessHandler;
 import com.guns21.authentication.security.PasswordEncryptAuthenticationProvider;
 import jakarta.annotation.Resource;
-import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -33,8 +31,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
-
-import java.io.IOException;
 
 /**
  * 认证

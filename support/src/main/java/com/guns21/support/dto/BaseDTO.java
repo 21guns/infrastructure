@@ -2,7 +2,7 @@ package com.guns21.support.dto;
 
 import lombok.Data;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * @author jliu

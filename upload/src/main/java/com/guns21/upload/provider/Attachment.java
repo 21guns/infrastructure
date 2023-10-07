@@ -1,6 +1,6 @@
 package com.guns21.upload.provider;
 
-import java.io.*;
+import java.io.Serializable;
 
 public class Attachment implements Serializable {
 

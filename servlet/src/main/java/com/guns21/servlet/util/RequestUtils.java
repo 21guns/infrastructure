@@ -2,7 +2,8 @@ package com.guns21.servlet.util;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.net.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * Created by gy on 2016/1/29.

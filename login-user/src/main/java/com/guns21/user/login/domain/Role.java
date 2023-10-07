@@ -3,7 +3,7 @@ package com.guns21.user.login.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * Created by ljj on 17/7/14.

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
 import com.guns21.user.login.domain.Role;
 
-import java.io.*;
+import java.io.IOException;
 
 class RoleDeserializer extends JsonDeserializer<Role> {
     RoleDeserializer() {

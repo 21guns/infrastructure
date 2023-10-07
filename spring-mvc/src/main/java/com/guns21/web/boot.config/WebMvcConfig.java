@@ -4,7 +4,6 @@ import com.guns21.common.enums.ValuableEnum;
 import com.guns21.common.util.ObjectUtils;
 import com.guns21.web.formatter.ValuableEnumFormatter;
 import com.guns21.web.method.resolver.RequireUuidMethodArgumentResolver;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

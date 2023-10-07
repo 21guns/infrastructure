@@ -2,9 +2,8 @@ package com.guns21.user.login.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
-import java.io.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**

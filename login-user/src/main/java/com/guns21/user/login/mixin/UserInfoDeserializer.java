@@ -11,10 +11,9 @@ import com.fasterxml.jackson.databind.node.MissingNode;
 import com.guns21.user.login.domain.Role;
 import com.guns21.user.login.domain.UserInfo;
 
-import java.io.*;
-import java.util.Arrays;
-import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 class UserInfoDeserializer extends JsonDeserializer<UserInfo> {
     UserInfoDeserializer() {
