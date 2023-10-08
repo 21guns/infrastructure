@@ -1,6 +1,7 @@
 package com.guns21.assembler;
 
 
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -9,7 +10,6 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
 
-import javax.annotation.PostConstruct;
 import java.util.Set;
 import java.util.regex.Pattern;
 

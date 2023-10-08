@@ -6,6 +6,6 @@ apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.github
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
-    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    implementation 'jakarta.annotation:jakarta.annotation-api'
     implementation 'org.slf4j:slf4j-api'
 }

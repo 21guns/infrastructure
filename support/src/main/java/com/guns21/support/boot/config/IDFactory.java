@@ -7,11 +7,11 @@ import com.guns21.support.idgen.IDGen;
 import com.guns21.support.idgen.snowflake.LeadIDGen;
 import com.guns21.support.idgen.snowflake.SohuIDGen;
 import com.sohu.idcenter.IdWorker;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;

@@ -3,8 +3,6 @@ group 'com.guns21'
 apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/3.x/spring-boot.gradle')
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle'
 dependencies {
-    api 'javax.servlet:javax.servlet-api:4.0.1'
-//    api 'jakarta.servlet:jakarta.servlet-api:6.0.0'
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
     implementation 'org.springframework.data:spring-data-redis'
     implementation 'org.springframework.security:spring-security-cas'
