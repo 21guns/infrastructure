@@ -1,6 +1,6 @@
 package com.guns21.web.servlet;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.guns21.domain.result.light.Result;
 import com.guns21.web.annotation.AuthAnnotation;
 import com.guns21.web.constant.SpringConstant;
