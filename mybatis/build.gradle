@@ -10,6 +10,6 @@ dependencies {
     compileOnly "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     compileOnly "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
     compileOnly "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-    compileOnly 'org.mybatis:mybatis:3.5.3'
-    compileOnly 'com.github.pagehelper:pagehelper:5.1.10'
+    compileOnly 'org.mybatis:mybatis:3.5.13'
+    compileOnly 'com.github.pagehelper:pagehelper:5.3.3'
 }
