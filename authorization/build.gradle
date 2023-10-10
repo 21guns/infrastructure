@@ -6,6 +6,6 @@ apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.github
 dependencies {
 //    implementation 'com.guns21:authentication:1.0.0-SNAPSHOT'
 
-    implementation project(":authentication")
+    api project(":authentication")
     implementation project(":redis")
 }

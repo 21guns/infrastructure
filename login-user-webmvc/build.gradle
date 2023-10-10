@@ -3,8 +3,8 @@ group 'com.guns21'
 apply from: (Boolean.valueOf(System.getProperty("github")) ? 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle' : 'https://gitee.com/21hulk/java-gradle/raw/3.x/spring-boot.gradle')
 //apply from: 'https://raw.githubusercontent.com/21guns/java-gradle/3.x/spring-boot.gradle'
 dependencies {
-    implementation project(":common")
-    implementation project(":login-user")
+    api project(":common")
+    api project(":login-user")
     implementation 'jakarta.servlet:jakarta.servlet-api'
     implementation 'org.springframework:spring-webmvc'
 }
