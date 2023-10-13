@@ -20,4 +20,5 @@ include 'assembler-starter'
 include 'event'
 include 'mybatis'
 include 'open-feign'
+include 'spring'
 
