@@ -59,8 +59,6 @@ public class AuthenticationSecurityConfig {
     private HttpAuthenticationFailureHandler httpAuthenticationFailureHandler;
     @Autowired
     private RedisIndexedSessionRepository redisOperationsSessionRepository;
-    @Resource(name = "passwordAuthenticationProvider")
-    private AuthenticationProvider authenticationProvider;
     @Autowired
     private AuthExtValidator authExtValidator;
 
@@ -99,8 +97,8 @@ public class AuthenticationSecurityConfig {
 //    }
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.authenticationProvider(authenticationProvider);
+            AuthenticationManagerBuilder authenticationManagerBuilder, @Qualifier("passwordUserAuthService") UserAuthService userAuthService) throws Exception {
+        authenticationManagerBuilder.authenticationProvider(passwordAuthenticationProvider(userAuthService));
         return authenticationManagerBuilder.build();
     }
 
