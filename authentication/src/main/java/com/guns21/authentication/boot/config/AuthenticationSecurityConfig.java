@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -29,6 +31,7 @@ import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.SessionRepository;
 import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
@@ -58,10 +61,13 @@ public class AuthenticationSecurityConfig {
     @Autowired
     private HttpAuthenticationFailureHandler httpAuthenticationFailureHandler;
     @Autowired
-    private RedisIndexedSessionRepository redisOperationsSessionRepository;
-    @Autowired
     private AuthExtValidator authExtValidator;
 
+    @Bean
+    @Primary
+    public SessionRepository redisIndexedSessionRepository(RedisTemplate<String, Object> redisTemplate) {
+        return new RedisIndexedSessionRepository(redisTemplate);
+    }
     @Bean
     @ConditionalOnMissingBean(name = "beforeLoginFilter")
     public Filter beforeLoginFilter() {
@@ -81,8 +87,8 @@ public class AuthenticationSecurityConfig {
     }
 
     @Bean
-    public SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry() {
-        return new SpringSessionBackedSessionRegistry((FindByIndexNameSessionRepository) this.redisOperationsSessionRepository);
+    public SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry(RedisTemplate<String, Object> redisTemplate) {
+        return new SpringSessionBackedSessionRegistry((FindByIndexNameSessionRepository) redisIndexedSessionRepository(redisTemplate));
     }
 
     /**
@@ -103,7 +109,7 @@ public class AuthenticationSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain authenticationSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain authenticationSecurityFilterChain(HttpSecurity httpSecurity, RedisTemplate<String, Object> redisTemplate) throws Exception {
         httpSecurity
                 //当有多个 HttpSecurity patterns 只能匹配Order优先级最好的HttpSecurity
                 .authorizeHttpRequests(auth -> auth.requestMatchers(login, logout).permitAll()
@@ -128,7 +134,7 @@ public class AuthenticationSecurityConfig {
                 .sessionManagement(sessionManagement ->
                         sessionManagement.maximumSessions(securityConfig.getMaximumSessions())
                                 //.maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
-                                .sessionRegistry(springSessionBackedSessionRegistry())
+                                .sessionRegistry(springSessionBackedSessionRegistry(redisTemplate))
                 );
 
         return httpSecurity.build();
