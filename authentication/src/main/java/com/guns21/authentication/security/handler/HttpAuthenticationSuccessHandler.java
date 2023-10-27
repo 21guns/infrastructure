@@ -1,4 +1,4 @@
-package com.guns21.authentication.security;
+package com.guns21.authentication.security.handler;
 
 import com.guns21.domain.result.light.Result;
 import com.guns21.servlet.util.ResponseUtils;

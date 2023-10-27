@@ -1,4 +1,4 @@
-package com.guns21.authentication.security;
+package com.guns21.authentication.security.handler;
 
 import com.guns21.domain.result.light.Result;
 import com.guns21.servlet.util.ResponseUtils;
@@ -15,7 +15,6 @@ import java.io.IOException;
 /**
  * Created by ljj on 17/6/22.
  */
-@Component
 public class HttpLogoutSuccessHandler implements LogoutSuccessHandler {
     @Autowired
     private MessageSourceAccessor messageSourceAccessor;

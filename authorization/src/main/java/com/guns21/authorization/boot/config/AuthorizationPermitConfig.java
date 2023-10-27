@@ -18,7 +18,6 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
  */
 @Configuration
 @EnableWebSecurity
-@Order(101)
 public class AuthorizationPermitConfig {
     @Value("${com.guns21.security.permit.authorize-any:false}")
     private boolean permitAny;
@@ -34,6 +33,7 @@ public class AuthorizationPermitConfig {
 
 
     @Bean
+    @Order(101)
     public SecurityFilterChain authorizationPermitSecurityFilterChain(HttpSecurity http) throws Exception {
         if (permitAny) {
             http

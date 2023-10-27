@@ -1,8 +1,9 @@
-package com.guns21.authentication.security;
+package com.guns21.authentication.security.provider;
 
 import com.guns21.authentication.api.entity.AuthUser;
 import com.guns21.authentication.api.service.UserAuthService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,10 +15,10 @@ import java.util.Objects;
 /**
  * 验证码登录
  */
-public class PasswordEqualsAuthenticationProvider extends AbstractAuthenticationProvider {
+public class CodeAuthenticationProvider extends AbstractAuthenticationProvider {
 
-    public PasswordEqualsAuthenticationProvider(UserAuthService userAuthService) {
-        super(userAuthService);
+    public CodeAuthenticationProvider(MessageSourceAccessor messageSourceAccessor, UserAuthService userAuthService) {
+        super(messageSourceAccessor, userAuthService);
     }
 
     @Override
@@ -34,12 +35,12 @@ public class PasswordEqualsAuthenticationProvider extends AbstractAuthentication
     @Override
     protected Authentication buildAuthentication(UserDetails userDetails) {
 
-        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        return new CodeAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+        return CodeAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }
 

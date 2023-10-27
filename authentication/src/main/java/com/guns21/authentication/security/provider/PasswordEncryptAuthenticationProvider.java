@@ -1,8 +1,8 @@
-package com.guns21.authentication.security;
+package com.guns21.authentication.security.provider;
 
 import com.guns21.authentication.api.entity.AuthUser;
 import com.guns21.authentication.api.service.UserAuthService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,11 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 public class PasswordEncryptAuthenticationProvider extends AbstractAuthenticationProvider {
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public PasswordEncryptAuthenticationProvider(UserAuthService userAuthService) {
-        super(userAuthService);
+    public PasswordEncryptAuthenticationProvider(MessageSourceAccessor messageSourceAccessor, UserAuthService userAuthService, PasswordEncoder passwordEncoder) {
+        super(messageSourceAccessor, userAuthService);
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class PasswordEncryptAuthenticationProvider extends AbstractAuthenticatio
 
     @Override
     protected Authentication buildAuthentication(UserDetails userDetails) {
-        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        return UsernamePasswordAuthenticationToken.authenticated(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
     }
 
     @Override

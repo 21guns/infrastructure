@@ -9,7 +9,14 @@ import java.util.List;
 
 @Configuration
 public class SecurityConfig {
-
+    @Value("${com.guns21.security.login:/login}")
+    private String login;
+    @Value("${com.guns21.security.logout:/logout}")
+    private String logout;
+    @Value("${com.guns21.security.username-parameter:username}")
+    private String usernameParameter;
+    @Value("${com.guns21.security.password-parameter:password}")
+    private String passwordParameter;
     /**
      * false:标识禁用匿名访问
      */
@@ -18,6 +25,22 @@ public class SecurityConfig {
 
     @Value("${com.guns21.session.maximum:1}")
     private int maximumSessions;
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getLogout() {
+        return logout;
+    }
+
+    public String getUsernameParameter() {
+        return usernameParameter;
+    }
+
+    public String getPasswordParameter() {
+        return passwordParameter;
+    }
 
     public boolean isAnonymous() {
         return anonymous;

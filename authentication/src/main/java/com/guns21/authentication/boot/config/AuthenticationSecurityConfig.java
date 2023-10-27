@@ -4,35 +4,32 @@ import com.guns21.authentication.api.service.UserAuthService;
 import com.guns21.authentication.ext.AuthExtValidator;
 import com.guns21.authentication.filter.AccessFilter;
 import com.guns21.authentication.filter.ValidatorFilter;
-import com.guns21.authentication.security.HttpAuthenticationFailureHandler;
-import com.guns21.authentication.security.HttpAuthenticationSuccessHandler;
-import com.guns21.authentication.security.HttpLogoutSuccessHandler;
-import com.guns21.authentication.security.PasswordEncryptAuthenticationProvider;
-import jakarta.annotation.Resource;
+import com.guns21.authentication.security.handler.HttpAuthenticationFailureHandler;
+import com.guns21.authentication.security.handler.HttpAuthenticationSuccessHandler;
+import com.guns21.authentication.security.handler.HttpLogoutSuccessHandler;
+import com.guns21.authentication.security.provider.PasswordEncryptAuthenticationProvider;
 import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.session.FindByIndexNameSessionRepository;
-import org.springframework.session.SessionRepository;
 import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
@@ -44,37 +41,16 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
  */
 @Configuration
 @EnableWebSecurity
-@Order(100)
-//@ConfigurationProperties(prefix = "com.guns21.security") TODO 当有多处需要注入相同的prefix时不能使用ConfigurationProperties注入
 public class AuthenticationSecurityConfig {
-    @Value("${com.guns21.security.login:/login}")
-    private String login;
-    @Value("${com.guns21.security.logout:/logout}")
-    private String logout;
-    @Value("${com.guns21.security.username-parameter:username}")
-    private String usernameParameter;
-    @Value("${com.guns21.security.password-parameter:password}")
-    private String passwordParameter;
-    @Autowired
-    private SecurityConfig securityConfig;
-    @Autowired
-    private HttpLogoutSuccessHandler httpLogoutSuccessHandler;
-    @Autowired
-    private HttpAuthenticationFailureHandler httpAuthenticationFailureHandler;
-    @Autowired
-    private AuthExtValidator authExtValidator;
 
-    @Bean
-    @Primary
-    public SessionRepository redisIndexedSessionRepository(RedisTemplate<String, Object> redisTemplate) {
-        return new RedisIndexedSessionRepository(redisTemplate);
-    }
+//    @Autowired
+//    private AuthExtValidator authExtValidator;
+
     @Bean
     @ConditionalOnMissingBean(name = "beforeLoginFilter")
     public Filter beforeLoginFilter() {
         return new AccessFilter();
     }
-
     @Bean
     @ConditionalOnMissingBean(AuthenticationSuccessHandler.class)
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
@@ -82,14 +58,30 @@ public class AuthenticationSecurityConfig {
     }
 
     @Bean
-    @ConditionalOnMissingBean(name = "passwordAuthenticationProvider")
-    public AuthenticationProvider passwordAuthenticationProvider(@Qualifier("passwordUserAuthService") UserAuthService userAuthService) {
-        return new PasswordEncryptAuthenticationProvider(userAuthService);
+    public LogoutSuccessHandler httpLogoutSuccessHandler() {
+        return new HttpLogoutSuccessHandler();
     }
 
     @Bean
-    public SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry(RedisTemplate<String, Object> redisTemplate) {
-        return new SpringSessionBackedSessionRegistry((FindByIndexNameSessionRepository) redisIndexedSessionRepository(redisTemplate));
+    public AuthenticationFailureHandler httpAuthenticationFailureHandler(){
+        return new HttpAuthenticationFailureHandler();
+    }
+
+    @Bean
+    public AuthenticationProvider passwordAuthenticationProvider(@Qualifier("passwordUserAuthService") UserAuthService userAuthService,
+                                                                 MessageSourceAccessor messageSourceAccessor,
+                                                                 PasswordEncoder passwordEncoder) {
+        return new PasswordEncryptAuthenticationProvider(messageSourceAccessor, userAuthService, passwordEncoder);
+    }
+
+//    @Bean
+//    public RedisIndexedSessionRepository redisIndexedSessionRepository(RedisTemplate<String, Object> redisTemplate) {
+//        return new RedisIndexedSessionRepository(redisTemplate);
+//    }
+
+    @Bean
+    public SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry(RedisIndexedSessionRepository redisOperationsSessionRepository) {
+        return new SpringSessionBackedSessionRegistry<>(redisOperationsSessionRepository);
     }
 
     /**
@@ -102,38 +94,34 @@ public class AuthenticationSecurityConfig {
 //            AuthenticationConfiguration authenticationConfiguration) throws Exception {
 //        return authenticationConfiguration.getAuthenticationManager();
 //    }
-    @Bean
-    public AuthenticationManager authenticationManager(@Qualifier("passwordUserAuthService") UserAuthService userAuthService) throws Exception {
-        return new ProviderManager(passwordAuthenticationProvider(userAuthService));
-    }
 
     @Bean
-    public SecurityFilterChain authenticationSecurityFilterChain(HttpSecurity httpSecurity, RedisTemplate<String, Object> redisTemplate) throws Exception {
+    @Order(100)
+    public SecurityFilterChain authenticationSecurityFilterChain(HttpSecurity httpSecurity, SecurityConfig securityConfig,
+                                                                 SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry) throws Exception {
         httpSecurity
                 //当有多个 HttpSecurity patterns 只能匹配Order优先级最好的HttpSecurity
-                .authorizeHttpRequests(auth -> auth.requestMatchers(login, logout).permitAll()
-                            .anyRequest().authenticated()
-                )
-                .addFilterBefore(beforeLoginFilter(), ChannelProcessingFilter.class)
-                .addFilterBefore(new ValidatorFilter(authExtValidator), UsernamePasswordAuthenticationFilter.class)
-                .formLogin(formLogin -> formLogin.loginPage(login)
-                                .usernameParameter(usernameParameter)
-                                .passwordParameter(passwordParameter)
+                .securityMatcher(securityConfig.getLogin(), securityConfig.getLogout())
+//                .addFilterBefore(beforeLoginFilter(), ChannelProcessingFilter.class)
+//                .addFilterBefore(new ValidatorFilter(authExtValidator), UsernamePasswordAuthenticationFilter.class)
+                .formLogin(formLogin -> formLogin.loginProcessingUrl(securityConfig.getLogin())
+                                .usernameParameter(securityConfig.getUsernameParameter())
+                                .passwordParameter(securityConfig.getPasswordParameter())
                                 .successHandler(authenticationSuccessHandler())
-                                .failureHandler(httpAuthenticationFailureHandler)
+                                .failureHandler(httpAuthenticationFailureHandler())
                 )
-                .logout(fromLogout -> fromLogout.logoutUrl(logout)
-                                .logoutSuccessHandler(httpLogoutSuccessHandler)
+                .logout(fromLogout -> fromLogout.logoutUrl(securityConfig.getLogout())
+                                .logoutSuccessHandler(httpLogoutSuccessHandler())
                                 .invalidateHttpSession(true)
                 )
-                .csrf(csrf -> csrf.disable());
+                .csrf(AbstractHttpConfigurer::disable);
 
         //同一个账户多次登录限制，针对等是需要对之前的session进行表示
         httpSecurity
                 .sessionManagement(sessionManagement ->
                         sessionManagement.maximumSessions(securityConfig.getMaximumSessions())
                                 //.maxSessionsPreventsLogin(true)为true是多次登录时抛出异常
-                                .sessionRegistry(springSessionBackedSessionRegistry(redisTemplate))
+                                .sessionRegistry(springSessionBackedSessionRegistry)
                 );
 
         return httpSecurity.build();
@@ -142,8 +130,7 @@ public class AuthenticationSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        Pbkdf2PasswordEncoder pbkdf2PasswordEncoder = new Pbkdf2PasswordEncoder("8iekd,a.oa0923.",1850,256, Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA1);
-        return pbkdf2PasswordEncoder;
+        return new Pbkdf2PasswordEncoder("8iekd,a.oa0923.",8,1850, 256);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.guns21.authentication.security;
+package com.guns21.authentication.security.provider;
 
 import com.guns21.authentication.api.entity.AuthUser;
 import com.guns21.authentication.api.service.UserAuthService;
@@ -31,12 +31,12 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
     protected String userNamePattern;
     @Value("${com.guns21.security.password-pattern:#{null}}")
     protected String passwordPattern;
-    @Autowired
-    protected MessageSourceAccessor messageSourceAccessor;
 
+    protected MessageSourceAccessor messageSourceAccessor;
     protected UserAuthService userAuthService;
 
-    public AbstractAuthenticationProvider(UserAuthService userAuthService) {
+    public AbstractAuthenticationProvider(MessageSourceAccessor messageSourceAccessor, UserAuthService userAuthService) {
+        this.messageSourceAccessor = messageSourceAccessor;
         this.userAuthService = userAuthService;
     }
 

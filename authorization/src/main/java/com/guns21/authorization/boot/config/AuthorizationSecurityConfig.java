@@ -8,14 +8,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
@@ -27,30 +29,10 @@ import java.util.Objects;
  */
 @Configuration
 @EnableWebSecurity
-@Order(110)
 public class AuthorizationSecurityConfig {
 
     @Value("${com.guns21.security.permit.matcher:ant}")
     private String matcher;
-
-    @Autowired
-    private SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry;
-
-    @Autowired
-    private SecurityConfig securityConfig;
-    @Autowired
-    private SecurityConfig.SecurityPermitConfig securityPermitConfig;
-
-
-    @Bean
-    public AccessDecisionManager accessDecisionManager() {
-        return new HttpAccessDecisionManager();
-    }
-
-    @Bean
-    public FilterInvocationSecurityMetadataSource securityMetadataSource() {
-        return new RedisInvocationSecurityMetadataSource();
-    }
 
     @Bean
     public SessionInformationExpiredStrategy sessionInformationExpiredStrategy() {
@@ -58,25 +40,32 @@ public class AuthorizationSecurityConfig {
     }
 
     @Bean
-    public HttpAuthenticationEntryPoint httpAuthenticationEntryPoint() {
+    public AuthenticationEntryPoint httpAuthenticationEntryPoint() {
         return new HttpAuthenticationEntryPoint();
     }
 
     @Bean
-    public AccessDecisionManagerAuthorizationManagerAdapter accessDecisionManagerAuthorizationManagerAdapter() {
-        return new AccessDecisionManagerAuthorizationManagerAdapter(accessDecisionManager(), securityMetadataSource());
+    public AccessDeniedHandler httpAccessDeniedHandler() {
+        return  new HttpAccessDeniedHandler();
     }
 
     @Bean
-    public SecurityFilterChain authorizationSecurityFilterChain(HttpSecurity httpSecurity,ApplicationContext applicationContext) throws Exception {
+    public AuthorizationManager<RequestAuthorizationContext> httpAuthorizationManagerAdapter() {
+        return new HttpAuthorizationManagerAdapter();
+    }
+
+    @Bean
+    @Order(110)
+    public SecurityFilterChain authorizationSecurityFilterChain(HttpSecurity httpSecurity, SecurityConfig securityConfig,
+                                                                SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry) throws Exception {
         if (!securityConfig.isAnonymous()) {
             httpSecurity.anonymous(AbstractHttpConfigurer::disable);
         }
         httpSecurity
                 .requestCache(cache -> cache.requestCache(new NullRequestCache()))//不缓存request
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().access(httpAuthorizationManagerAdapter()))
                 .exceptionHandling(exception-> exception.authenticationEntryPoint(httpAuthenticationEntryPoint())
-//                                .accessDeniedHandler(new HttpAccessDeniedHandler())
+                                .accessDeniedHandler(httpAccessDeniedHandler())
                 )
                 .csrf(csrf -> csrf.disable());
 
@@ -93,7 +82,7 @@ public class AuthorizationSecurityConfig {
     }
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
+    public WebSecurityCustomizer webSecurityCustomizer(SecurityConfig.SecurityPermitConfig securityPermitConfig) {
         return  web -> {
             WebSecurity.IgnoredRequestConfigurer ignoring = web.ignoring();
             ignoring.requestMatchers("/error");
