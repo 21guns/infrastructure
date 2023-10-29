@@ -74,11 +74,6 @@ public class AuthenticationSecurityConfig {
         return new PasswordEncryptAuthenticationProvider(messageSourceAccessor, userAuthService, passwordEncoder);
     }
 
-//    @Bean
-//    public RedisIndexedSessionRepository redisIndexedSessionRepository(RedisTemplate<String, Object> redisTemplate) {
-//        return new RedisIndexedSessionRepository(redisTemplate);
-//    }
-
     @Bean
     public SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry(RedisIndexedSessionRepository redisOperationsSessionRepository) {
         return new SpringSessionBackedSessionRegistry<>(redisOperationsSessionRepository);

@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration;
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
 
@@ -13,9 +12,8 @@ import org.springframework.session.web.http.HttpSessionIdResolver;
 /**
  * Created by ljj on 17/5/24.
  */
-//@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 5)
 @Configuration
-public class HttpSessionConfig extends RedisHttpSessionConfiguration {
+public class HttpSessionConfig {
 
 
     /**

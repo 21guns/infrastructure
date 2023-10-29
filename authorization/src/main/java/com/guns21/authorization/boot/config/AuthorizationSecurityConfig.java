@@ -1,18 +1,18 @@
 package com.guns21.authorization.boot.config;
 
 import com.guns21.authentication.boot.config.SecurityConfig;
-import com.guns21.authorization.security.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.guns21.authorization.security.HttpAccessDeniedHandler;
+import com.guns21.authorization.security.HttpAuthenticationEntryPoint;
+import com.guns21.authorization.security.HttpAuthorizationManagerAdapter;
+import com.guns21.authorization.security.HttpSessionInformationExpiredStrategy;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
@@ -55,8 +55,49 @@ public class AuthorizationSecurityConfig {
     }
 
     @Bean
+    @ConditionalOnExpression("${com.guns21.security.permit.authorize-any:false}")
+    @Order(101)
+    public SecurityFilterChain authorizationPermitSecurityFilterChain(HttpSecurity http, SecurityConfig securityConfig,
+                                                                      SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry,
+                                                                      SessionInformationExpiredStrategy sessionInformationExpiredStrategy) throws Exception {
+            http
+                    .authorizeHttpRequests(
+                            authorize -> authorize
+                                    .anyRequest().permitAll()
+                    )
+                    .csrf(csrf -> csrf.disable());
+
+
+            //同一个账户多次登录限制，对url访问进行监控
+            http
+                    .sessionManagement(sessionManagement ->
+                                    sessionManagement.maximumSessions(securityConfig.getMaximumSessions())
+//                                .maxSessionsPreventsLogin(true) //为true是多次登录时抛出异常
+                                            .sessionRegistry(springSessionBackedSessionRegistry)
+                                            //被登录时，第一次返回的错误信息
+                                            .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                    );
+            return  http.build();
+    }
+
+    @Bean
+    @Order(102)
+    public SecurityFilterChain authorizationPermitUrlSecurityFilterChain(HttpSecurity httpSecurity, SecurityConfig.SecurityPermitConfig securityPermitConfig ) throws Exception {
+        //permit urls
+        if (Objects.nonNull(securityPermitConfig.getPermitPages())) {
+            httpSecurity.securityMatchers((matchers) -> matchers.requestMatchers(securityPermitConfig.getPermitPages())
+                            .requestMatchers("/error"))
+                    .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
+        } else {
+            httpSecurity.securityMatchers((matchers) -> matchers.requestMatchers("/error"))
+                    .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
+        }
+        return httpSecurity.build();
+    }
+
+    @Bean
     @Order(110)
-    public SecurityFilterChain authorizationSecurityFilterChain(HttpSecurity httpSecurity, SecurityConfig securityConfig,
+    public SecurityFilterChain authorizationSecurityFilterChain(HttpSecurity httpSecurity, SecurityConfig securityConfig, SecurityConfig.SecurityPermitConfig securityPermitConfig,
                                                                 SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry) throws Exception {
         if (!securityConfig.isAnonymous()) {
             httpSecurity.anonymous(AbstractHttpConfigurer::disable);
@@ -81,22 +122,22 @@ public class AuthorizationSecurityConfig {
         return httpSecurity.build();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(SecurityConfig.SecurityPermitConfig securityPermitConfig) {
-        return  web -> {
-            WebSecurity.IgnoredRequestConfigurer ignoring = web.ignoring();
-            ignoring.requestMatchers("/error");
-            if (Objects.nonNull(securityPermitConfig.getPermitPages())) {
-                if ("regex".equalsIgnoreCase(matcher)) {
-                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
-                } else if ("ant".equalsIgnoreCase(matcher)) {
-                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
-                } else {
-                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
-                }
-            }
-        };
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer(SecurityConfig.SecurityPermitConfig securityPermitConfig) {
+//        return  web -> {
+//            WebSecurity.IgnoredRequestConfigurer ignoring = web.ignoring();
+//            ignoring.requestMatchers("/error");
+//            if (Objects.nonNull(securityPermitConfig.getPermitPages())) {
+//                if ("regex".equalsIgnoreCase(matcher)) {
+//                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
+//                } else if ("ant".equalsIgnoreCase(matcher)) {
+//                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
+//                } else {
+//                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
+//                }
+//            }
+//        };
+//    }
 
 
 }

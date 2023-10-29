@@ -22,9 +22,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExecutionChain;
+import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -36,7 +36,7 @@ public class HttpAuthorizationManagerAdapter implements AuthorizationManager<Req
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpAuthorizationManagerAdapter.class);
     private static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
     private static final String SUPER_ADMIN = "SUPER_ADMIN";
-    private String permissionRedisKey = "permission_redis_key";
+    private final String permissionRedisKey = "permission_redis_key";
 
     @Resource(name = "redisTemplate")
     private RedisTemplate<String, Map<String, List<String>>> template;
@@ -71,9 +71,12 @@ public class HttpAuthorizationManagerAdapter implements AuthorizationManager<Req
         String requestURI = request.getRequestURI();
         String method = request.getMethod();
 
+        String urlPattern = null ;
         Map<RequestMappingInfo, HandlerMethod> pathMatcher = requestMappingHandlerMapping.getHandlerMethods();
         try {
             HandlerExecutionChain handlerExecutionChain = requestMappingHandlerMapping.getHandler(request);
+            urlPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+            LOGGER.debug("urlPattern:{}",urlPattern);
 //            if (Objects.nonNull(handlerExecutionChain)) {
 //                HandlerMethod handlerMethod = (HandlerMethod) handlerExecutionChain.getHandler();
 //                RequestMapping methodAnnotation = handlerMethod.getMethodAnnotation(RequestMapping.class);
@@ -83,21 +86,14 @@ public class HttpAuthorizationManagerAdapter implements AuthorizationManager<Req
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        RequestMappingInfo matchingCondition = null;
 
-        for (RequestMappingInfo requestMappingInfo : pathMatcher.keySet()) {
-            matchingCondition = requestMappingInfo.getMatchingCondition(request);
-            if (Objects.nonNull(matchingCondition)) {
-                break;
-            }
-        }
-        if (Objects.nonNull(matchingCondition)) {
+        if (Objects.nonNull(urlPattern)) {
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
                 throw new AuthenticationCredentialsNotFoundException(
                         "An Authentication requestAuthorizationContext was not found in the SecurityContext");
             }
 
-            String key = matchingCondition.toString();
+            String key = method + ":" + urlPattern;
             //取redis中的数据
             BoundHashOperations<String, String,  List<String>> ops = template.boundHashOps(permissionRedisKey);
 
@@ -105,9 +101,10 @@ public class HttpAuthorizationManagerAdapter implements AuthorizationManager<Req
             roles = ops.get(key);
             if (ObjectUtils.isEmpty(roles)) {
                 //  使用ant表达式 /api/usermanage/v1/org/{no:MD[0-9]{19}}/salesman --> /api/usermanage/v1/org/*/salesman
-                List<String> resourceList = matchingCondition.getPatternValues().stream()
-                        .map(s -> replaceBrace(s, "*", Arrays.asList("{", "}")))
-                        .toList();
+                String antUrl  = replaceBrace(urlPattern, "*", Arrays.asList("{","}"));
+//                List<String> resourceList = matchingCondition.getPatternValues().stream()
+//                        .map(s -> replaceBrace(s, "*", Arrays.asList("{", "}")))
+//                        .toList();
                 //提供数据来源
                 List<AccessResource> accessResources = resourceRoleMapping.listRole(requestURI, method);
                 if (Objects.nonNull(accessResources)) {
@@ -115,10 +112,10 @@ public class HttpAuthorizationManagerAdapter implements AuthorizationManager<Req
                         AccessResource accessResource = accessResources.get(i);
                         //访问资源
                         if (AccessResource.FULL_RESOURCE.equals(accessResource.getPermissionUrl())
-                                || resourceList.contains(accessResource.getPermissionUrl()) ) {
+                                || antUrl.equals(accessResource.getPermissionUrl()) ) {
                             //比较访问方式
                             if (AccessResource.FULL_ACCESS.equals(accessResource.getRequestMethod())
-                                    || matchingCondition.getMethodsCondition().getMethods().contains(RequestMethod.valueOf(accessResource.getRequestMethod()))) {
+                                    || method.equals(accessResource.getRequestMethod())) {
                                 roles = accessResource.getRole();
                                 ops.put(key, roles);
                                 break;
