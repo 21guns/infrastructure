@@ -75,7 +75,7 @@ public class AuthenticationSecurityConfig {
     }
 
     @Bean
-    public SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry(RedisIndexedSessionRepository redisOperationsSessionRepository) {
+    public SpringSessionBackedSessionRegistry<?> springSessionBackedSessionRegistry(RedisIndexedSessionRepository redisOperationsSessionRepository) {
         return new SpringSessionBackedSessionRegistry<>(redisOperationsSessionRepository);
     }
 
@@ -93,7 +93,7 @@ public class AuthenticationSecurityConfig {
     @Bean
     @Order(100)
     public SecurityFilterChain authenticationSecurityFilterChain(HttpSecurity httpSecurity, SecurityConfig securityConfig,
-                                                                 SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry) throws Exception {
+                                                                 SpringSessionBackedSessionRegistry<?> springSessionBackedSessionRegistry) throws Exception {
         httpSecurity
                 //当有多个 HttpSecurity patterns 只能匹配Order优先级最好的HttpSecurity
                 .securityMatcher(securityConfig.getLogin(), securityConfig.getLogout())

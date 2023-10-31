@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -54,17 +55,17 @@ public class SecurityConfig {
     @ConfigurationProperties(prefix = "com.guns21.security.permit")
     public static class SecurityPermitConfig {
 
-        private String[] permitPages;
+        private List<String> permitPages;
 
         public void setPages(List<String> permitPages) {
             if (ObjectUtils.nonEmpty(permitPages)) {
-                this.permitPages = permitPages.toArray(new String[0]);
+                this.permitPages = permitPages;
             } else {
-                this.permitPages = null;
+                this.permitPages = Collections.emptyList();
             }
         }
 
-        public String[] getPermitPages() {
+        public List<String> getPermitPages() {
             return permitPages;
         }
     }

@@ -22,6 +22,8 @@ import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -57,58 +59,36 @@ public class AuthorizationSecurityConfig {
     @Bean
     @ConditionalOnExpression("${com.guns21.security.permit.authorize-any:false}")
     @Order(101)
-    public SecurityFilterChain authorizationPermitSecurityFilterChain(HttpSecurity http, SecurityConfig securityConfig,
-                                                                      SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry,
-                                                                      SessionInformationExpiredStrategy sessionInformationExpiredStrategy) throws Exception {
+    public SecurityFilterChain authorizationPermitSecurityFilterChain(HttpSecurity http) throws Exception {
             http
                     .authorizeHttpRequests(
                             authorize -> authorize
                                     .anyRequest().permitAll()
                     )
-                    .csrf(csrf -> csrf.disable());
+                    .csrf(AbstractHttpConfigurer::disable);
 
-
-            //同一个账户多次登录限制，对url访问进行监控
-            http
-                    .sessionManagement(sessionManagement ->
-                                    sessionManagement.maximumSessions(securityConfig.getMaximumSessions())
-//                                .maxSessionsPreventsLogin(true) //为true是多次登录时抛出异常
-                                            .sessionRegistry(springSessionBackedSessionRegistry)
-                                            //被登录时，第一次返回的错误信息
-                                            .expiredSessionStrategy(sessionInformationExpiredStrategy)
-                    );
             return  http.build();
-    }
-
-    @Bean
-    @Order(102)
-    public SecurityFilterChain authorizationPermitUrlSecurityFilterChain(HttpSecurity httpSecurity, SecurityConfig.SecurityPermitConfig securityPermitConfig ) throws Exception {
-        //permit urls
-        if (Objects.nonNull(securityPermitConfig.getPermitPages())) {
-            httpSecurity.securityMatchers((matchers) -> matchers.requestMatchers(securityPermitConfig.getPermitPages())
-                            .requestMatchers("/error"))
-                    .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
-        } else {
-            httpSecurity.securityMatchers((matchers) -> matchers.requestMatchers("/error"))
-                    .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
-        }
-        return httpSecurity.build();
     }
 
     @Bean
     @Order(110)
     public SecurityFilterChain authorizationSecurityFilterChain(HttpSecurity httpSecurity, SecurityConfig securityConfig, SecurityConfig.SecurityPermitConfig securityPermitConfig,
-                                                                SpringSessionBackedSessionRegistry springSessionBackedSessionRegistry) throws Exception {
+                                                                SpringSessionBackedSessionRegistry<?> springSessionBackedSessionRegistry) throws Exception {
         if (!securityConfig.isAnonymous()) {
             httpSecurity.anonymous(AbstractHttpConfigurer::disable);
         }
+        var urls = new ArrayList<String>(List.of("/error"));
+        if (Objects.nonNull(securityPermitConfig.getPermitPages())) {
+            urls.addAll(securityPermitConfig.getPermitPages());
+        }
         httpSecurity
                 .requestCache(cache -> cache.requestCache(new NullRequestCache()))//不缓存request
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().access(httpAuthorizationManagerAdapter()))
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers(urls.toArray(new String[0])).permitAll()
+                        .anyRequest().access(httpAuthorizationManagerAdapter()))
                 .exceptionHandling(exception-> exception.authenticationEntryPoint(httpAuthenticationEntryPoint())
                                 .accessDeniedHandler(httpAccessDeniedHandler())
                 )
-                .csrf(csrf -> csrf.disable());
+                .csrf(AbstractHttpConfigurer::disable);
 
         //同一个账户多次登录限制，对url访问进行监控
         httpSecurity
@@ -129,11 +109,11 @@ public class AuthorizationSecurityConfig {
 //            ignoring.requestMatchers("/error");
 //            if (Objects.nonNull(securityPermitConfig.getPermitPages())) {
 //                if ("regex".equalsIgnoreCase(matcher)) {
-//                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
+//                    ignoring.requestMatchers(securityPermitConfig.getPermitPages().toArray(new String[0]));
 //                } else if ("ant".equalsIgnoreCase(matcher)) {
-//                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
+//                    ignoring.requestMatchers(securityPermitConfig.getPermitPages().toArray(new String[0]));
 //                } else {
-//                    ignoring.requestMatchers(securityPermitConfig.getPermitPages());
+//                    ignoring.requestMatchers(securityPermitConfig.getPermitPages().toArray(new String[0]));
 //                }
 //            }
 //        };
