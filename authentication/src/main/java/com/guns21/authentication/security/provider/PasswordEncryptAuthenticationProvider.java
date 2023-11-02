@@ -1,7 +1,7 @@
 package com.guns21.authentication.security.provider;
 
 import com.guns21.authentication.api.entity.AuthUser;
-import com.guns21.authentication.api.service.UserAuthService;
+import com.guns21.authentication.api.service.PasswordAuthService;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +18,7 @@ public class PasswordEncryptAuthenticationProvider extends AbstractAuthenticatio
 
     private PasswordEncoder passwordEncoder;
 
-    public PasswordEncryptAuthenticationProvider(MessageSourceAccessor messageSourceAccessor, UserAuthService userAuthService, PasswordEncoder passwordEncoder) {
+    public PasswordEncryptAuthenticationProvider(MessageSourceAccessor messageSourceAccessor, PasswordAuthService userAuthService, PasswordEncoder passwordEncoder) {
         super(messageSourceAccessor, userAuthService);
         this.passwordEncoder = passwordEncoder;
     }

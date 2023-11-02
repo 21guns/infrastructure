@@ -3,6 +3,7 @@ package com.guns21.authorization.security;
 import com.guns21.authentication.boot.config.SecurityConfig;
 import com.guns21.authorization.ResourceRoleMapping;
 import com.guns21.authorization.domain.AccessResource;
+import com.guns21.authorization.domain.AuthorizationConstants;
 import com.guns21.common.util.ObjectUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,10 +35,6 @@ import java.util.stream.Collectors;
 
 public class HttpAuthorizationManagerAdapter implements AuthorizationManager<RequestAuthorizationContext> {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpAuthorizationManagerAdapter.class);
-    private static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
-    private static final String SUPER_ADMIN = "SUPER_ADMIN";
-    private final String permissionRedisKey = "permission_redis_key";
-
     @Resource(name = "redisTemplate")
     private RedisTemplate<String, Map<String, List<String>>> template;
     @Autowired
@@ -95,7 +92,7 @@ public class HttpAuthorizationManagerAdapter implements AuthorizationManager<Req
 
             String key = method + ":" + urlPattern;
             //取redis中的数据
-            BoundHashOperations<String, String,  List<String>> ops = template.boundHashOps(permissionRedisKey);
+            BoundHashOperations<String, String,  List<String>> ops = template.boundHashOps(AuthorizationConstants.PERMISSION_REDIS_KEY);
 
             //TODO 添加过期时间
             roles = ops.get(key);
@@ -135,9 +132,9 @@ public class HttpAuthorizationManagerAdapter implements AuthorizationManager<Req
         if (null == roles || roles.size() == 0) {
             LOGGER.warn("url {} hasn't roles and return SUPER_ADMIN's role", requestURI);
             if (securityConfig.isAnonymous()) {
-                return Collections.singleton(new org.springframework.security.access.SecurityConfig(ROLE_ANONYMOUS));
+                return Collections.singleton(new org.springframework.security.access.SecurityConfig(AuthorizationConstants.ROLE_ANONYMOUS));
             } else {
-                return Collections.singleton(new org.springframework.security.access.SecurityConfig(SUPER_ADMIN));
+                return Collections.singleton(new org.springframework.security.access.SecurityConfig(AuthorizationConstants.SUPER_ADMIN));
             }
         }
 
@@ -162,7 +159,7 @@ public class HttpAuthorizationManagerAdapter implements AuthorizationManager<Req
         /**
          * 2.启用匿名访问时，检查角色列表是否包含匿名用户
          */
-        if (securityConfig.isAnonymous() && configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals(ROLE_ANONYMOUS))) {
+        if (securityConfig.isAnonymous() && configAttributes.stream().map(ca -> ca.getAttribute()).anyMatch(role -> role.equals(AuthorizationConstants.ROLE_ANONYMOUS))) {
             return;
         }
 

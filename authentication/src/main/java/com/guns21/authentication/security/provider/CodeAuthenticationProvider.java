@@ -1,11 +1,10 @@
 package com.guns21.authentication.security.provider;
 
 import com.guns21.authentication.api.entity.AuthUser;
-import com.guns21.authentication.api.service.UserAuthService;
+import com.guns21.authentication.api.service.CodeAuthService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +16,7 @@ import java.util.Objects;
  */
 public class CodeAuthenticationProvider extends AbstractAuthenticationProvider {
 
-    public CodeAuthenticationProvider(MessageSourceAccessor messageSourceAccessor, UserAuthService userAuthService) {
+    public CodeAuthenticationProvider(MessageSourceAccessor messageSourceAccessor, CodeAuthService userAuthService) {
         super(messageSourceAccessor, userAuthService);
     }
 
