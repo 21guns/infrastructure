@@ -67,6 +67,7 @@ public class IDFactory {
         switch (type) {
             case IP:
                 String[] ips = IpUtils.getIps();
+                log.info("local ip[{}]", Arrays.toString(ips));
                 if (IpUtils.validate(ips)) {
                     dataCenterId = Long.parseLong(ips[2]) % 32;
                     workerId = Long.parseLong(ips[3]) % 32;
