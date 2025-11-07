@@ -14,21 +14,22 @@ import java.sql.SQLException;
 /**
  * mapper里json型字段到类的映射。
  * 用法一:
- * 入库：#{jsonDataField, typeHandler=com.guns21.mybatis.handler.JsonTypeHandler}
+ * 入库：#{jsonDataField, typeHandler=com.guns21.mybatis.JsonTypeHandler}
  * 出库：
  * <resultMap>
- * <result property="jsonDataField" column="json_data_field" javaType="com.xxx.MyClass" typeHandler="com.guns21.mybatis.handler.JsonTypeHandler"/>
+ * <result property="jsonDataField" column="json_data_field" javaType="com.xxx.MyClass" typeHandler="com.guns21.mybatis.JsonTypeHandler"/>
  * </resultMap>
  *
  * 用法二：
  * 1）在mybatis-config.xml中指定handler:
  *      <typeHandlers>
- *              <typeHandler handler="com.guns21.mybatis.handler.JsonTypeHandler" javaType="com.xxx.MyClass"/>
+ *              <typeHandler handler="com.guns21.mybatis.JsonTypeHandler" javaType="com.xxx.MyClass"/>
  *      </typeHandlers>
  * 2)在MyClassMapper.xml里直接select/update/insert。
  *
  *
- * ps: since mybatis-spring 2.0.3 need No Args Constructor
+ * ps: 该类没办法提供无参构造函数，不能放到handler包
+ *  since mybatis-spring 2.0.3 need No Args Constructor
  */
 public class JsonTypeHandler<T extends Object> extends BaseTypeHandler<T> {
     private static final ObjectMapper mapper = new ObjectMapper();
